@@ -1,0 +1,36 @@
+.input {
+    display: flex;
+    align-items: center;
+    justify-content: center; /* aggiunto */
+    margin: auto;
+    width: 480px;
+    height: 80px;
+    border-radius: 10px;
+    padding: 20px;
+    border: 1px solid #141313;
+    
+}
+.areaLogin {
+        margin:auto;
+        align-items: center;
+        background: linear-gradient(to right, #089bdf73, #c00ad8a1);
+        background-size: 1000px 1020px;
+        background-repeat: no-repeat;
+        background-position: center;
+        padding: 40px;
+        border-radius: 10px;
+}
+.buttonLogin {
+        position: absolute;
+        background: linear-gradient(to right, #089bdf73, #c00ad8a1);
+        padding: 40px;
+        border-radius: 10px;
+
+}
+#bottoneaccedi {
+    color: rgb(7, 0, 0);
+    font-size: 150%;
+    font-weight: bolder;
+    border-color: rgb(31, 29, 29);
+    
+}

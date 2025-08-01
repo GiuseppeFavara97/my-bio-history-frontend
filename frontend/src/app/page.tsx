@@ -1,8 +1,44 @@
-import Image from "next/image";
+
+import './globals.css';
+
+import Footer from "../components/footer/footer";
+
+
+const Home: React.FC = () => {
+  return (
+    
+     <div className="relative">
+  <img
+    src="/Biomedical.jpg"
+    alt="Background"
+    className="float-right  object-bottom h-80 object-cover ml-4 mb-4 rounded"
+  />
+  
+  <section className="p-8 bg-white dark:bg-zinc-900 text-black dark:text-white">
+    <h1 className="text-3xl font-bold mb-4">Benvenuto su My Bio History</h1>
+    <p className="mb-2">La tua storia, la tua biografia, il tuo mondo.</p>
+    <p className="mb-2">
+      Scopri di più su di noi e su come possiamo aiutarti a raccontare la tua storia.
+    </p>
+    <p className="mb-2">Contattaci per maggiori informazioni.</p>
+    <p className="mb-2">Inizia il tuo viaggio con noi!</p>
+    <p className="mb-2">TESTING.............</p>
+    <p className="mb-2">TESTING.............</p>
+    <p className="mb-2">TESTING.............</p>
+    <p>TESTING.............</p>
+  </section>
+</div>
+  );
+};
+
+export default Home;
+
+/*
+
 
 export default function Home() {
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
+    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
       <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
         <Image
           className="dark:invert"
@@ -12,10 +48,10 @@ export default function Home() {
           height={38}
           priority
         />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
+        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
           <li className="mb-2 tracking-[-.01em]">
             Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
+            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
               src/app/page.tsx
             </code>
             .
@@ -39,7 +75,7 @@ export default function Home() {
               width={20}
               height={20}
             />
-            Deploy now
+            Deploy u uaglioncello
           </a>
           <a
             className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
@@ -47,7 +83,7 @@ export default function Home() {
             target="_blank"
             rel="noopener noreferrer"
           >
-            Read our docs
+            uaglione
           </a>
         </div>
       </main>
@@ -101,3 +137,7 @@ export default function Home() {
     </div>
   );
 }
+
+
+
+*/
