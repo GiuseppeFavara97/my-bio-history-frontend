@@ -22,7 +22,7 @@ type User = {
 
 export default function Provausers() {
     const [users, setUsers] = useState<User[]>([]); // Stato per memorizzare gli utente
-    const API_URL = process.env.REACT_APP_API_URL || 'https://http://localhost:3000';
+    const API_URL = process.env.REACT_APP_API_URL;
 
 
     useEffect(() => {
