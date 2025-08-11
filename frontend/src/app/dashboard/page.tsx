@@ -10,7 +10,7 @@ export default async function DashboardHome() {
 
   if (!token) {
     return (
-      <div className="p-8">
+      <div className="w-screen  flex  flex-col items-center p-8">
         <h1 className="text-2xl font-bold mb-4">Accesso non autorizzato</h1>
         <p>Effettua prima il  {' '}
         <a href="/login" className="text-blue-600 underline">Login</a> per accedere alla dashboard.</p>
@@ -20,7 +20,9 @@ export default async function DashboardHome() {
   }
   if (role && role.toLowerCase() === 'doctor'){
     redirect("/dashboard/doctor")
+  } else if (role && role.toLowerCase() === 'admin'){
+    redirect("/dashboard/admin")
   } else {
-    redirect("/dashboard/patient")
+    redirect ("/dashboard/patient")
   }
 }

@@ -51,7 +51,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
       <NavigationMenuLink href="/">Home</NavigationMenuLink>
     </NavigationMenuItem>
     <NavigationMenuItem>
-      <NavigationMenuLink href="/users">TestUsers</NavigationMenuLink>
+      <NavigationMenuLink href="/dashboard">Dashboard</NavigationMenuLink>
     </NavigationMenuItem>
     <NavigationMenuItem>
       <NavigationMenuLink href="/login">Login</NavigationMenuLink>

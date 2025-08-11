@@ -47,14 +47,15 @@ const Login: React.FC = () => {
 
       clearInterval(intervallo);
       setProgress(100);
-
       const token = response.data.access_token;
-      const role = response.data.ruolo;
+      const user = response.data.user;
+      const role = user.role;
       if (!token) {
         throw new Error('Token non ricevuto');
       }
 
       localStorage.setItem('token', token);
+      localStorage.setItem('user' , JSON.stringify(user))
       document.cookie = `auth_token=${token}; path=/; SameSite=Lax`;
       document.cookie = `ruolo=${role}; path=/; SameSite=Lax`;
       setTimeout(() => {
