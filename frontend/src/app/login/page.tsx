@@ -41,23 +41,15 @@ const Login: React.FC = () => {
 
     try {
       const response = await axios.post('http://localhost:3001/api/auth/login', {
-        email,
-        password,
-      });
+        email,password,},
+      {withCredentials: true}
+      );
 
       clearInterval(intervallo);
       setProgress(100);
-      const token = response.data.access_token;
       const user = response.data.user;
       const role = user.role;
-      if (!token) {
-        throw new Error('Token non ricevuto');
-      }
-
-      localStorage.setItem('token', token);
       localStorage.setItem('user' , JSON.stringify(user))
-      document.cookie = `auth_token=${token}; path=/; SameSite=Lax`;
-      document.cookie = `ruolo=${role}; path=/; SameSite=Lax`;
       setTimeout(() => {
         router.push('/');
       }, 300); // piccola attesa per mostrare il 100%

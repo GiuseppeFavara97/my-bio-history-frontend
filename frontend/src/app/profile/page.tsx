@@ -28,19 +28,9 @@ const Profile: React.FC = () => {
   const backendURL = 'http://localhost:3001/api/auth/Profile';
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    console.log('Token usato nella richiesta:', token);
-
-    if (!token) {
-      router.push('/login'); // attenzione: lowercase
-      return;
-    }
-
     axios
       .get<UserProfile>(backendURL, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        withCredentials: true,
       })
       .then(res => {
         setUser(res.data);
@@ -48,8 +38,6 @@ const Profile: React.FC = () => {
       .catch(err => {
         console.error(err);
         setError('Sessione scaduta o accesso non autorizzato.');
-        localStorage.removeItem('token');
-        localStorage.removeItem('user');
         router.push('/login');
       });
   }, [router]);
