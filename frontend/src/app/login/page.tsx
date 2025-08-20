@@ -40,10 +40,11 @@ const Login: React.FC = () => {
     }, 200);
 
     try {
-      const response = await axios.post('http://localhost:3001/api/auth/login', {
-        email,password,},
-      {withCredentials: true}
-      );
+      const API_URL = process.env.NEXT_PUBLIC_API_URL;
+      const response = await axios.post(`${API_URL}/api/auth/login`, {
+        email,
+        password,
+      });
 
       clearInterval(intervallo);
       setProgress(100);
