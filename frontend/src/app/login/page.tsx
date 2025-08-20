@@ -48,16 +48,9 @@ const Login: React.FC = () => {
 
       clearInterval(intervallo);
       setProgress(100);
-
-      const token = response.data.access_token;
-      const role = response.data.ruolo;
-      if (!token) {
-        throw new Error('Token non ricevuto');
-      }
-
-      localStorage.setItem('token', token);
-      document.cookie = `auth_token=${token}; path=/; SameSite=Lax`;
-      document.cookie = `ruolo=${role}; path=/; SameSite=Lax`;
+      const user = response.data.user;
+      const role = user.role;
+      localStorage.setItem('user' , JSON.stringify(user))
       setTimeout(() => {
         router.push('/');
       }, 300); // piccola attesa per mostrare il 100%

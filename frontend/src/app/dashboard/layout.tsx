@@ -1,16 +1,15 @@
-import React from "react";
-import { Inter } from "next/font/google";
-import { ThemeProvider } from 'next-themes'
-import ClientLayout from "../clientlayout";
-import Footer from "../../components/footer/footer";
+import React from 'react'
+import { cookies } from 'next/headers'
+import { redirect } from 'next/navigation'
 
-const inter = Inter({ subsets: ["latin"] });
+export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
+  const cookie = await cookies()
+  const token = cookie.get('auth_token')?.value
 
-export default function DashboardLayout({ children }: { children: React.ReactNode }) {
+  if (!token) redirect('/login')
   return (
-    <div className="flex">
-      <main className="p-4">{children}</main>
-      <Footer/>
+    <div className="flex bg-gradient-to-t from-gray-700 to-gray-900">
+      <main className="p-0.5 w-1/10 rounded-r-2xl">{children}</main>
     </div>
   )
 }
