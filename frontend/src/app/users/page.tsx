@@ -9,20 +9,20 @@ type User = {
     email: string;
     firstName: string;
     lastName: string;
-    birthday: Date;
+    birthday: string;
     birthday_place: string;
     province: string;
     sex: string;
     phoneNumber: string;
-    createdAt: Date;
-    updatedAt: Date;
+    createdAt: string;
+    updatedAt: string;
 }
 
 
 
 export default function Provausers() {
     const [users, setUsers] = useState<User[]>([]); // Stato per memorizzare gli utente
-    const API_URL = process.env.REACT_APP_API_URL;
+    const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 
     useEffect(() => {
