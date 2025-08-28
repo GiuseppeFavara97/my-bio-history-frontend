@@ -11,8 +11,6 @@ type User = {
 }
 type MedicalRecord = Record<string, unknown>
 
-
-
 export default function PatientClient({
     medicalrecord,
     userData,
@@ -23,13 +21,14 @@ export default function PatientClient({
     const [dati, setDati] = useState<'dati' | 'medical' | ''>('dati')
     const [user, setUser] = useState<User | null>(userData)
     const [open, setOpen] = useState(true)
+    const [medical, setMedical] = useState<any>([medicalrecord])
 
     useEffect(() => {
         setUser(userData)
     }, [])
     if (!user) return null;
     return (
-        <div className='flex w-screen '>
+        <div className='flex w-screen text-white'>
             <div className='p-2 outline outline-indigo-600 rounded-r-2xl'>
                 <div className="text-center cursor-pointer" onClick={() => setOpen(old => !old)}>
                     {open ? "Nascondi" : "Menu"}
