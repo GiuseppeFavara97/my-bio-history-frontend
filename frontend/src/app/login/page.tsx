@@ -1,10 +1,5 @@
 'use client'
 
-import React, { useState } from 'react';
-import axios from 'axios';
-import { useRouter } from 'next/navigation';
-import './Login.css';
-
 import {
   Card,
   CardContent,
@@ -13,9 +8,11 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-
+import React, { useState } from 'react';
+import axios from 'axios';
+import { useRouter } from 'next/navigation';
+import './Login.css';
 import { Progress } from "@/components/ui/progress";
-import { RESPONSE_LIMIT_DEFAULT } from 'next/dist/server/api-utils';
 
 const Login: React.FC = () => {
   const router = useRouter();
@@ -41,16 +38,16 @@ const Login: React.FC = () => {
 
     try {
       const API_URL = process.env.NEXT_PUBLIC_API_URL;
-      const response = await axios.post(`${API_URL}/api/auth/login`, {
-        email,
-        password,
-      });
+      const response = await axios.post(`${API_URL}/api/auth/login`,
+        { email, password },
+        { withCredentials: true }
+      );
 
       clearInterval(intervallo);
       setProgress(100);
       const user = response.data.user;
       const role = user.role;
-      localStorage.setItem('user' , JSON.stringify(user))
+      localStorage.setItem('user', JSON.stringify(user))
       setTimeout(() => {
         router.push('/');
       }, 300); // piccola attesa per mostrare il 100%

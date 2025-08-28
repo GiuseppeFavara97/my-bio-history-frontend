@@ -24,8 +24,9 @@ const Profile: React.FC = () => {
   const [user, setUser] = useState<UserProfile | null>(null);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
+  const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
-  const backendURL = 'http://localhost:3001/api/auth/Profile';
+  const backendURL = `${API_URL}/api/auth/Profile`;
 
   useEffect(() => {
     axios
@@ -49,7 +50,7 @@ const Profile: React.FC = () => {
     <div>
       {user.profileImageUrl && (
         <img
-          src={`http://localhost:3001${user.profileImageUrl}`}
+          src={`${API_URL}${user.profileImageUrl}`}
           alt="Foto Profilo"
           style={{ width: '150px', borderRadius: '50%' }}
         />
