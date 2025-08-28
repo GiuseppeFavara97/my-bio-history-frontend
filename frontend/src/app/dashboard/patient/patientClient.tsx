@@ -9,14 +9,16 @@ type User = {
     lastName: string;
     role: string;
 }
+type MedicalRecord = Record<string, unknown>
 
-
-export default function PatientClient({ medicalrecord, userData }: { medicalrecord: any[], userData: any }) {
-    console.log("primo")
-    console.log(medicalrecord)
-    console.log(userData)
-
-    const [dati, setDati] = useState<string>("dati")
+export default function PatientClient({
+    medicalrecord,
+    userData,
+}: {
+    medicalrecord: MedicalRecord[]
+    userData: User | null
+}) {
+    const [dati, setDati] = useState<'dati' | 'medical' | ''>('dati')
     const [user, setUser] = useState<User | null>(userData)
     const [open, setOpen] = useState(true)
     const [medical, setMedical] = useState<any>([medicalrecord])
@@ -128,7 +130,23 @@ export default function PatientClient({ medicalrecord, userData }: { medicalreco
             )}
 
         </div>
-
-
+    )
+}
+function InfoField({
+    label,
+    value,
+    full,
+}: {
+    label: string
+    value: string
+    full?: boolean
+}) {
+    return (
+        <div className={`flex flex-col ${full ? 'md:col-span-2' : ''}`}>
+            <span className="text-xs uppercase opacity-70">{label}</span>
+            <div className="mt-1 outline outline-lime-400/60 rounded-md px-3 py-2 break-all">
+                {value}
+            </div>
+        </div>
     )
 }
