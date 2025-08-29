@@ -16,6 +16,7 @@ import { Progress } from "@/components/ui/progress";
 
 const Login: React.FC = () => {
   const router = useRouter();
+  const [user, setUser] = useState<any>(null);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -38,11 +39,12 @@ const Login: React.FC = () => {
 
     try {
       const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
       const response = await axios.post(`${API_URL}/api/auth/login`,
         { email, password },
         { withCredentials: true }
       );
-
+      
       clearInterval(intervallo);
       setProgress(100);
       const user = response.data.user;
@@ -105,3 +107,4 @@ const Login: React.FC = () => {
 };
 
 export default Login;
+
