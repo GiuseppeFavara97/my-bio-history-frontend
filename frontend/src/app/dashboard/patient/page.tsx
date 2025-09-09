@@ -2,8 +2,9 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import PatientClient from "./patientClient";
+import { MedicalRecord, User } from "@/Types/Types";
 
-interface User  {
+type User  = {
     id: number;
     username: string;
     email: string;
@@ -12,18 +13,16 @@ interface User  {
     role: string;
 };
 
-type MedicalRecord  ={
+type MedicalRecord = {
     id: number;
     description: string;
     date: string; // oppure Date se lo converti
 };
 
 export default function Page() {
-
-    const [data, setData] = useState<User | null>(null);
-    const [error, setError] = useState<string | null>(null);
-    const [medical, setMedical] = useState<MedicalRecord[]>([]);
     const [user, setUser] = useState<User | null>(null);
+    const [medical, setMedical] = useState<MedicalRecord[]>([]);
+    const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState(true);
 
     const API_URL = process.env.NEXT_PUBLIC_API_URL;
