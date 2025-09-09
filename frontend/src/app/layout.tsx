@@ -1,15 +1,13 @@
 import type { Metadata } from "next";
 //import { Inter } from "next/font/google";
-import localFont from "next/font/local";
+//import localFont from "next/font/local";
 import "./globals.css";
 import ClientLayout from "./clientlayout";
 import Footer from "../components/footer/footer";
 import { ThemeProvider } from 'next-themes';
 import { SpeedInsights } from "@vercel/speed-insights/next"
 
-
 //const inter = Inter({ subsets: ["arial"] });
-const inter = localFont({ src: "../fonts/Inter-Regular.ttf", display: 'swap', variable: '--font-inter' });
 
 export const metadata: Metadata = {
   title: "Next App",
@@ -21,7 +19,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     
     <html lang="en" suppressHydrationWarning>
       
-      <body className={inter.className}>
+      <body >
          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
         <ClientLayout> 
           {children}
