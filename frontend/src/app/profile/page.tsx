@@ -5,6 +5,7 @@ import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import UploadProfileImage from '../../components/upload';
 import Button from '../../components/navigation/navbar/button';
+import './profile.css';
 
 interface UserProfile {
   id: number;
@@ -23,19 +24,24 @@ interface UserProfile {
 const Profile: React.FC = () => {
   const [user, setUser] = useState<UserProfile | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [show , setShow] = useState(false)
   const router = useRouter();
   const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
   const backendURL = `${API_URL}/api/auth/Profile`;
 
+  function upload() {
+    return (
+      <div>
+        viso
+      </div>
+    )
+  }
+
   useEffect(() => {
     axios
-      .get<UserProfile>(backendURL, {
-        withCredentials: true,
-      })
-      .then(res => {
-        setUser(res.data);
-      })
+      .get<UserProfile>(backendURL, { withCredentials: true })
+      .then(res => setUser(res.data))
       .catch(err => {
         console.error(err);
         setError('Sessione scaduta o accesso non autorizzato.');
@@ -47,33 +53,93 @@ const Profile: React.FC = () => {
   if (!user) return <p>Caricamento profilo...</p>;
 
   return (
-    <div>
-      {user.profileImageUrl && (
-        <img
-          src={`${API_URL}${user.profileImageUrl}`}
-          alt="Foto Profilo"
-          style={{ width: '150px', borderRadius: '50%' }}
-        />
-      )}
-      <UploadProfileImage />
-      <h2>Profilo Utente</h2>
-      <p><strong>Nome:</strong> {user.firstName}</p>
-      <p><strong>Cognome:</strong> {user.lastName}</p>
-      <p><strong>Email:</strong> {user.email}</p>
-      <p><strong>Telefono:</strong> {user.phoneNumber}</p>
-      <p><strong>Provincia:</strong> {user.province}</p>
-      <p><strong>Luogo di nascita:</strong> {user.birthdayPlace}</p>
-      <p><strong>Data di nascita:</strong> {new Date(user.birthday).toLocaleDateString()}</p>
+    <div className="profile-wrapper">
+      <h1 className="profile-title">Profilo Utente</h1>
 
-      <Button
-        onClick={() => {
-          localStorage.removeItem('token');
-          localStorage.removeItem('user');
-          router.push('/login');
-        }}
-      >
-        Logout
-      </Button>
+      <div className="profile-form outline">
+        {/* Sezione sinistra: immagine profilo + upload */}
+        <div className="outline h-full profile-left">
+          <img
+            src={user.profileImageUrl ? `${API_URL}${user.profileImageUrl}` : '/omino blu.webp'}
+            alt={"Avatar Utente"}
+            onClick={() => setShow(true) }
+            className="profile-avatar"
+          />
+          <div className='items-center outline flex-col w-full text-center h-full'>
+          <div className=" flex flex-col profile-actions">
+            <div className='items-center flex-col'> 
+            <Button className="cursor-pointer hover:bg-blue-500 w-full"onClick={() => alert('Modifica profilo non ancora disponibile')}>Modifica Profilo</Button>
+              </div>
+            <Button className="cursor-pointer hover:bg-red-500" onClick={() => alert('Cambia password non ancora disponibile')}>Cambia Password</Button>
+            <Button
+          onClick={() => {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            router.push('/login');
+          }}
+          className="btn-logout"
+        >
+          Logout
+        </Button>
+        </div>
+      </div>
+        </div>
+          {show && (
+            <div className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center">
+              <div className="bg-white p-6 rounded-lg shadow-lg">
+                <UploadProfileImage onClose={() => setShow(false)} />
+              </div>
+            </div>
+)}
+        {/* Sezione destra: campi utente */}
+        <div className="profile-right">
+          <div className="profile-fields">
+            <div className="form-group">
+              <label>Nome</label>
+              <input type="text" value={user.firstName} readOnly />
+            </div>
+            <div className="form-group">
+              <label>Cognome</label>
+              <input type="text" value={user.lastName} readOnly />
+            </div>
+            <div className="form-group">
+              <label>Username</label>
+              <input type="text" value={user.username} readOnly />
+            </div>
+            <div className="form-group">
+              <label>Email</label>
+              <input type="email" value={user.email} readOnly />
+            </div>
+            <div className="form-group">
+              <label>Telefono</label>
+              <input type="text" value={user.phoneNumber} readOnly />
+            </div>
+            <div className="form-group">
+              <label>Provincia</label>
+              <input type="text" value={user.province} readOnly />
+            </div>
+            <div className="form-group">
+              <label>Luogo di nascita</label>
+              <input type="text" value={user.birthdayPlace} readOnly />
+            </div>
+            <div className="form-group">
+              <label>Data di nascita</label>
+              <input
+                type="text"
+                value={new Date(user.birthday).toLocaleDateString('it-IT')}
+                readOnly
+              />
+            </div>
+            <div className="form-group">
+              <label>Sesso</label>
+              <input type="text" value={user.sex} readOnly />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Pulsanti azione */}
+      
     </div>
   );
 };

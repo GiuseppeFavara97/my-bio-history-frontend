@@ -8,7 +8,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import './Login.css';
@@ -28,7 +28,7 @@ const Login: React.FC = () => {
     setError('');
     setProgress(0);
     setLoading(true);
-
+   
     // parte che uso per simulare un caricamento
     const intervallo = setInterval(() => {
       setProgress(prev => {

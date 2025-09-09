@@ -4,7 +4,20 @@ import { useEffect, useState } from "react";
 import PatientClient from "./patientClient";
 import { MedicalRecord, User } from "@/Types/Types";
 
+type User  = {
+    id: number;
+    username: string;
+    email: string;
+    firstName: string;
+    lastName: string;
+    role: string;
+};
 
+type MedicalRecord = {
+    id: number;
+    description: string;
+    date: string; // oppure Date se lo converti
+};
 
 export default function Page() {
     const [user, setUser] = useState<User | null>(null);

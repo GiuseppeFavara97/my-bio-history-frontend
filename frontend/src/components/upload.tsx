@@ -1,7 +1,13 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
-const UploadProfileImage: React.FC = () => {
+interface UploadProfileImage {
+  onClose : () => void
+}
+
+const UploadProfileImage: React.FC<UploadProfileImage> = ({onClose}) => {
+
+
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [uploading, setUploading] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
@@ -51,11 +57,21 @@ const UploadProfileImage: React.FC = () => {
   };
 
   return (
-    <div>
+    <div className='text-black'>
       <input type="file" accept="image/*" onChange={handleFileChange} />
       <button onClick={handleUpload} disabled={uploading}>
         {uploading ? 'Caricamento...' : 'Carica Foto Profilo'}
       </button>
+      {onClose && (
+        <button className="hover:bg-amber-300 w-5 h-3"onClick={onClose}> x </button>
+      )}
+      <img
+                src= "http://localhost:3001/uploads/390423-200.png"
+                 width={40}
+                height={10}
+                className= "close-icon"
+                
+                />
       {message && <p>{message}</p>}
     </div>
   );
