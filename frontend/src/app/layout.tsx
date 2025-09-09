@@ -5,7 +5,8 @@ import ClientLayout from "./clientlayout";
 import services from "./services/page";
 import Footer from "../components/footer/footer";
 const inter = Inter({ subsets: ["latin"] });
-import { ThemeProvider } from 'next-themes'
+import { ThemeProvider } from 'next-themes';
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 
 export const metadata: Metadata = {
@@ -22,9 +23,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
         <ClientLayout> </ClientLayout>
           {children}
-
-        {/* ClientLayout is a client component */}
-        
+          <SpeedInsights />
       
             <Footer/>
 

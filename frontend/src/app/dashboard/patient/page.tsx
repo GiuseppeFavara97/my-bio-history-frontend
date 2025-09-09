@@ -3,7 +3,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import PatientClient from "./patientClient";
 
-interface User = {
+type User = {
     id: number;
     username: string;
     email: string;
@@ -12,7 +12,7 @@ interface User = {
     role: string;
 };
 
-interface MedicalRecord = {
+type MedicalRecord = {
     id: number;
     description: string;
     date: string; // oppure Date se lo converti
