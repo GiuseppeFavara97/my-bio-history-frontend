@@ -60,7 +60,7 @@ const Profile: React.FC = () => {
         {/* Sezione sinistra: immagine profilo + upload */}
         <div className="outline h-full profile-left">
           <img
-            src={user.profileImageUrl ? `${API_URL}${user.profileImageUrl}` : '/avatar-placeholder.png'}
+            src={user.profileImageUrl ? `${API_URL}${user.profileImageUrl}` : '/omino blu.webp'}
             alt={"Avatar Utente"}
             onClick={() => setShow(true) }
             className="profile-avatar"
@@ -68,12 +68,9 @@ const Profile: React.FC = () => {
           <div className='items-center outline flex-col w-full text-center h-full'>
           <div className=" flex flex-col profile-actions">
             <div className='items-center flex-col'> 
-            <Button className="cursor-pointer"onClick={() => alert('Modifica profilo non ancora disponibile')}>Modifica Profilo</Button>
+            <Button className="cursor-pointer hover:bg-blue-500 w-full"onClick={() => alert('Modifica profilo non ancora disponibile')}>Modifica Profilo</Button>
               </div>
-           
-            
-            
-             <Button onClick={() => alert('Cambia password non ancora disponibile')}>Cambia Password</Button>
+            <Button className="cursor-pointer hover:bg-red-500" onClick={() => alert('Cambia password non ancora disponibile')}>Cambia Password</Button>
             <Button
           onClick={() => {
             localStorage.removeItem('token');

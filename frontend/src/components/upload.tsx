@@ -63,12 +63,11 @@ const UploadProfileImage: React.FC<UploadProfileImage> = ({onClose}) => {
         {uploading ? 'Caricamento...' : 'Carica Foto Profilo'}
       </button>
       {onClose && (
-        <button className="hover:bg-amber-300 w-5 h-3"onClick={onClose}>   </button>
+        <button className="hover:bg-amber-300 w-5 h-3"onClick={onClose}> x </button>
       )}
       <img
                 src= "http://localhost:3001/uploads/390423-200.png"
-                alt= "chiudi"
-                width={40}
+                 width={40}
                 height={10}
                 className= "close-icon"
                 
