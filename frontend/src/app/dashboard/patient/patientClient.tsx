@@ -3,6 +3,7 @@ import { redirect } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { useSharedData } from '../_shared/SharedData';
 import { MedicalRecord, User } from '@/Types/Types';
+import AllergyPage from '../allergy/allergy';
 
 
 export default function PatientClient({
@@ -110,8 +111,7 @@ export default function PatientClient({
                     </div>
                 </div>
             ))
-        ) : (
-            "seleziona uno strumento"
+        ) : ( <AllergyPage />
         )}
 
         </div>
