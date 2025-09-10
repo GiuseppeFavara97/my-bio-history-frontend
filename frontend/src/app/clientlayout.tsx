@@ -46,6 +46,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
                 <NavigationMenuLink href="/about">About</NavigationMenuLink>
                 <NavigationMenuLink href="/login">Login</NavigationMenuLink>
                 <NavigationMenuLink href="/profile">Profilo</NavigationMenuLink>
+                <NavigationMenuLink href="/register">Registrati</NavigationMenuLink>
               </NavigationMenuContent>
             </NavigationMenuItem>
 
@@ -59,12 +60,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
               <NavigationMenuLink href="/login">Login</NavigationMenuLink>
             </NavigationMenuItem>
             <NavigationMenuItem>
-              <button
-                onClick={() => setIsRegisterOpen(true)}
-                className="text-sm font-medium hover:underline"
-              >
-                Registrati
-              </button>
+              <NavigationMenuLink href="/register">Registrati</NavigationMenuLink>
             </NavigationMenuItem>
             <NavigationMenuItem>
               <NavigationMenuLink href="/profile">Profilo</NavigationMenuLink>
@@ -76,13 +72,8 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
         <ToggleTheme />
       </header>
 
-     
       {/* Main content */}
       <main className="p-4">{children}</main>
-
-       {isRegisterOpen && (
-        <RegisterModal onClose={() => setIsRegisterOpen(false)} />
-      )}
     </>
   );
 }
