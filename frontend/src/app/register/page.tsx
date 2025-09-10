@@ -17,6 +17,11 @@ interface RegisterFormData {
   sex: Sex;
   phoneNumber: string;
   role: Role;
+  patient?: {
+    mainpatientId?: string;
+    fullname?: string;
+    address?: string;
+  };
   doctor?: {
     specializer: string;
     licenseNumber: string;
@@ -57,6 +62,10 @@ export default function Register() {
     } else {
       setFormData((prev) => ({ ...prev, [name]: value }));
     }
+  };
+  const dataToSend = {
+    ...formData,
+    ...(formData.role === "patient" ? { patient: {} } : {}),
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
