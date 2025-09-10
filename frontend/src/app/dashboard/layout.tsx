@@ -2,7 +2,7 @@ import React from 'react'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { DashboardProvider } from './_shared/SharedData'
-import DashSidebar from './patient/DashSidebar'
+import Sidebar from './patient/components/sidebar'
 
 type Ciao = {
   username: string;
@@ -10,7 +10,6 @@ type Ciao = {
     firstName: string;
     lastName: string;
     role: string;
-
 }
 
 export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
@@ -22,7 +21,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
     
      <DashboardProvider>
       <div className="flex bg-gradient-to-t from-gray-700 to-gray-900">
-        <DashSidebar />
+        <Sidebar />
         <main className="p-0.5 w-1/10 rounded-r-2xl"> {children} </main>
       </div>
       </DashboardProvider>

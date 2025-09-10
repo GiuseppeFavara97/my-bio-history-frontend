@@ -1,16 +1,15 @@
 'use client'
-import axios from "axios"
+
 import { useEffect, useState } from "react"
-import { useSharedData } from "../_shared/SharedData"
+import { useSharedData } from "../../_shared/SharedData"
 
 
-export default function DashSidebar() {
+export default function Sidebar() {
     const {selectedTab, setSelectedTab , patientName , setPatientName} = useSharedData();
     const [open, setOpen] = useState(true)
     
-
     return (
-        <div className='p-2 outline outline-indigo-600 rounded-r-2xl'>
+        <div className='p-2 outline outline-indigo-600 rounded-r-2xl text-white'>
                 <div className="text-center cursor-pointer" onClick={() => setOpen(old => !old)}>
                     {open ? "Nascondi" : "Menu"}
                 </div>
@@ -25,6 +24,5 @@ export default function DashSidebar() {
                     </div>
                 </div>
             </div>
-    )    
-
+    )
 }

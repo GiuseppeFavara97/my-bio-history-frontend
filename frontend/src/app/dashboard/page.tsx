@@ -1,5 +1,3 @@
-
-
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 
@@ -10,7 +8,7 @@ export default async function DashboardHome() {
 
   if (!token) {
     return (
-      <div className="w-screen  flex  flex-col items-center p-8">
+      <div className="w-screen  flex  flex-col items-center p-8  dark:bg-zinc-900 dark:text-white ">
         <h1 className="text-2xl font-bold mb-4">Accesso non autorizzato</h1>
         <p>Effettua prima il  {' '}
         <a href="/login" className="text-blue-600 underline">Login</a> per accedere alla dashboard.</p>

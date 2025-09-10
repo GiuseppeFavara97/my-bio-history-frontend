@@ -19,10 +19,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       
       <body className={inter.className}>
          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-        <ClientLayout> </ClientLayout>
+        <ClientLayout> 
           {children}
-          
-        <Footer/>
+        </ClientLayout>
 
       </ThemeProvider>
     </body>
