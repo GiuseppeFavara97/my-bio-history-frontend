@@ -176,7 +176,7 @@ export default function AllergyPage() {
                             />
                             </div>
                             <div className="col-span-2 w-90"> 
-                                  <p className="mb-1 font-semibold">Data di fine * </p>
+                                  <p className="mb-1 font-semibold">Data di fine </p>
                                  <input
                                 className="mb-2 p-1.4 box-border border-slate-400 border-4 p-4-lg w-full text-sm"
                                 type="text"
