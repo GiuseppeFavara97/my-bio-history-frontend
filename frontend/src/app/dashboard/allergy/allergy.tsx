@@ -49,7 +49,7 @@ export default function AllergyPage() {
     );
 
     const handleInputChange = (
-        e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+        e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
     ) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
@@ -57,7 +57,7 @@ export default function AllergyPage() {
     const handleAddAllergy = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            const response = await axios.post('http://localhost:3001/api/allergies', formData, {
+            const response = await axios.post('http://localhost:3001/api/allergies/create', formData, {
                 withCredentials: true
             });
             setAllergies([...allergies, response.data]);
@@ -131,25 +131,24 @@ export default function AllergyPage() {
                                     required
                                 />
                             </div>
-                            <div className="col-span-2 w-90"> 
-                            <p className="mb-1 font-semibold">Gravità * </p>
-                            <input
-                                className="mb-2 p-1.4 box-border border-slate-400 border-4 p-4-lg w-full text-sm"
-                                type="text"
+                            <p className="mb-1 font-semibold h-1">Gravità *</p>
+                           <div className="col-span-2 w-90"> 
+                            <select className=" mb-2 col-span-2 p-1.4 box-border border-slate-400 border-4 p-4-lg w-full text-sm"
                                 name="severity"
-                                placeholder="Gravità"
                                 value={formData.severity}
-                                onChange={handleInputChange}
-                                required
-                            />
+                               onChange={handleInputChange}
+                                required>
+                                <option value="" disabled>Seleziona gravità</option>
+                                <option value="Lieve">Lieve</option>
+                                <option value="Moderata">Moderata</option>
+                                <option value="Grave">Grave</option>
+                            </select>
                             </div>
 
                                  <div className="col-span-2 w-90"> 
                                   <p className="mb-1 font-semibold">Note </p>
                                   <textarea
-                        
                                 className="mb-2 p-1.4 box-border border-slate-400 border-4 p-4-lg w-full h-24 text-sm"
-                                // va messo sopra non al centro
                                 name="note"
                                 placeholder="Note"
                                 value={formData.note}
