@@ -21,11 +21,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
         <ClientLayout> </ClientLayout>
           {children}
-
-        {/* ClientLayout is a client component */}
-        
-      
-            <Footer/>
+          
+        <Footer/>
 
       </ThemeProvider>
     </body>
