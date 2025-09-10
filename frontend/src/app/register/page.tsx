@@ -1,0 +1,228 @@
+"use client";
+
+import { useState } from "react";
+import axios from "axios";
+
+type Role = "patient" | "doctor";
+type Sex = "M" | "F" | "O" | "";
+
+interface RegisterFormData {
+  email: string;
+  password: string;
+  firstName: string;
+  lastName: string;
+  birthday: string;
+  birthdayPlace: string;
+  province: string;
+  sex: Sex;
+  phoneNumber: string;
+  role: Role;
+  doctor?: {
+    specializer: string;
+    licenseNumber: string;
+  };
+}
+
+export default function RegisterModal() {
+  const [isOpen, setIsOpen] = useState(false);
+  const [formData, setFormData] = useState<RegisterFormData>({
+    email: "",
+    password: "",
+    firstName: "",
+    lastName: "",
+    birthday: "",
+    birthdayPlace: "",
+    province: "",
+    sex: "",
+    phoneNumber: "",
+    role: "patient",
+  });
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    const { name, value } = e.target;
+
+    if (formData.role === "doctor" && (name === "specializer" || name === "licenseNumber")) {
+      setFormData((prev) => ({
+        ...prev,
+        doctor: {
+          ...prev.doctor,
+          [name]: value,
+        } as RegisterFormData["doctor"],
+      }));
+    } else {
+      setFormData((prev) => ({ ...prev, [name]: value }));
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
+    try {
+      await axios.post(`${API_URL}/api/users/create`, formData, {
+        withCredentials: true,
+      });
+      alert("Registrazione avvenuta con successo!");
+      setIsOpen(false); // chiudi modale dopo successo
+    } catch (error) {
+      console.error("Errore:", error);
+      alert("Errore durante la registrazione");
+    }
+  };
+
+  return (
+    <div>
+      {/* Bottone per aprire il modale */}
+      <button
+        onClick={() => setIsOpen(true)}
+        className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+      >
+        Registrati
+      </button>
+
+      {/* Modale */}
+      {isOpen && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-40 z-50">
+          <div className="bg-white shadow-lg rounded-xl p-6 w-full max-w-lg relative">
+            {/* Bottone chiudi */}
+            <button
+              onClick={() => setIsOpen(false)}
+              className="absolute top-3 right-3 text-gray-500 hover:text-gray-700"
+            >
+              ✕
+            </button>
+
+            <h2 className="text-2xl font-bold mb-4 text-center">
+              Registrazione
+            </h2>
+
+            <form onSubmit={handleSubmit}>
+              {/* campi base */}
+              <input
+                type="text"
+                name="firstName"
+                placeholder="Nome"
+                value={formData.firstName}
+                onChange={handleChange}
+                className="w-full mb-3 p-2 border rounded"
+                required
+              />
+              <input
+                type="text"
+                name="lastName"
+                placeholder="Cognome"
+                value={formData.lastName}
+                onChange={handleChange}
+                className="w-full mb-3 p-2 border rounded"
+                required
+              />
+              <input
+                type="email"
+                name="email"
+                placeholder="Email"
+                value={formData.email}
+                onChange={handleChange}
+                className="w-full mb-3 p-2 border rounded"
+                required
+              />
+              <input
+                type="password"
+                name="password"
+                placeholder="Password"
+                value={formData.password}
+                onChange={handleChange}
+                className="w-full mb-3 p-2 border rounded"
+                required
+              />
+              <input
+                type="date"
+                name="birthday"
+                value={formData.birthday}
+                onChange={handleChange}
+                className="w-full mb-3 p-2 border rounded"
+                required
+              />
+              <input
+                type="text"
+                name="birthdayPlace"
+                placeholder="Luogo di nascita"
+                value={formData.birthdayPlace}
+                onChange={handleChange}
+                className="w-full mb-3 p-2 border rounded"
+              />
+              <input
+                type="text"
+                name="province"
+                placeholder="Provincia"
+                value={formData.province}
+                onChange={handleChange}
+                className="w-full mb-3 p-2 border rounded"
+              />
+              <select
+                name="sex"
+                value={formData.sex}
+                onChange={handleChange}
+                className="w-full mb-3 p-2 border rounded"
+              >
+                <option value="">Sesso</option>
+                <option value="M">Maschio</option>
+                <option value="F">Femmina</option>
+                <option value="O">Altro</option>
+              </select>
+              <input
+                type="text"
+                name="phoneNumber"
+                placeholder="Numero di telefono"
+                value={formData.phoneNumber}
+                onChange={handleChange}
+                className="w-full mb-3 p-2 border rounded"
+              />
+              <select
+                name="role"
+                value={formData.role}
+                onChange={handleChange}
+                className="w-full mb-3 p-2 border rounded"
+              >
+                <option value="patient">Paziente</option>
+                <option value="doctor">Medico</option>
+              </select>
+
+              {/* campi extra medico */}
+              {formData.role === "doctor" && (
+                <>
+                  <input
+                    type="text"
+                    name="specializer"
+                    placeholder="Specializzazione"
+                    value={formData.doctor?.specializer || ""}
+                    onChange={handleChange}
+                    className="w-full mb-3 p-2 border rounded"
+                    required
+                  />
+                  <input
+                    type="text"
+                    name="licenseNumber"
+                    placeholder="Numero licenza"
+                    value={formData.doctor?.licenseNumber || ""}
+                    onChange={handleChange}
+                    className="w-full mb-3 p-2 border rounded"
+                    required
+                  />
+                </>
+              )}
+
+              <button
+                type="submit"
+                className="w-full bg-blue-500 text-white font-semibold py-2 rounded hover:bg-blue-600"
+              >
+                Registrati
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}

@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import ToggleTheme from "../components/toggleTheme";
+import RegisterModal from "../app/register/page";
 import {
   NavigationMenu,
   NavigationMenuItem,
@@ -13,6 +14,7 @@ import {
 
 export default function ClientLayout({ children }: { children: React.ReactNode }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [isRegisterOpen, setIsRegisterOpen] = useState(false);
 
   const toggleSidebar = () => setSidebarOpen((open) => !open);
 
@@ -36,32 +38,39 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
 
         
         <NavigationMenu className="hidden md:block">
-  <NavigationMenuList className="flex gap-6">
-    <NavigationMenuItem>
-      <NavigationMenuTrigger>Menu per prova</NavigationMenuTrigger>
-      <NavigationMenuContent className="bg-white dark:bg-zinc-900 p-4 rounded shadow flex flex-col gap-2">
-        <NavigationMenuLink href="/">Home</NavigationMenuLink>
-        <NavigationMenuLink href="/about">About</NavigationMenuLink>
-        <NavigationMenuLink href="/login">Login</NavigationMenuLink>
-        <NavigationMenuLink href="/profile">Profilo</NavigationMenuLink>
-      </NavigationMenuContent>
-    </NavigationMenuItem>
+          <NavigationMenuList className="flex gap-6">
+            <NavigationMenuItem>
+              <NavigationMenuTrigger>Menu per prova</NavigationMenuTrigger>
+              <NavigationMenuContent className="bg-white dark:bg-zinc-900 p-4 rounded shadow flex flex-col gap-2">
+                <NavigationMenuLink href="/">Home</NavigationMenuLink>
+                <NavigationMenuLink href="/about">About</NavigationMenuLink>
+                <NavigationMenuLink href="/login">Login</NavigationMenuLink>
+                <NavigationMenuLink href="/profile">Profilo</NavigationMenuLink>
+              </NavigationMenuContent>
+            </NavigationMenuItem>
 
-    <NavigationMenuItem>
-      <NavigationMenuLink href="/">Home</NavigationMenuLink>
-    </NavigationMenuItem>
-    <NavigationMenuItem>
-      <NavigationMenuLink href="/dashboard">Dashboard</NavigationMenuLink>
-    </NavigationMenuItem>
-    <NavigationMenuItem>
-      <NavigationMenuLink href="/login">Login</NavigationMenuLink>
-    </NavigationMenuItem>
-    <NavigationMenuItem>
-      <NavigationMenuLink href="/profile">Profilo</NavigationMenuLink>
-    </NavigationMenuItem>
-  </NavigationMenuList>
-</NavigationMenu>
-
+            <NavigationMenuItem>
+              <NavigationMenuLink href="/">Home</NavigationMenuLink>
+            </NavigationMenuItem>
+            <NavigationMenuItem>
+              <NavigationMenuLink href="/dashboard">Dashboard</NavigationMenuLink>
+            </NavigationMenuItem>
+            <NavigationMenuItem>
+              <NavigationMenuLink href="/login">Login</NavigationMenuLink>
+            </NavigationMenuItem>
+            <NavigationMenuItem>
+              <button
+                onClick={() => setIsRegisterOpen(true)}
+                className="text-sm font-medium hover:underline"
+              >
+                Registrati
+              </button>
+            </NavigationMenuItem>
+            <NavigationMenuItem>
+              <NavigationMenuLink href="/profile">Profilo</NavigationMenuLink>
+            </NavigationMenuItem>
+          </NavigationMenuList>
+        </NavigationMenu>
 
         {/* Toggle Theme */}
         <ToggleTheme />
@@ -70,7 +79,10 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
      
       {/* Main content */}
       <main className="p-4">{children}</main>
+
+       {isRegisterOpen && (
+        <RegisterModal onClose={() => setIsRegisterOpen(false)} />
+      )}
     </>
   );
 }
-
