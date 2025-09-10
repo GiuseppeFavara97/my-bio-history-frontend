@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import axios from "axios";
-
+import { useRouter } from "next/navigation";
 type Role = "patient" | "doctor";
 type Sex = "M" | "F" | "O" | "";
 
@@ -24,6 +24,7 @@ interface RegisterFormData {
 }
 
 export default function Register() {
+  const router = useRouter();
   const [formData, setFormData] = useState<RegisterFormData>({
     email: "",
     password: "",
@@ -67,6 +68,7 @@ export default function Register() {
         withCredentials: true,
       });
       alert("Registrazione avvenuta con successo!");
+      router.push("/login");
     } catch (error) {
       console.error("Errore:", error);
       alert("Errore durante la registrazione");
