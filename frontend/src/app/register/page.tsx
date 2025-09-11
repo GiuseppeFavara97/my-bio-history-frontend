@@ -59,6 +59,15 @@ export default function Register() {
           [name]: value,
         } as RegisterFormData["doctor"],
       }));
+    } else if (formData.role === "patient") {
+        setFormData((old) => ({
+          ...old,
+          [name]: value,
+          patient : {
+            ...old.patient,
+            fullName: `${name === "firstName" ? value:old.firstName} ${name === "lastName" ? value : old.lastName}`.trim()
+          }
+        }))
     } else {
       setFormData((prev) => ({ ...prev, [name]: value }));
     }
