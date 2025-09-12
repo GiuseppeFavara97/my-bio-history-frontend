@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import ClientLayout from "./clientlayout";
-import Footer from "../components/footer/footer";
 import { ThemeProvider } from 'next-themes';
+import Navbar from "../components/navigation/navbar/Navbar";
+import Footer from "@/components/footer/footer";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,10 +19,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       
       <body className={inter.className}>
          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-        <ClientLayout> 
+        <Navbar> 
           {children}
-        </ClientLayout>
-
+        </Navbar>
+    <Footer/>
       </ThemeProvider>
     </body>
     </html>
