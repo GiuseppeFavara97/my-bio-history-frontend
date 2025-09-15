@@ -21,6 +21,7 @@ export default function Sidebar() {
                         <button onClick={() => setSelectedTab("dati")} className='p-1 outline outline-indigo-600 rounded-r-full text-center cursor-pointer'>I miei dati</button>
                         <button onClick={() => setSelectedTab("medical")} className='p-1 outline outline-indigo-600 rounded-r-full text-center cursor-pointer'>Cartella Clinica</button>
                         <button onClick={() => setSelectedTab("allergy")} className='p-1 outline outline-indigo-600 rounded-r-full text-center cursor-pointer'>Allergia</button>
+                        <button onClick={() => setSelectedTab("vaccine")} className='p-1 outline outline-indigo-600 rounded-r-full text-center cursor-pointer'>Vaccini</button>
                     </div>
                 </div>
             </div>

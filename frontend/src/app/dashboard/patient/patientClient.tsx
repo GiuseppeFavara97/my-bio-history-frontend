@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { useSharedData } from '../_shared/SharedData';
 import { MedicalRecord, User } from '@/Types/Types';
 import AllergyPage from '../allergy/allergy';
+import VaccinePage from '../vaccines/page';
 
 
 export default function PatientClient({
@@ -111,8 +112,8 @@ export default function PatientClient({
                     </div>
                 </div>
             ))
-        ) : ( <AllergyPage />
-        )}
+        ) : selectedTab ==='allergy' ? ( <AllergyPage />
+        ) : (<VaccinePage/>)}
 
         </div>
     )
