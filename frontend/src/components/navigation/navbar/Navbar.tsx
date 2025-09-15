@@ -23,10 +23,13 @@ export default function Navbar({ children }: { children: React.ReactNode }) {
     <>
       {/* Navbar */}
       <header className="flex justify-between items-center px-4 py-3 border-b bg-white dark:bg-black">
-        
         <div className="flex">
-          <img src="/umbrella.png" alt="Logo" className="h-10 w-10" onClick={() => router.push("/")}/>
-        
+        <div className="">
+          <img width={125} height={30} src="/myLogo.png" alt="Logo" className="" onClick={() => router.push("/")}/>
+        </div>
+        <h2 className="flex items-center ">
+          <p className="shadow-2xl shadow-fuchsia-600 text-indigo-700 font-bold">My Bio-History</p>
+          </h2>
         <NavigationMenu className="list-none md:hidden">
           <NavigationMenuItem className="transition duration-500 hover:scale-110 animat">
                 <NavigationMenuTrigger className=""> <Ham/> </NavigationMenuTrigger>
