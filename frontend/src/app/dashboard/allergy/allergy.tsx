@@ -78,7 +78,14 @@ export default function AllergyPage() {
     return (
         <div className="p-4">
             <h1 className="text-2xl font-bold mb-4">Le mie Allergie</h1>
-            <div className="mb-6 flex justify-end">
+            
+            <div className="flex items-center gap-4 mb-6">
+                <button
+                    className="px-6 py-3 bg-blue-600 text-black rounded-lg text-lg font-semibold"
+                    onClick={() => setShowModal(true)}
+                >
+                    Aggiungi Allergia
+                </button>
                 <input
                     type="text"
                     className="p-3 border-2 border-blue-400 rounded-lg w-full max-w-md text-lg"
@@ -87,12 +94,6 @@ export default function AllergyPage() {
                     onChange={e => setSearch(e.target.value)}
                 />
             </div>
-            <button
-                className="mb-4 px-6 py-3 bg-blue-600 text-black rounded-lg text-lg font-semibold"
-                onClick={() => setShowModal(true)}
-            >
-                Aggiungi Allergia
-            </button>
 
             {/* MODALE */}
             {showModal && (
