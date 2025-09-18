@@ -27,7 +27,6 @@ export default function VaccinePage() {
     useEffect(() => {
         const fetchVaccines = async () => {
             try {
-                const token = localStorage.getItem('token');
                 const response = await axios.get('http://localhost:3001/api/vaccines', {
                     withCredentials: true
                 });
@@ -76,21 +75,21 @@ export default function VaccinePage() {
     return (
         <div className="p-4">
             <h1 className="text-2xl font-bold mb-4">I miei vaccini</h1>
-            <div className="mb-6 flex justify-end">
-                <input
-                    type="text"
-                    className="p-3 border-2 border-blue-400 rounded-lg w-full max-w-md text-lg"
-                    placeholder="Cerca nome, tipo e data"
-                    value={search}
-                    onChange={e => setSearch(e.target.value)}
-                />
-            </div>
+            <div className="flex items-center gap-4 mb-6">
             <button
-                className="mb-4 px-6 py-3 bg-blue-600 text-black rounded-lg text-lg font-semibold"
+                className="px-6 py-3 bg-blue-600 text-black rounded-lg text-short font-semibold"
                 onClick={() => setShowModal(true)}
             >
                 Aggiungi Vaccini
             </button>
+            <input
+                    className="p-3 border-2 border-blue-400 rounded-lg w-full max-w-md text-lg"
+                    type="text"
+                    placeholder="Cerca nome, tipo e data"
+                    value={search}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearch(e.target.value)}
+                />
+            </div>
 
             {/* MODALE */}
             {showModal && (
