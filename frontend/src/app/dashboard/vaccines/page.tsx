@@ -178,7 +178,7 @@ export default function VaccinePage() {
                 <div className="overflow-x-auto">
                     <table className="min-w-full bg-white dark:bg-gray-800 border rounded-lg shadow-lg max-w-5xl">
                         <thead>
-                            <tr className="bg-gray-200 dark:bg-gray-700 text-black"> 
+                            <tr className="bg-gray-200 dark:bg-gray-700 text-black dark:text-white "> 
                                 <th className="py-4 px-8 border-b text-lg">Nome</th>
                                 <th className="py-4 px-8 border-b text-lg">Data del vaccino</th>
                                 <th className="py-4 px-8 border-b text-lg">Tipo</th>
@@ -188,7 +188,7 @@ export default function VaccinePage() {
                         </thead>
                         <tbody>
                             {filteredVaccine.map((vaccine) => (
-                                <tr key={vaccine.id} className="hover:bg-gray-200 dark:hover:bg-gray-700 text-black">
+                                <tr key={vaccine.id} className="hover:bg-gray-200 dark:hover:bg-gray-700 text-black dark:text-white bg-gray-900">
                                     <td className="py-3 px-8 border-b">{vaccine.name}</td>
                                     <td className="py-3 px-8 border-b">{vaccine.vaccinateDate}</td>
                                     <td className="py-3 px-8 border-b">{vaccine.type}</td>

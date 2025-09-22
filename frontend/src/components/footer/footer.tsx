@@ -3,7 +3,7 @@ import React from 'react';
 import '../../app/globals.css';
 const Footer: React.FC = () => {
   return (
-    <footer className="footer w-full sticky bottom-0 text-white py-4">
+    <footer className="footer w-full bottom-0   text-white py-4">
       <div>
         
           <img
