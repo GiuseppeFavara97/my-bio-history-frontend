@@ -149,13 +149,14 @@ export default function AllergyPage() {
                                     </select>
                                 </div>
                                 <div className="col-span-2">
-                                    <p className="font-semibold text-left">Note</p>
+                                    <span className="font-semibold text-left">Note</span>
                                     <textarea
                                         className="p-2 box-border border-slate-400 border-4 rounded-lg w-full text-lg h-24 resize-none"
                                         name="note"
                                         placeholder="Note"
                                         value={formData.note}
                                         onChange={handleInputChange}
+                                        
                                     />
                                 </div>
                                 <div className="col-span-2">
