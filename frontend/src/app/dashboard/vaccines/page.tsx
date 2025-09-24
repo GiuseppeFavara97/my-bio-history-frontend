@@ -77,7 +77,7 @@ export default function VaccinePage() {
             <h1 className="text-2xl font-bold mb-4">I miei vaccini</h1>
             <div className="flex items-center gap-4 mb-6">
             <button
-                className="px-6 py-3 bg-blue-600 text-black rounded-lg text-short font-semibold"
+                className="cursor-pointer px-6 py-3 bg-blue-600 text-black rounded-lg text-short font-semibold"
                 onClick={() => setShowModal(true)}
             >
                 Aggiungi Vaccini
