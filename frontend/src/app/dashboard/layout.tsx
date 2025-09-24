@@ -19,10 +19,12 @@ export default async function DashboardLayout({ children }: { children: React.Re
   if (!token) redirect('/login')
   return (
     
-     <DashboardProvider>
-      <div className="flex bg-gradient-to-t from-gray-700 to-gray-900">
-        <Sidebar />
-        <main className="p-0.5 w-1/10 rounded-r-2xl"> {children} </main>
+      <DashboardProvider>
+      <div className='flex-1 bg-gradient-to-b from-gray-900 via-slate-950 to-gray-950 w-full'>
+        <div className="flex w-full ">
+          <Sidebar />
+          <main className="p-0.5 w-full "> {children} </main>
+        </div>
       </div>
       </DashboardProvider>
     

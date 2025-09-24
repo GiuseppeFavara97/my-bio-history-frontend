@@ -27,7 +27,7 @@ export default function PatientClient({
     }, [])
     if (!user) return null;
     return (
-        <div className='flex w-screen text-white'>
+        <div className='h-full text-white'>
             
             {selectedTab === "dati" ? (
                 <div className="flex-1 p-4 outline rounded-t">
@@ -69,9 +69,10 @@ export default function PatientClient({
                         </div>
                     </div>
                 </div>
+                
         ) : selectedTab === "medical" ? (
             medical.map((folder:MedicalRecord, i:number) => (
-                <div key={i} className="flex-1 p-4 outline rounded-t">
+                <div key={i} className=" h-full p-4 rounded-t">
                     <h2 className="text-lg font-semibold mb-3">Cartella Clinica Work in Progress</h2>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -110,8 +111,72 @@ export default function PatientClient({
                             </div>
                         </div>
                     </div>
+                    <div className='text-center h-full my-10  grid grid-rows-3 gap-1 '> 
+                    
+                        <div className="outline rounded-md p-3">
+                            <h3 className="font-semibold mb-3 text-center my-5">Allergie</h3>
+
+                        {folder.allergies.length > 0 ? (
+                            <table className="w-full text-sm border-collapse">
+                                <thead>
+                                    <tr className="border-b border-gray-600">
+                                        <th className=" p-2">#</th>
+                                        <th className=" p-2">Allergene</th>
+                                        <th className=" p-2">Note</th>
+                                        <th className=" p-2">Reazione</th>
+                                        <th className=" p-2">Gravità</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {folder.allergies.map((allergy, idx) => (
+                                        <tr key={allergy.id} className="border-b border-gray-700">
+                                            <td className="p-2">{idx + 1}</td>
+                                            <td className="p-2">{allergy.allergen}</td>
+                                            <td className="p-2">{allergy.note}</td>
+                                            <td className="p-2">{allergy.reaction}</td>
+                                            <td className="p-2">{allergy.severity}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                        </table>
+                        ) : (
+                        <p className="text-sm opacity-70 text-center">
+                        Nessuna allergia registrata
+                        </p>
+                        )}
+                    </div>
+                    <div className='outline rounded p-3'> 
+                    <h3 className='my-5'>Vaccini</h3>
+                    {folder.vaccines.length > 0 ? (
+                        <table className='w-full text-sm border-collapse'>
+                            <thead>
+                                <tr className='border-b border-gray-600'>
+                                    <th className=''>#</th>
+                                    <th>Nome</th>
+                                    <th>Note</th>
+                                    <th>Type</th>
+                                    <th>Data</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {folder.vaccines.map((vaccino, idxV) => (
+                                    <tr key={vaccino.id} className='outline'>
+                                        <td className='p-2'>{idxV+1}</td>
+                                        <td className='p-2'>{vaccino.name}</td>
+                                        <td className='p-2'>{vaccino.note}</td>
+                                        <td className='p-2'>{vaccino.type}</td>
+                                        <td className='p-2'>{vaccino.date}</td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                        
+                    ) : ("")}
+                    </div>
+                    </div>
                 </div>
             ))
+            
         ) : selectedTab ==='allergy' ? ( <AllergyPage />
         ) : (<VaccinePage/>)}
 

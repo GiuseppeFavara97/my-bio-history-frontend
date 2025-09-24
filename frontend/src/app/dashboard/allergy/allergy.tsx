@@ -216,9 +216,9 @@ export default function AllergyPage() {
                 <p className="text-center text-gray-500">Nessuna allergia trovata.</p>
             ) : (
                 <div className="overflow-x-auto">
-                    <table className="min-w-full bg-white dark:bg-gray-800 border rounded-lg shadow-lg max-w-5xl">
+                    <table className="min-w-full bg-white dark:bg-gray-900  border rounded-lg shadow-lg max-w-5xl">
                         <thead>
-                            <tr className="bg-gray-200 dark:bg-gray-700 text-black"> 
+                            <tr className="bg-gray-200 dark:bg-gray-700 text-black dark:text-white"> 
                                 <th className="py-4 px-8 border-b text-lg">Allergene</th>
                                 <th className="py-4 px-8 border-b text-lg">Reazione</th>
                                 <th className="py-4 px-8 border-b text-lg">Gravità</th>
@@ -229,7 +229,7 @@ export default function AllergyPage() {
                         </thead>
                         <tbody>
                             {filteredAllergies.map((allergy) => (
-                                <tr key={allergy.id} className="hover:bg-gray-200 dark:hover:bg-gray-700 text-black">
+                                <tr key={allergy.id} className="hover:bg-gray-200 dark:hover:bg-gray-700 text-black dark:text-white">
                                     <td className="py-3 px-8 border-b">{allergy.allergen}</td>
                                     <td className="py-3 px-8 border-b">{allergy.reaction}</td>
                                     <td className="py-3 px-8 border-b">{allergy.severity}</td>

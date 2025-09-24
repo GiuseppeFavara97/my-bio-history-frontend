@@ -13,7 +13,7 @@ import {
 import Ham from "@/components/ui/HamMenu";
 import { useRouter } from "next/navigation";
 
-export default function Navbar({ children }: { children: React.ReactNode }) {
+export default function Navbar() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [isRegisterOpen, setIsRegisterOpen] = useState(false);
 
@@ -67,8 +67,6 @@ export default function Navbar({ children }: { children: React.ReactNode }) {
         <ToggleTheme />
       </header>
 
-      {/* Main content */}
-      <main className="p-4">{children}</main>
     </>
   );
 }
