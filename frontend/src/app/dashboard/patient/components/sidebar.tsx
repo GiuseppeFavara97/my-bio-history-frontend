@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { useSharedData } from "../../_shared/SharedData"
-import { Activity, HeartMinus, Settings, SquareChartGantt, Syringe } from "lucide-react";
+import { Activity, HeartMinus, Settings, SquareChartGantt, Syringe, ClipboardPlus, PillBottle } from "lucide-react";
 
 export default function Sidebar() {
     const { selectedTab, setSelectedTab, patientName } = useSharedData();
@@ -56,6 +56,22 @@ return (
             >
                 <Syringe className="w-5 h-5 text-blue-400" />
                 {open && "Vaccini"}
+            </button>
+
+             <button
+                onClick={() => setSelectedTab("diagnoses")}
+                className="cursor-pointer flex items-center gap-2 px-3 py-2 rounded-md transition-all duration-300 hover:bg-gray-700"
+            >
+                <ClipboardPlus className="w-5 h-5 text-red-400" />
+                {open && "Diagnosi"}
+            </button>
+
+            <button
+                onClick={() => setSelectedTab("care")}
+                className="cursor-pointer flex items-center gap-2 px-3 py-2 rounded-md transition-all duration-300 hover:bg-gray-700"
+            >
+                <PillBottle className="w-5 h-5 text-amber-700" />
+                {open && "Terapie"}
             </button>
             </div>
         </div>
