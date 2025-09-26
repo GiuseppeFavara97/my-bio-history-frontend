@@ -81,7 +81,7 @@ export default function AllergyPage() {
             
             <div className="flex items-center gap-4 mb-6">
                 <button
-                    className="px-6 py-3 bg-blue-600 text-black rounded-lg text-lg font-semibold"
+                    className="cursor-pointer px-6 py-3 bg-blue-600 text-black rounded-lg text-lg font-semibold"
                     onClick={() => setShowModal(true)}
                 >
                     Aggiungi Allergia
