@@ -3,9 +3,9 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
-import UploadProfileImage from '../../components/upload';
-import Button from '../../components/navigation/navbar/button';
 import './profile.css';
+import UploadProfileImage from '@/components/upload';
+import Button from '@/components/navigation/navbar/button';
 
 interface UserProfile {
   id: number;

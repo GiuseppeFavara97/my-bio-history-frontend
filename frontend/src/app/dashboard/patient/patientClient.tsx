@@ -6,6 +6,8 @@ import AllergyPage from '../allergy/allergy';
 import VaccinePage from '../vaccines/page';
 import DiagnosesPage from '../diagnoses/page';
 import CarePage from '../Care/page';
+import Profile from '../components/profile/page';
+
 
 
 export default function PatientClient({
@@ -29,16 +31,10 @@ export default function PatientClient({
     return (
         <div className='h-full text-white'>
             {selectedTab === "dati" ? (
-                <div className="flex-1 p-4 outline rounded-t">
-                    <h2 className="text-lg font-semibold mb-3">I miei dati</h2>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                        <InfoField label="Nome" value={user.firstName} />
-                        <InfoField label="Cognome" value={user.lastName} />
-                        <InfoField label="Email" value={user.email} full />
-                        <InfoField label="Username" value={user.username} />
-                        <InfoField label="Ruolo" value={user.role} />
+                
+                <div className="flex-1 p-4">
+                <Profile/>
                     </div>
-                </div>
             ) : selectedTab === "medical" ? (
                 medical.map((folder:MedicalRecord, i:number) => (
                     <div key={i} className="h-full p-4 rounded-t">
