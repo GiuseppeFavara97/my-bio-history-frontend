@@ -16,7 +16,7 @@ return (
         <div
             onMouseLeave={() => setOpen(false)}
             onMouseEnter={() => setOpen(true)}
-            className={`flex flex-col h-full transition-all duration-300 ease-in-out
+            className={`flex flex-col h-screen transition-all duration-300 ease-in-out
             ${open ? "w-56" : "w-28"}
             bg-gradient-to-b from-gray-950 via-gray-700 to-gray-950 border-r border-gray-700 rounded-r-xl`}
         >

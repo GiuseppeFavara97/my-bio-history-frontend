@@ -76,7 +76,7 @@ export default function AllergyPage() {
     };
 
     return (
-        <div className="p-4">
+        <div className="p-4 ">
             <h1 className="text-2xl font-bold mb-4">Le mie Allergie</h1>
             
             <div className="flex items-center gap-4 mb-6">
