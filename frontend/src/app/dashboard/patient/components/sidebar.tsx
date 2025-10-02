@@ -73,6 +73,13 @@ return (
                 <PillBottle className="w-5 h-5 text-amber-700" />
                 {open && "Terapie"}
             </button>
+                 <button
+                onClick={() => setSelectedTab("uploadDocument")}
+                className="cursor-pointer flex items-center gap-2 px-3 py-2 rounded-md transition-all duration-300 hover:bg-gray-700"
+            >
+                <PillBottle className="w-5 h-5 text-amber-700" />
+                {open && "Carica documenti"}
+            </button>
             </div>
         </div>
     </div>

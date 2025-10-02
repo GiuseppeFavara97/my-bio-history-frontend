@@ -6,6 +6,7 @@ import AllergyPage from '../allergy/allergy';
 import VaccinePage from '../vaccines/page';
 import DiagnosesPage from '../diagnoses/page';
 import CarePage from '../Care/page';
+import UploadDocumentPage from '../uploadDocument/page';
 
 
 export default function PatientClient({
@@ -50,7 +51,7 @@ export default function PatientClient({
                             <InfoField label="Username" value={user.username} />
                             <InfoField label="Ruolo" value={user.role} />
                         </div>
-                        <div className='text-center h-full my-10 grid grid-rows-4 gap-1'>
+                        <div className='text-center h-full my-10 grid grid-rows-5 gap-1'>
                             <div className="outline rounded-md p-3">
                                 <h3 className="font-semibold mb-3 text-center my-5">Allergie</h3>
                                 {folder.allergies && folder.allergies.length > 0 ? (
@@ -144,6 +145,43 @@ export default function PatientClient({
                                     </p>
                                 )}
                             </div>
+                            <div className="outline rounded-md p-3">
+                                <h3 className="font-semibold mb-3 text-center my-5">Documenti</h3>
+                                {folder.uploadDocument && folder.uploadDocument.length > 0 ? (
+                                    <table className="w-full text-sm border-collapse">
+                                        <thead>
+                                            <tr className="border-b border-gray-600">
+                                                <th className="p-2">#</th>
+                                                <th className="p-2">Nome</th>
+                                                <th className="p-2">Tipo</th>
+                                                <th className="p-2">Dimensione</th>
+                                                <th className="p-2">Url</th>
+                                                <th className="p-2">Data di inserimento</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {folder.uploadDocument.map((uploadDocument, idx) => (
+                                                <tr key={uploadDocument.id} className="border-b border-gray-700">
+                                                    <td className="p-2">{idx + 1}</td>
+                                                    <td className="p-2">{uploadDocument.name}</td>
+                                                    <td className="p-2">{uploadDocument.type}</td>
+                                                    <td className="p-2">{uploadDocument.size}</td>
+                                                    <td className="p-2">
+                                                        <a href={uploadDocument.url} target="_blank" rel="noopener noreferrer" className="text-blue-400 underline">
+                                                            Visualizza
+                                                        </a>
+                                                    </td>
+                                                    <td className="p-2">{uploadDocument.createdAt}</td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                ) : (
+                                    <p className="text-sm opacity-70 text-center">
+                                        Nessun documento registrato
+                                    </p>
+                                )}
+                            </div>
                             <div className='outline rounded p-3'>
                                 <h3 className='my-5'>Vaccini</h3>
                                 {folder.vaccines && folder.vaccines.length > 0 ? (
@@ -184,6 +222,8 @@ export default function PatientClient({
                 <AllergyPage />
             ) : selectedTab === "care" ? (
                 <CarePage />
+            ) : selectedTab === "uploadDocument" ? (
+                <UploadDocumentPage />
             ) : (
                 <VaccinePage />
             )}
