@@ -74,7 +74,7 @@ export default function DiagnosesPage() {
     };
 
     return (
-        <div className="p-4">
+        <div className="p-4 flex-1 flex flex-col ">
             <h1 className="text-2xl font-bold mb-4">Le mie Diagnosi</h1>
             
             <div className="flex items-center gap-4 mb-6">

@@ -1,26 +1,48 @@
-import { cookies } from 'next/headers'
-import { redirect } from 'next/navigation'
+"use client";
+import axios from "axios";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
-export default async function DashboardHome() {
-  const cookie = await cookies()
-  const token = cookie.get('auth_token')?.value
-  const role = cookie.get('ruolo')?.value
+export default function DashboardHome() {
+  const router = useRouter();
+  const API_URL = process.env.NEXT_PUBLIC_API_URL;
+    const [loading, setLoading] = useState(true);
 
-  if (!token) {
-    return (
-      <div className="w-screen  flex  flex-col items-center p-8  dark:bg-zinc-900 dark:text-white ">
-        <h1 className="text-2xl font-bold mb-4">Accesso non autorizzato</h1>
-        <p>Effettua prima il  {' '}
-        <a href="/login" className="text-blue-600 underline">Login</a> per accedere alla dashboard.</p>
+
+  useEffect(() => {
+    let loading = true
+    async function fetchData() {
+      try {
+        const res = await axios.get(`${API_URL}/api/auth/userID`, {
+          withCredentials: true,
+        });
         
+        if (res.data.role === "doctor") {
+        router.replace("/dashboard/doctor");
+      } else if (res.data.role === "patient") {
+        router.replace("/dahsboard/patient");
+      }
+        loading = false
+      } catch (err:any) {
+        if (err.status === 401) {
+          router.replace("/login");
+        }
+      } finally {
+        setLoading(false)
+      }
+      
+    }
+    fetchData();
+  }, []);
+  
+  if (loading) {
+    return (
+      <div className="flex h-screen items-center justify-center">
+        <div className="animate-spin h-10 w-10 border-4 border-blue-500 border-t-transparent rounded-full"></div>
       </div>
-    )
+    );
   }
-  if (role && role.toLowerCase() === 'doctor'){
-    redirect("/dashboard/doctor")
-  } else if (role && role.toLowerCase() === 'admin'){
-    redirect("/dashboard/admin")
-  } else {
-    redirect ("/dashboard/patient")
-  }
+
+  return null;
 }
+

@@ -1,32 +1,24 @@
-import React from 'react'
-import { cookies } from 'next/headers'
-import { redirect } from 'next/navigation'
-import { DashboardProvider } from './_shared/SharedData'
-import Sidebar from './patient/components/sidebar'
+import React from "react";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
+import { DashboardProvider } from "./_shared/SharedData";
+import Sidebar from "./patient/components/sidebar";
 
-type Ciao = {
-  username: string;
-    email: string;
-    firstName: string;
-    lastName: string;
-    role: string;
-}
-
-export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
-  const cookie = await cookies()
-  const token = cookie.get('auth_token')?.value
-  let ciao: Ciao = { firstName: "lol", username:"username", email:"email", lastName:"lastName", role:"ruolo" }
-  if (!token) redirect('/login')
+export default async function DashboardLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  const cookie = await cookies();
+  const token = cookie.get("auth_token")?.value;
+  if (!token) redirect("/login");
   return (
-    
-      <DashboardProvider>
-      <div className='flex-1 bg-gradient-to-b from-gray-900 via-slate-950 to-gray-950 w-full'>
-        <div className="flex w-full ">
-          <Sidebar />
-          <main className="p-0.5 w-full "> {children} </main>
+    <DashboardProvider>
+      <div className="flex-1 bg-white dark:bg-gradient-to-b dark:from-gray-900 dark:via-slate-950 dark:to-gray-950 w-full ">
+        <div className="flex w-full  ">
+          <main className="p-0.5 w-full flex-1 "> {children} </main>
         </div>
       </div>
-      </DashboardProvider>
-    
-  )
+    </DashboardProvider>
+  );
 }

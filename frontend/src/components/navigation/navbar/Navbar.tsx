@@ -22,13 +22,13 @@ export default function Navbar() {
   return (
     <>
       {/* Navbar */}
-      <header className="flex justify-between items-center px-4 py-3 border-b bg-white dark:bg-black">
-        <div className="flex">
+      <header className="flex justify-between items-center px-4 h-25 border-b bg-white dark:bg-gray-950">
+        <div className="flex ">
           <div className="">
-            <img width={125} height={30} src="/myLogo.png" alt="Logo" className="" onClick={() => router.push("/")} />
+            <img width={125} height={30} src="/myLogo.png" alt="Logo" className="cursor-pointer" onClick={() => router.push("/")} />
           </div>
           <h2 className="flex items-center ">
-            <p className="shadow-2xl shadow-fuchsia-600 text-indigo-700 font-bold">My Bio-History</p>
+            <p className="font-bold bg-clip-text text-transparent bg-gradient-to-r from-sky-500 via-blue-400 to-sky-400  ">My Bio-History</p>
           </h2>
           <NavigationMenu className="list-none md:hidden">
             <NavigationMenuItem className="transition duration-500 hover:scale-110 animat">
@@ -43,17 +43,11 @@ export default function Navbar() {
             </NavigationMenuItem>
           </NavigationMenu>
         </div>
-        <NavigationMenu className="hidden md:block">
+        <NavigationMenu className="hidden md:block self-center ">
           <NavigationMenuList className="flex gap-6">
-           <NavigationMenuItem>
               <NavigationMenuLink href="/dashboard">Dashboard</NavigationMenuLink>
-            </NavigationMenuItem>
-            <NavigationMenuItem>
               <NavigationMenuLink href="/login">Login</NavigationMenuLink>
-            </NavigationMenuItem>
-            <NavigationMenuItem>
               <NavigationMenuLink href="/register">Registrati</NavigationMenuLink>
-            </NavigationMenuItem>
           </NavigationMenuList>
         </NavigationMenu>
 

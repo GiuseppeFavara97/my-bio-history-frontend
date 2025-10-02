@@ -4,24 +4,9 @@ import { useEffect, useState } from "react";
 import PatientClient from "./patientClient";
 import { MedicalRecord, User } from "@/Types/Types";
 
-/* type User  = {
-    id: number;
-    username: string;
-    email: string;
-    firstName: string;
-    lastName: string;
-    role: string;
-};
-
-type MedicalRecord = {
-    id: number;
-    description: string;
-    date: string; // oppure Date se lo converti
-};
-*/
 export default function Page() {
     const [user, setUser] = useState<User | null>(null);
-    const [medical, setMedical] = useState<MedicalRecord[]>([]);
+    const [medical, setMedical] = useState<MedicalRecord>();
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState(true);
 
@@ -68,6 +53,6 @@ export default function Page() {
     if (loading) return <p>Caricamento…</p>;
     if (error) return <p style={{ color: "red" }}>{error}</p>;
     if (!user) return <p>Nessun utente trovato</p>;
-
+    if (!medical) return  <p>Errore </p>
     return <PatientClient medicalrecord={medical} userData={user} />;
 }
