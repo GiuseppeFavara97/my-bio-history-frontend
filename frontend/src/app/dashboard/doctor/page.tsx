@@ -1,7 +1,16 @@
-import { cookies } from "next/headers"
-import { redirect } from "next/navigation"
+'use client'
+import { useSharedData } from "../_shared/SharedData"
 
-export default async function Page() {
-
-    return (<p>pagina di prova</p>)
+export default  function Page() {
+    
+      const context=useSharedData()
+        console.log(context)
+    return (
+        
+        
+        <div className="flex justify-center items-center h-full">
+        <p>Dashboard Dottore</p>
+        </div>
+        
+        )
 }

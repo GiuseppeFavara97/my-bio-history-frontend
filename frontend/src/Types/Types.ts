@@ -8,10 +8,53 @@ export type User = {
 };
 
 export type MedicalRecord = {
-    patient:patient
-}
+  id: number;
+  createdAt: Date;
+  allergies: allergies[];
+  cares: care[];
+  diagnoses: diagnoses[];
+  patient: patient;
+  vaccines: vaccines[];
+};
 
 export type patient = {
-    fullName:string
-    address:string
-}
+  id: number;
+  mainPatientId?: number;
+  fullName: string;
+  address: string;
+  relationToMainPatient?: string;
+};
+
+export type allergies = {
+  id: number;
+  allergen: string;
+  note: string;
+  reaction: string;
+  severity: string;
+  end_date: Date;
+  start_date: Date;
+};
+
+export type care = {
+  id: number;
+  name: string;
+  description: string;
+  duration_days: string | number;
+  daily_frequency: number | string;
+};
+
+export type diagnoses = {
+  id: number;
+  pathologyName: string;
+  description: string;
+  createdAt: Date;
+  updatedAt: Date;
+};
+
+export type vaccines = {
+  id: number;
+  name: string;
+  note: string;
+  type: number;
+  vaccinationDate?: Date;
+};

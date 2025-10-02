@@ -188,7 +188,7 @@ export default function VaccinePage() {
                         </thead>
                         <tbody>
                             {filteredVaccine.map((vaccine) => (
-                                <tr key={vaccine.id} className="hover:bg-gray-200 dark:hover:bg-gray-700 text-black dark:text-white bg-gray-900">
+                                <tr key={vaccine.id} className="hover:bg-gray-200 dark:hover:bg-gray-700 text-white dark:text-white bg-gray-900">
                                     <td className="py-3 px-8 border-b">{vaccine.name}</td>
                                     <td className="py-3 px-8 border-b">{vaccine.vaccinateDate}</td>
                                     <td className="py-3 px-8 border-b">{vaccine.type}</td>

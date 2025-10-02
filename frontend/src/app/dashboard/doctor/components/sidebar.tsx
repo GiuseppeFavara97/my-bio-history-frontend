@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { useSharedData } from "../../_shared/SharedData"
-import { Activity, HeartMinus, Settings, SquareChartGantt, Syringe, ClipboardPlus, PillBottle, CircleUserRound } from "lucide-react";
+import { Activity, HeartMinus, Settings, SquareChartGantt, Syringe, ClipboardPlus, PillBottle } from "lucide-react";
 import { NavigationMenuLink , NavigationMenuItem, NavigationMenu, NavigationMenuList } from "@radix-ui/react-navigation-menu"
 import Link from "next/link";
 
@@ -16,7 +16,7 @@ return (
         <div
             onMouseLeave={() => setOpen(false)}
             onMouseEnter={() => setOpen(true)}
-            className={`flex flex-col h-full transition-all duration-300 ease-in-out
+            className={`flex flex-col h-screen transition-all duration-300 ease-in-out
             ${open ? "w-56" : "w-28"}
             bg-gradient-to-b from-gray-950 via-gray-700 to-gray-950 border-r border-gray-700 rounded-r-xl`}
         >
@@ -32,10 +32,7 @@ return (
             <button
                 onClick={() => setSelectedTab("dati")}
                 className="cursor-pointer flex items-center gap-2 px-3 py-2 rounded-md transition-all duration-300 hover:bg-gray-700"
-            
             >
-                    <CircleUserRound className="w-5 h-5 text blue"/>
-            
                 <Link href="/profile" className="w-5 h-5">Profilo</Link>
             {open}
             
