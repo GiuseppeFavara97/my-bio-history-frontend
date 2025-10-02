@@ -20,9 +20,19 @@ export default async function DashboardLayout({ children }: { children: React.Re
   return (
     
      <DashboardProvider>
-      <div className="flex bg-gradient-to-t from-gray-700 to-gray-900">
+      <div className="flex bg-gradient-to-t from-gray-700 to-gray-900 min-h-screen"> {/* Aggiunto min-h-screen per altezza minima */}
         <Sidebar />
-        <main className="p-0.5 w-1/10 rounded-r-2xl"> {children} </main>
+        {/* MODIFICA QUI */}
+        {/* Opzione 1: Il contenuto principale prende lo spazio rimanente */}
+        <main className="flex-grow p-4 rounded-r-2xl overflow-auto"> {/* Aggiunto p-4 per un po' di padding generale, e overflow-auto */}
+          {children}
+        </main>
+
+        {/* Opzione 2: Se vuoi una larghezza percentuale specifica per il main, ma più grande */}
+        {/* <main className="w-9/10 p-4 rounded-r-2xl overflow-auto"> */}
+          {/* {children} */}
+        {/* </main> */}
+
       </div>
       </DashboardProvider>
     
