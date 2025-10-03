@@ -16,6 +16,7 @@ export default function FileSearch() {
   const [searchResults, setSearchResults] = useState<FileEntry[]>([]);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
+  const [viewMode, setViewMode] = useState<'search' | 'latest' | null>(null);
 
   const token = typeof window !== 'undefined' ? localStorage.getItem('auth_token') : null;
 
@@ -25,6 +26,8 @@ export default function FileSearch() {
 
   const handleSearch = async (event: React.FormEvent) => {
     event.preventDefault();
+    setViewMode('search');
+
     if (!searchTerm.trim()) {
       setSearchResults([]);
       setMessage('Inserisci un nome per la ricerca.');
@@ -59,6 +62,7 @@ export default function FileSearch() {
   };
 
   const handleLatest = async () => {
+    setViewMode('latest');
     setLoading(true);
     setMessage('Caricamento ultimi file...');
     setSearchResults([]);
@@ -86,6 +90,14 @@ export default function FileSearch() {
     }
   };
 
+  const refreshList = async () => {
+    if (viewMode === 'search') {
+      await handleSearch({ preventDefault: () => {} } as React.FormEvent);
+    } else if (viewMode === 'latest') {
+      await handleLatest();
+    }
+  };
+
   const handleDownload = (file: FileEntry) => {
     const link = document.createElement('a');
     link.href = `http://localhost:3001${file.url}`;
@@ -93,6 +105,30 @@ export default function FileSearch() {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+  };
+
+  const handleDelete = async (id: number) => {
+    const conferma = window.confirm('Sei sicuro di voler eliminare il documento?');
+    if (!conferma) return;
+
+    try {
+      const response = await fetch(`http://localhost:3001/api/uploadDocuments/${id}`, {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (response.ok) {
+        setMessage('File eliminato con successo.');
+        await refreshList();
+      } else {
+        const errorData = await response.json();
+        setMessage(`Errore: ${errorData.message || response.statusText}`);
+      }
+    } catch (error: any) {
+      setMessage(`Errore di rete: ${error.message}`);
+    }
   };
 
   return (
@@ -118,9 +154,15 @@ export default function FileSearch() {
           disabled={loading}
           className="px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 disabled:opacity-50"
         >
-          {loading ? 'Caricamento...' : 'Ultimi 5 file'}
+          {loading ? 'Caricamento...' : 'Files recenti'}
         </button>
       </form>
+
+      {viewMode && (
+        <p className="text-sm text-gray-500 italic">
+          Vista attiva: {viewMode === 'search' ? 'Risultati della ricerca' : 'Ultimi file caricati'}
+        </p>
+      )}
 
       {message && (
         <p className={`text-sm ${searchResults.length > 0 ? 'text-green-600' : 'text-gray-600'}`}>
@@ -143,8 +185,14 @@ export default function FileSearch() {
             <tbody className="bg-white divide-y divide-gray-200">
               {searchResults.map((file) => (
                 <tr key={file.id}>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                    {file.originalName || file.name}
+                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-blue-600 hover:underline">
+                    <a
+                      href={`http://localhost:3001${file.url}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {file.originalName || file.name}
+                    </a>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{file.type}</td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
@@ -153,12 +201,18 @@ export default function FileSearch() {
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                     {new Date(file.createdAt).toLocaleDateString('it-IT')}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                  <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-4">
                     <button
                       onClick={() => handleDownload(file)}
                       className="text-indigo-600 hover:text-indigo-900"
                     >
                       Download
+                    </button>
+                    <button
+                      onClick={() => handleDelete(file.id)}
+                      className="text-red-600 hover:text-red-800"
+                    >
+                      Elimina
                     </button>
                   </td>
                 </tr>
