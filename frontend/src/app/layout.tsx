@@ -14,17 +14,14 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    
-    <html lang="en" suppressHydrationWarning>
-      
-      <body className={inter.className}>
-         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-        <Navbar> 
-          {children}
-        </Navbar>
-    <Footer/>
-      </ThemeProvider>
-    </body>
+    <html className="" lang="en" suppressHydrationWarning>
+      <body className={`${inter.className} flex flex-col min-h-screen bg-white dark:bg-gradient-to-b dark:from-gray-900 dark:via-slate-950 dark:to-gray-950 `}>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <Navbar />
+          <main className="flex-grow">{children}</main>
+          <Footer />
+        </ThemeProvider>
+      </body>
     </html>
   );
 }

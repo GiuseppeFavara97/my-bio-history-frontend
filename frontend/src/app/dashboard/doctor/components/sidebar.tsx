@@ -1,23 +1,21 @@
 'use client'
-      
-import { useState, useState  rom "react"       
-import { useRouter } from "next/navigation" 
+
+import { useState } from "react"
 import { useSharedData } from "../../_shared/SharedData"
-import { Activity, HeartMinus, Settings, SquareChartGantt, Syringe, ClipboardPlus, PillBottle, CircleUserRound } from "lucide-react";
-import { NavigationMenuLink , NavigationMenuItem, NavigationMenu, NavigationMenuList } from "@radix-ui/react-navigation-menu"
+import { Activity, HeartMinus, Settings, SquareChartGantt, Syringe, ClipboardPlus, PillBottle, User } from "lucide-react";
 import Link from "next/link";
 
 export default function Sidebar() {
     const { selectedTab, setSelectedTab, patientName } = useSharedData();
     const [open, setOpen] = useState(false);
-    const router = useRouter();
+
 
 return (
     <div className="text-white h-screen">
         <div
             onMouseLeave={() => setOpen(false)}
             onMouseEnter={() => setOpen(true)}
-            className={`flex flex-col h-full transition-all duration-300 ease-in-out
+            className={`flex flex-col h-screen transition-all duration-300 ease-in-out
             ${open ? "w-56" : "w-28"}
             bg-gradient-to-b from-gray-950 via-gray-700 to-gray-950 border-r border-gray-700 rounded-r-xl`}
         >
@@ -33,12 +31,10 @@ return (
             <button
                 onClick={() => setSelectedTab("dati")}
                 className="cursor-pointer flex items-center gap-2 px-3 py-2 rounded-md transition-all duration-300 hover:bg-gray-700"
-            
-            >
-                    <CircleUserRound className="w-5 h-5 text blue"/>
-            
-                <Link href="/profile" className="w-5 h-5">Profilo</Link>
-            {open}
+            >   
+                <User className="w-5 h-5 text-blue-400" />
+                <Link href="/profile"/>
+            {open && "Profilo"}
             
             </button>
 
@@ -81,19 +77,8 @@ return (
                 <PillBottle className="w-5 h-5 text-amber-700" />
                 {open && "Terapie"}
             </button>
-              
-            <button
-                onClick={() => {
-                  setSelectedTab("documents");
-                  router.push("/dashboard/documents");
-                }}
-            className='p-1 outline outline-indigo-600 rounded-r-full text-center cursor-pointer'
-          >
-            Documenti
-          </button>
             </div>
         </div>
     </div>
 );
-
 }

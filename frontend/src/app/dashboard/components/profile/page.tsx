@@ -3,9 +3,9 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
-import UploadProfileImage from '../../components/upload';
-import Button from '../../components/navigation/navbar/button';
 import './profile.css';
+import UploadProfileImage from '@/components/upload';
+import Button from '@/components/navigation/navbar/button';
 
 interface UserProfile {
   id: number;
@@ -19,6 +19,7 @@ interface UserProfile {
   sex: string;
   phoneNumber: number;
   profileImageUrl?: string;
+  taxCode: string;
 }
 
 const Profile: React.FC = () => {
@@ -133,6 +134,10 @@ const Profile: React.FC = () => {
             <div className="form-group">
               <label>Sesso</label>
               <input type="text" value={user.sex} readOnly />
+            </div>
+            <div className="form-group">
+            <label>CodiceFiscale</label>
+            <input type= "text" value={user.taxCode} readOnly />
             </div>
           </div>
         </div>
