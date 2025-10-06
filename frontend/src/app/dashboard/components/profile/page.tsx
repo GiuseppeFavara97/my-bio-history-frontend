@@ -69,7 +69,7 @@ const Profile: React.FC = () => {
           <div className='items-center outline flex-col w-full text-center h-full'>
           <div className=" flex flex-col profile-actions">
             <div className='items-center flex-col'> 
-            <Button className="cursor-pointer hover:bg-blue-500 w-full"onClick={() => alert('Modifica profilo non ancora disponibile')}>Modifica Profilo</Button>
+            <Button className="cursor-pointer hover:bg-blue-500 w-full"onClick={() => ('Modifica profilo non ancora disponibile')}>Modifica Profilo</Button>
               </div>
             <Button className="cursor-pointer hover:bg-red-500" onClick={() => alert('Cambia password non ancora disponibile')}>Cambia Password</Button>
             <Button
@@ -78,7 +78,7 @@ const Profile: React.FC = () => {
             localStorage.removeItem('user');
             router.push('/login');
           }}
-          className="btn-logout"
+          className="cursor-pointer btn-logout"
         >
           Logout
         </Button>
