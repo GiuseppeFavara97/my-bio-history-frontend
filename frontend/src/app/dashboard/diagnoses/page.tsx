@@ -75,18 +75,18 @@ export default function DiagnosesPage() {
 
     return (
         <div className="p-4 flex-1 flex flex-col ">
-            <h1 className="text-2xl font-bold mb-4">Le mie Diagnosi</h1>
+            <h1 className="text-2xl font-bold mb-4 text-black dark:text-white">Le mie Diagnosi</h1>
             
             <div className="flex items-center gap-4 mb-6">
                 <button
-                    className="px-6 py-3 bg-blue-600 text-black rounded-lg text-lg font-semibold"
+                    className="px-6 py-3 bg-blue-600 rounded-lg text-lg font-semibold"
                     onClick={() => setShowModal(true)}
                 >
                     Aggiungi Diagnosi
                 </button>
                 <input
                     type="text"
-                    className="p-3 border-2 border-blue-400 rounded-lg w-full max-w-md text-lg"
+                    className="p-3 border-2 border-blue-400 rounded-lg w-full max-w-md text-lg text-black dark:text-white"
                     placeholder="Cerca diagnosi, descrizione..."
                     value={search}
                     onChange={e => setSearch(e.target.value)}
