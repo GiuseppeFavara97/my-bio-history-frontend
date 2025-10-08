@@ -74,7 +74,7 @@ export default function VaccinePage() {
 
     return (
         <div className="p-4">
-            <h1 className="text-2xl font-bold mb-4">I miei vaccini</h1>
+            <h1 className="text-2xl font-bold mb-4 text-black dark:text-white">I miei vaccini</h1>
             <div className="flex items-center gap-4 mb-6">
             <button
                 className="cursor-pointer px-6 py-3 bg-blue-600 text-black rounded-lg text-short font-semibold"
@@ -83,7 +83,7 @@ export default function VaccinePage() {
                 Aggiungi Vaccini
             </button>
             <input
-                    className="p-3 border-2 border-blue-400 rounded-lg w-full max-w-md text-lg"
+                    className="p-3 border-2 border-blue-400 rounded-lg w-full max-w-md text-lg text-black dark:text-white"
                     type="text"
                     placeholder="Cerca nome, tipo e data"
                     value={search}
