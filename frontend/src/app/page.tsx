@@ -3,7 +3,7 @@ import Footer from "../components/footer/footer";
 
 export default function Home() {
   return (
-    <div className="relative flex flex-col min-h-screen">
+    <div className="relative flex flex-col ">
 
       
       <div className="relative w-full h-[70vh] overflow-hidden">
@@ -30,7 +30,7 @@ export default function Home() {
       </div>
 
       
-      <section className="flex-grow p-8 bg-white dark:bg-zinc-900 text-black dark:text-white">
+      <section className="flex-grow place-items-center p-8 bg-white dark:bg-zinc-900 text-black dark:text-white">
         <h2 className="text-2xl font-semibold mb-4">Chi siamo</h2>
         <p className="mb-2">
           My Bio History è una piattaforma digitale per la gestione e la narrazione della tua storia clinica personale.

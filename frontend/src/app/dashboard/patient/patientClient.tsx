@@ -8,8 +8,9 @@ import FileManager from '../documents/page';
 import AllergyPage from "../allergy/allergy";
 import VaccinePage from "../vaccines/page";
 import DiagnosesPage from "../diagnoses/page";
-import CarePage from "../Care/page";
+
 import Profile from "../components/profile/page";
+import CarePage from "../doctor/Care/page";
 
 export default function PatientClient({
   medicalrecord,
@@ -20,7 +21,7 @@ export default function PatientClient({
 }) {
   const [user, setUser] = useState<User>(userData);
   const [medical, setMedical] = useState<MedicalRecord>(medicalrecord);
-  const { etSelectedTab, setPatientName } = useSharedData();
+  const { selectedTab, setPatientName } = useSharedData();
 
   
   useEffect(() => {
