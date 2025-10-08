@@ -5,7 +5,8 @@ import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import './profile.css';
 import UploadProfileImage from '@/components/upload';
-import Button from '@/components/navigation/navbar/button';
+import Button from '@/components/navigation/navbar/components/button';
+
 
 interface UserProfile {
   id: number;
@@ -68,30 +69,21 @@ const Profile: React.FC = () => {
             className="profile-avatar"
           />
           <div className='items-center outline flex-col w-full text-center h-full'>
-          <div className="flex flex-col profile-actions">
-            <div className='items-center flex-col'>
-              <Button
-                className="cursor-pointer hover:bg-blue-500 w-full"
-                onClick={() => {
-                  setEditData(user);
-                  setEditModal(true);
-                }}
-              >
-                Modifica Profilo
-              </Button>
+          <div className=" flex flex-col profile-actions">
+            <div className='items-center flex-col'> 
+              <Button className="cursor-pointer hover:bg-blue-500 w-full"onClick={() => ('Modifica profilo non ancora disponibile')}>Modifica Profilo</Button>
             </div>
-            <Button className="cursor-pointer hover:bg-red-500" onClick={() => alert('Cambia password non ancora disponibile')}  >Cambia Password</Button>
+            <Button className="cursor-pointer hover:bg-red-500" onClick={() => alert('Cambia password non ancora disponibile')}>Cambia Password</Button>
             <Button
-              onClick={() => {
-                localStorage.removeItem('token');
-                localStorage.removeItem('user');
-                router.push('/login');
-              }}
-              className="btn-logout"
-            >
-              Logout
-            </Button>
-          </div>
+          onClick={() => {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            router.push('/login');
+          }}
+          className="cursor-pointer btn-logout"
+        >
+          Logout
+        </Button>
         </div>
         </div>
           {show && (
