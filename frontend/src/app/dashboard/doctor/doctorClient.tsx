@@ -1,37 +1,33 @@
 "use client";
-
 import { useEffect, useState } from "react";
 import { useSharedData } from "../_shared/SharedData";
 import { MedicalRecord, User } from "@/Types/Types";
-import { redirect } from 'next/navigation';
-import FileManager from '../documents/page';
 import AllergyPage from "../allergy/allergy";
 import VaccinePage from "../vaccines/page";
 import DiagnosesPage from "../diagnoses/page";
-import CarePage from "../Care/page";
+import CarePage from "./Care/page";
 import Profile from "../components/profile/page";
 
-export default function PatientClient({
+export default function DoctorClient({
   medicalrecord,
   userData,
 }: {
   medicalrecord: MedicalRecord;
-  userData: User;
+  userData: User | null;
 }) {
-  const [user, setUser] = useState<User>(userData);
-  const [medical, setMedical] = useState<MedicalRecord>(medicalrecord);
-  const { etSelectedTab, setPatientName } = useSharedData();
+  const [user, setUser] = useState<User | null>(userData);
+  const [medical, setMedical] = useState<MedicalRecord | null>(medicalrecord);
+  const { selectedTab, setDoctorName } = useSharedData();
 
-  
   useEffect(() => {
     setUser(userData);
-    if (userData) setPatientName(userData.firstName);
-  }, [userData, setPatientName]);
+    if (userData) setDoctorName(userData.firstName);
+  }, [userData, setDoctorName]);
 
   if (!user || !medical) return null;
 
   return (
-    <div className=" text-white  ">
+    <div className=" text-black dark:text-white ">
       {selectedTab === "dati" ? (
         <div className="flex-1 p-4">
           <Profile />

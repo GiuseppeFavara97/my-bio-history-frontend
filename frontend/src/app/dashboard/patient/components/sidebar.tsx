@@ -1,6 +1,7 @@
 'use client'
-
-import { useState } from "react"
+      
+import { useState, useState  rom "react"       
+import { useRouter } from "next/navigation" 
 import { useSharedData } from "../../_shared/SharedData"
 import { Activity, HeartMinus, Settings, SquareChartGantt, Syringe, ClipboardPlus, PillBottle, CircleUserRound } from "lucide-react";
 import { NavigationMenuLink , NavigationMenuItem, NavigationMenu, NavigationMenuList } from "@radix-ui/react-navigation-menu"
@@ -9,7 +10,7 @@ import Link from "next/link";
 export default function Sidebar() {
     const { selectedTab, setSelectedTab, patientName } = useSharedData();
     const [open, setOpen] = useState(false);
-
+    const router = useRouter();
 
 return (
     <div className="text-white h-screen">
@@ -80,8 +81,19 @@ return (
                 <PillBottle className="w-5 h-5 text-amber-700" />
                 {open && "Terapie"}
             </button>
+              
+            <button
+                onClick={() => {
+                  setSelectedTab("documents");
+                  router.push("/dashboard/documents");
+                }}
+            className='p-1 outline outline-indigo-600 rounded-r-full text-center cursor-pointer'
+          >
+            Documenti
+          </button>
             </div>
         </div>
     </div>
 );
+
 }
