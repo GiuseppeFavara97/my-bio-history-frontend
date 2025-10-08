@@ -1,32 +1,49 @@
-
 import './globals.css';
-
 import Footer from "../components/footer/footer";
- 
 
 export default function Home() {
   return (
-    
-     <div className="flex flex-col  ">
-  <img
-    src="/Biomedical.jpg"
-    alt="Background"
-    className=" m-1"
-  />
-  
-  <section className="p-8 self-center bg-white dark:bg-zinc-900 text-black dark:text-white">
-    <h1 className="text-3xl font-bold mb-4">Benvenuto su My Bio History</h1>
-    <p className="mb-2">La tua storia, la tua biografia, il tuo mondo.</p>
-    <p className="mb-2">
-      Scopri di più su di noi e su come possiamo aiutarti a raccontare la tua storia.
-    </p>
-  </section>
-</div>
+    <div className="relative flex flex-col min-h-screen">
+
+      
+      <div className="relative w-full h-[70vh] overflow-hidden">
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="w-full h-full object-cover brightness-75"
+        >
+          <source src="/0_Abstract_Background_Technology_1280x720.mp4" type="video/mp4" />
+         
+        </video>
+
+        <div className="absolute inset-0 flex items-center justify-center text-center px-4">
+          <div className="text-white bg-light-blue bg-opacity-50 p-6 rounded-lg max-w-2xl">
+            <h1 className="text-4xl font-bold mb-4">Benvenuto su My Bio History</h1>
+            <p className="text-lg mb-2">La tua storia, la tua biografia, il tuo mondo.</p>
+            <p className="text-md">
+              Scopri di più su di noi e su come possiamo aiutarti a raccontare la tua storia.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      
+      <section className="flex-grow p-8 bg-white dark:bg-zinc-900 text-black dark:text-white">
+        <h2 className="text-2xl font-semibold mb-4">Chi siamo</h2>
+        <p className="mb-2">
+          My Bio History è una piattaforma digitale per la gestione e la narrazione della tua storia clinica personale.
+        </p>
+        <p>
+          Con tecnologie moderne e sicurezza avanzata, vogliamo aiutarti a custodire e condividere la tua storia sanitaria.
+        </p>
+      </section>
+
+      
+    </div>
   );
-};
-
-
-
+}
 
 /*
 

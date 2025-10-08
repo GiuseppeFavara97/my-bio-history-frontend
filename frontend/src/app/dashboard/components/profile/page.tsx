@@ -5,7 +5,8 @@ import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import './profile.css';
 import UploadProfileImage from '@/components/upload';
-import Button from '@/components/navigation/navbar/button';
+import Button from '@/components/navigation/navbar/components/button';
+
 
 interface UserProfile {
   id: number;
