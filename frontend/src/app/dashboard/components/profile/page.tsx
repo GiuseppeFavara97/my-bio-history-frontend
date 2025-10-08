@@ -5,8 +5,6 @@ import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import './profile.css';
 import UploadProfileImage from '@/components/upload';
-import Button from '@/components/navigation/navbar/components/button';
-
 
 interface UserProfile {
   id: number;
@@ -57,42 +55,42 @@ const Profile: React.FC = () => {
   if (!user) return <p>Caricamento profilo...</p>;
 
   return (
-    <div className="profile-wrapper">
-      <h1 className="profile-title">Profilo Utente</h1>
-      <div className="profile-form outline">
-        {/* Sezione sinistra: immagine profilo + upload */}
-        <div className="outline h-full profile-left">
-          <img
-            src={user.profileImageUrl ? `${API_URL}${user.profileImageUrl}` : '/omino blu.webp'}
-            alt={"Avatar Utente"}
-            onClick={() => setShow(true)}
-            className="profile-avatar"
-          />
-          <div className='items-center outline flex-col w-full text-center h-full'>
-          <div className=" flex flex-col profile-actions">
-            <div className='items-center flex-col'> 
-              <Button className="cursor-pointer hover:bg-blue-500 w-full"onClick={() => ('Modifica profilo non ancora disponibile')}>Modifica Profilo</Button>
-            </div>
-            <Button className="cursor-pointer hover:bg-red-500" onClick={() => alert('Cambia password non ancora disponibile')}>Cambia Password</Button>
-            <Button
-          onClick={() => {
-            localStorage.removeItem('token');
-            localStorage.removeItem('user');
-            router.push('/login');
-          }}
-          className="cursor-pointer btn-logout"
-        >
-          Logout
-        </Button>
+<div className="profile-wrapper">
+  <h1 className="profile-title">Profilo Utente</h1>
+  <div className="profile-form outline">
+    {/* Sezione sinistra: immagine profilo + upload */}
+    <div className="outline h-full profile-left">
+      <img
+        src={user.profileImageUrl ? `${API_URL}${user.profileImageUrl}` : '/omino blu.webp'}
+        alt={"Avatar Utente"}
+        onClick={() => setShow(true)}
+        className="profile-avatar"
+      />
+      <div className='items-center outline flex-col w-full text-center h-full'>
+        <div className=" flex flex-col profile-actions">
+          <div className='items-center flex-col'> 
+            <button className="cursor-pointer hover:bg-blue-500 w-full"onClick={() => ('Modifica profilo non ancora disponibile')}>Modifica Profilo</button>
+          </div>
+          <button className="cursor-pointer hover:bg-red-500" onClick={() => alert('Cambia password non ancora disponibile')}>Cambia Password</button>
+          <button
+            onClick={() => {
+              localStorage.removeItem('token');
+              localStorage.removeItem('user');
+              router.push('/login');
+            }}
+            className="cursor-pointer btn-logout"
+          >
+            Logout
+          </button>
         </div>
+      </div>
+      {show && (
+        <div className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center">
+          <div className="bg-white p-6 rounded-lg shadow-lg">
+            <UploadProfileImage onClose={() => setShow(false)} />
+          </div>
         </div>
-          {show && (
-            <div className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center">
-              <div className="bg-white p-6 rounded-lg shadow-lg">
-                <UploadProfileImage onClose={() => setShow(false)} />
-              </div>
-            </div>
-)}
+      )}
       {/* MODALE MODIFICA PROFILO */}
       {editModal && editData && (
         <div className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center">
@@ -196,60 +194,58 @@ const Profile: React.FC = () => {
           </div>
         </div>
       )}
-      {/* Sezione destra: campi utente */}
-      <div className="profile-right">
-        <div className="profile-fields">
-            <div className="form-group">
-              <label>Nome</label>
-              <input type="text" value={user.firstName} readOnly />
-            </div>
-            <div className="form-group">
-              <label>Cognome</label>
-              <input type="text" value={user.lastName} readOnly />
-            </div>
-            <div className="form-group">
-              <label>Username</label>
-              <input type="text" value={user.username} readOnly />
-            </div>
-            <div className="form-group">
-              <label>Email</label>
-              <input type="email" value={user.email} readOnly />
-            </div>
-            <div className="form-group">
-              <label>Telefono</label>
-              <input type="text" value={user.phoneNumber} readOnly />
-            </div>
-            <div className="form-group">
-              <label>Provincia</label>
-              <input type="text" value={user.province} readOnly />
-            </div>
-            <div className="form-group">
-              <label>Luogo di nascita</label>
-              <input type="text" value={user.birthdayPlace} readOnly />
-            </div>
-            <div className="form-group">
-              <label>Data di nascita</label>
-              <input
-                type="text"
-                value={new Date(user.birthday).toLocaleDateString('it-IT')}
-                readOnly
-              />
-            </div>
-            <div className="form-group">
-              <label>Sesso</label>
-              <input type="text" value={user.sex} readOnly />
-            </div>
-            <div className="form-group">
-            <label>CodiceFiscale</label>
-            <input type= "text" value={user.taxCode} readOnly />
-            </div>
-          </div>
+    </div>
+    {/* Sezione destra: campi utente */}
+    <div className="profile-right">
+      <div className="profile-fields">
+        <div className="form-group">
+          <label>Nome</label>
+          <input type="text" value={user.firstName} readOnly />
+        </div>
+        <div className="form-group">
+          <label>Cognome</label>
+          <input type="text" value={user.lastName} readOnly />
+        </div>
+        <div className="form-group">
+          <label>Username</label>
+          <input type="text" value={user.username} readOnly />
+        </div>
+        <div className="form-group">
+          <label>Email</label>
+          <input type="email" value={user.email} readOnly />
+        </div>
+        <div className="form-group">
+          <label>Telefono</label>
+          <input type="text" value={user.phoneNumber} readOnly />
+        </div>
+        <div className="form-group">
+          <label>Provincia</label>
+          <input type="text" value={user.province} readOnly />
+        </div>
+        <div className="form-group">
+          <label>Luogo di nascita</label>
+          <input type="text" value={user.birthdayPlace} readOnly />
+        </div>
+        <div className="form-group">
+          <label>Data di nascita</label>
+          <input
+            type="text"
+            value={new Date(user.birthday).toLocaleDateString('it-IT')}
+            readOnly
+          />
+        </div>
+        <div className="form-group">
+          <label>Sesso</label>
+          <input type="text" value={user.sex} readOnly />
+        </div>
+        <div className="form-group">
+          <label>CodiceFiscale</label>
+          <input type="text" value={user.taxCode} readOnly />
         </div>
       </div>
-
-      {/* Pulsanti azione */}
-      
     </div>
+  </div>
+</div>
   );
 };
 

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import ToggleTheme from "../../../toggleTheme";
+import ToggleTheme from "./toggleTheme";
 import {
   NavigationMenu,
   NavigationMenuItem,
