@@ -6,15 +6,18 @@ export default function Home() {
     <div className="relative flex flex-col min-h-screen">
 
       
-      <div className="relative w-full h-[70vh] overflow-hidden">
+      <div className= " relative w-full h-screen overflow-hidden">
         <video
           autoPlay
           loop
           muted
           playsInline
-          className="w-full h-full object-cover brightness-75"
+          className="absolute top-0 left-0 w-full h-full object-cover brightness-75 -z-10"
         >
+          
+          
           <source src="/0_Abstract_Background_Technology_1280x720.mp4" type="video/mp4" />
+         
          
         </video>
 
