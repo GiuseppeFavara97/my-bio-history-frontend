@@ -45,7 +45,7 @@ export default function Navbar() {
         </div>
         <NavigationMenu className="hidden md:block self-center ">
           <NavigationMenuList className="flex gap-6">
-              <NavigationMenuLink href="/dashboard">Dashboard</NavigationMenuLink>
+              <NavigationMenuLink href="/Chi siamo">Chi siamo</NavigationMenuLink>
               <NavigationMenuLink href="/login">Login</NavigationMenuLink>
               <NavigationMenuLink href="/register">Registrati</NavigationMenuLink>
           </NavigationMenuList>
