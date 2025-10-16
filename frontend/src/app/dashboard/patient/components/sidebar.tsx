@@ -1,19 +1,11 @@
-'use client';
-
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { useSharedData } from "../../_shared/SharedData";
-import {
-  Activity,
-  HeartMinus,
-  Settings,
-  SquareChartGantt,
-  Syringe,
-  ClipboardPlus,
-  PillBottle,
-  CircleUserRound
-} from "lucide-react";
+'use client'
+      
+import { useRouter } from "next/navigation" 
+import { useSharedData } from "../../_shared/SharedData"
+import { Activity, HeartMinus, Settings, SquareChartGantt, Syringe, ClipboardPlus, PillBottle, CircleUserRound } from "lucide-react";
+import { NavigationMenuLink , NavigationMenuItem, NavigationMenu, NavigationMenuList } from "@radix-ui/react-navigation-menu"
 import Link from "next/link";
+import { useState } from "react";
 
 export default function Sidebar() {
   const { selectedTab, setSelectedTab, patientName } = useSharedData();
