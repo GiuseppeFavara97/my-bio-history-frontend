@@ -7,7 +7,7 @@ const Footer: React.FC = () => {
     <footer className="footer flex items-center h-30 w-full border-t text-white px-4 md:px-10">
       {/* Logo */}
       <div>
-        <img src="/logoplaceholder.png" alt="logo" width={50} height={50} />
+        <img src="/myLogo.png" alt="logo" width={50} height={50} />
       </div>
 
       {/* Titolo centrale */}

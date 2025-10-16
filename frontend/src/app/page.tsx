@@ -3,7 +3,7 @@ import Footer from "../components/footer/footer";
 
 export default function Home() {
   return (
-    <div className="relative flex flex-col min-h-screen">
+    <div className="relative flex flex-col ">
 
       
       <div className= " relative w-full h-screen overflow-hidden">
@@ -33,6 +33,7 @@ export default function Home() {
       </div>
 
       
+
      <section
   id="chi-siamo"
   className="flex-grow p-8 bg-white dark:bg-zinc-900 text-black dark:text-white"
@@ -45,6 +46,7 @@ export default function Home() {
     Con tecnologie moderne e sicurezza avanzata, vogliamo aiutarti a custodire e condividere la tua storia sanitaria.
   </p>
 </section>
+
 
 
       
