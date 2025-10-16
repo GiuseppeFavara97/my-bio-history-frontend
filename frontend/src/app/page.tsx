@@ -38,7 +38,7 @@ export default function Home() {
   className="flex-grow p-8 bg-white dark:bg-zinc-900 text-black dark:text-white"
 >
   <h2 className="text-2xl font-semibold mb-4">Chi siamo</h2>
-  <p className="mb-2">
+  <p className="mb-2"> 
     My Bio History è una piattaforma digitale per la gestione e la narrazione della tua storia clinica personale.
   </p>
   <p>
