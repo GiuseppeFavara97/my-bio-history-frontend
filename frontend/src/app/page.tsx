@@ -6,15 +6,18 @@ export default function Home() {
     <div className="relative flex flex-col ">
 
       
-      <div className="relative w-full h-[70vh] overflow-hidden">
+      <div className= " relative w-full h-screen overflow-hidden">
         <video
           autoPlay
           loop
           muted
           playsInline
-          className="w-full h-full object-cover brightness-75"
+          className="absolute top-0 left-0 w-full h-full object-cover brightness-75 -z-10"
         >
+          
+          
           <source src="/0_Abstract_Background_Technology_1280x720.mp4" type="video/mp4" />
+         
          
         </video>
 
@@ -30,15 +33,21 @@ export default function Home() {
       </div>
 
       
-      <section className="flex-grow place-items-center p-8 bg-white dark:bg-zinc-900 text-black dark:text-white">
-        <h2 className="text-2xl font-semibold mb-4">Chi siamo</h2>
-        <p className="mb-2">
-          My Bio History è una piattaforma digitale per la gestione e la narrazione della tua storia clinica personale.
-        </p>
-        <p>
-          Con tecnologie moderne e sicurezza avanzata, vogliamo aiutarti a custodire e condividere la tua storia sanitaria.
-        </p>
-      </section>
+
+     <section
+  id="chi-siamo"
+  className="flex-grow p-8 bg-white dark:bg-zinc-900 text-black dark:text-white"
+>
+  <h2 className="text-2xl font-semibold mb-4">Chi siamo</h2>
+  <p className="mb-2"> 
+    My Bio History è una piattaforma digitale per la gestione e la narrazione della tua storia clinica personale.
+  </p>
+  <p>
+    Con tecnologie moderne e sicurezza avanzata, vogliamo aiutarti a custodire e condividere la tua storia sanitaria.
+  </p>
+</section>
+
+
 
       
     </div>

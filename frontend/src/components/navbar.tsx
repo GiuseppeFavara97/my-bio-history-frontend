@@ -39,13 +39,15 @@ export default function Navbar() {
                 <NavigationMenuLink className="ease-in-out duration-300 hover:scale-120 hover:font-bold hover:translate-x-5" href="/login">Login</NavigationMenuLink>
                 <NavigationMenuLink className="ease-in-out duration-300 hover:scale-120 hover:font-bold hover:translate-x-5" href="/profile">Profilo</NavigationMenuLink>
                 <NavigationMenuLink className="ease-in-out duration-300 hover:scale-120 hover:font-bold hover:translate-x-5" href="/register">Registrati</NavigationMenuLink>
+                <NavigationMenuLink className="ease-in-out duration-300 hover:scale-120 hover:font-bold hover:translate-x-5" href="/register">Contatti</NavigationMenuLink>
               </NavigationMenuContent>
             </NavigationMenuItem>
           </NavigationMenu>
         </div>
         <NavigationMenu className="hidden md:block self-center ">
           <NavigationMenuList className="flex gap-6">
-              <NavigationMenuLink href="/dashboard">Dashboard</NavigationMenuLink>
+              <NavigationMenuLink href="#chi-siamo">Chi siamo</NavigationMenuLink>
+              <NavigationMenuLink href="contatti">Contatti</NavigationMenuLink>
               <NavigationMenuLink href="/login">Login</NavigationMenuLink>
               <NavigationMenuLink href="/register">Registrati</NavigationMenuLink>
           </NavigationMenuList>
