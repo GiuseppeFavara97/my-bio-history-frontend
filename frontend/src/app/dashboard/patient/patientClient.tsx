@@ -1,7 +1,10 @@
 "use client";
+
 import { useEffect, useState } from "react";
 import { useSharedData } from "../_shared/SharedData";
 import { MedicalRecord, User } from "@/Types/Types";
+import { redirect } from 'next/navigation';
+import FileManager from '../documents/page';
 import AllergyPage from "../allergy/allergy";
 import VaccinePage from "../vaccines/page";
 import DiagnosesPage from "../diagnoses/page";
@@ -13,12 +16,13 @@ export default function PatientClient({
   userData,
 }: {
   medicalrecord: MedicalRecord;
-  userData: User | null;
+  userData: User;
 }) {
-  const [user, setUser] = useState<User | null>(userData);
-  const [medical, setMedical] = useState<MedicalRecord | null>(medicalrecord);
-  const { selectedTab, setPatientName } = useSharedData();
+  const [user, setUser] = useState<User>(userData);
+  const [medical, setMedical] = useState<MedicalRecord>(medicalrecord);
+  const { etSelectedTab, setPatientName } = useSharedData();
 
+  
   useEffect(() => {
     setUser(userData);
     if (userData) setPatientName(userData.firstName);

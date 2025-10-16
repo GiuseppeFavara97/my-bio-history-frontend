@@ -2,8 +2,7 @@
 
 import { useState } from "react"
 import { useSharedData } from "../../_shared/SharedData"
-import { Activity, HeartMinus, Settings, SquareChartGantt, Syringe, ClipboardPlus, PillBottle } from "lucide-react";
-import { NavigationMenuLink , NavigationMenuItem, NavigationMenu, NavigationMenuList } from "@radix-ui/react-navigation-menu"
+import { Activity, HeartMinus, Settings, SquareChartGantt, Syringe, ClipboardPlus, PillBottle, User, FileText } from "lucide-react";
 import Link from "next/link";
 
 export default function Sidebar() {
@@ -32,9 +31,10 @@ return (
             <button
                 onClick={() => setSelectedTab("dati")}
                 className="cursor-pointer flex items-center gap-2 px-3 py-2 rounded-md transition-all duration-300 hover:bg-gray-700"
-            >
-                <Link href="/profile" className="w-5 h-5">Profilo</Link>
-            {open}
+            >   
+                <User className="w-5 h-5 text-blue-400" />
+                <Link href="/profile"/>
+            {open && "Profilo"}
             
             </button>
 
@@ -76,6 +76,14 @@ return (
             >
                 <PillBottle className="w-5 h-5 text-amber-700" />
                 {open && "Terapie"}
+            </button>
+
+            <button
+                onClick={() => setSelectedTab("documents")}
+                className="cursor-pointer flex items-center gap-2 px-3 py-2 rounded-md transition-all duration-300 hover:bg-gray-700"
+            >
+                <FileText className="w-5 h-5 text-purple-400" />
+                {open && "Documenti"}
             </button>
             </div>
         </div>
