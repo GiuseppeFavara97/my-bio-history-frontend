@@ -13,6 +13,7 @@ import {
 import Ham from "@/components/ui/HamMenu";
 import { useRouter } from "next/navigation";
 
+
 export default function Navbar() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [isRegisterOpen, setIsRegisterOpen] = useState(false);
@@ -47,7 +48,7 @@ export default function Navbar() {
         <NavigationMenu className="hidden md:block self-center ">
           <NavigationMenuList className="flex gap-6">
               <NavigationMenuLink href="#chi-siamo">Chi siamo</NavigationMenuLink>
-              <NavigationMenuLink href="contatti">Contatti</NavigationMenuLink>
+              <NavigationMenuLink href="/contatti">Contatti</NavigationMenuLink>
               <NavigationMenuLink href="/login">Login</NavigationMenuLink>
               <NavigationMenuLink href="/register">Registrati</NavigationMenuLink>
           </NavigationMenuList>
