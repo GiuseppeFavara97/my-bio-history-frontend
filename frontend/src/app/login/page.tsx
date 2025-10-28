@@ -32,7 +32,7 @@ export default function Login() {
       alert("Credenziali non valide");
     }
   };
-
+  
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100 dark:bg-gray-900 ">
       <div className="bg-white shadow-lg rounded-xl p-6 w-full max-w-lg dark:bg-gray-950">
