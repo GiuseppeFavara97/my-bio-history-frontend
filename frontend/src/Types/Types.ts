@@ -5,6 +5,14 @@ export type User = {
   firstName: string;
   lastName: string;
   role: string;
+  birthday?: Date
+  birthdayPlace?: string;
+  phoneNumber?: number;
+  profileImageUrl?: string
+  province?:string
+  sex?:string
+  taxCode?:string
+  
 };
 
 export type MedicalRecord = {

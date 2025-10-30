@@ -1,43 +1,34 @@
 'use client'
 
 import { useEffect, useState } from "react"
+import Sidebar from "./components/sidebarAdmin";
+import { useSharedData } from "../_shared/SharedData";
+import ListUsers from "./listUsers";
 
-type User ={
-    username:string;
-    email:string;
-    firstName:string;
-    lastName:string;
-    role:string;
+
+type User = {
+    username: string;
+    email: string;
+    firstName: string;
+    lastName: string;
+    role: string;
 }
 export default function Pageadmin() {
-        const [user, setUser] = useState<User | null >(null)
-
-
-
-    useEffect(() =>  {
-    
-    const userloc =localStorage.getItem('user')
-    if (userloc) try{
-    const parsed = JSON.parse(userloc)
-    setUser(parsed);
-    } catch (error) {
-        console.error('errore nel parsing ', error);
-        localStorage.removeItem('user');
-    }
-    
-    }, []);
-    console.log(user)
-
+    const [user, setUser] = useState<User | null>(null)
+    const context = useSharedData()
+    console.log("contesto", context)
     return (
-        
-        <div className="flex flex-col">
-    {user ? (
-    <p className=""> ciao {user.role} {user.firstName} {user.lastName}</p>
-    
-    ) : (
-        <p> nada </p>
-    )}
-    </div>
+
+
+
+        <div>
+            {context.selectedTab === "listUsers" && (
+                <ListUsers />
+            )
+            }
+        </div>
+
+
     )
 
 }
