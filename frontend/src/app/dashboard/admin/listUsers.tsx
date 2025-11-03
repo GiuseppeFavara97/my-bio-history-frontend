@@ -2,13 +2,29 @@ import axios from "axios"
 import Select from 'react-select';
 import { useEffect, useState } from "react"
 import { User } from "@/Types/Types";
+import CardAdmin from "@/components/ui/CardAdmin";
+import { Settings } from "lucide-react";
+import { Bar, Cell, Legend, Pie, PieChart, Tooltip, XAxis, YAxis } from "recharts"
+import CardAdminStats from "@/components/ui/CardAdminStats";
 
 export default function ListUsers() {
-    const [users, setUsers] = useState()
+    const [users, setUsers] = useState([])
     const [selectOption, setSelectOptions] = useState<option[]>()
     const [selectedOption, setSelectedOption] = useState<option>()
     const [userModify, setModify] = useState<Partial<User>>({})
+    let stats = NumberStats(users)
 
+    function NumberStats(users: User[]) {
+        let nPatients = users.filter(user => { return user.role === "patient" })
+        let nDoctor = users.filter(user => { return user.role === "doctor" })
+        let nAdmin = users.filter(user => { return user.role === "admin" })
+        return {
+            patients: nPatients.length,
+            doctors: nDoctor.length,
+            admins: nAdmin.length,
+        }
+    }
+    console.log("Npazienti", stats)
     type option = {
         value: number,
         label: string,
@@ -23,12 +39,12 @@ export default function ListUsers() {
             setUsers(res.data)
             const options = res.data.map((user: User) => ({ value: user.id, label: user.firstName, user: user }))
             setSelectOptions(options)
-            console.log("utest", users)
         })
             ()
     }, [selectedOption])
     console.log("selezionato", selectedOption)
     console.log("Modifiche", userModify)
+    console.log("Modifiche", users)
 
 
 
@@ -37,13 +53,13 @@ export default function ListUsers() {
             const modifies = {}
 
             for (const i in userModify) {
-                
+
                 if (userModify[i].trim() !== "") {
                     modifies[i] = userModify[i]
                 }
             }
-            console.log("modifiche pulite",modifies)
-            console.log("modifiche NOT pulite",userModify)
+            console.log("modifiche pulite", modifies)
+            console.log("modifiche NOT pulite", userModify)
             const sent = await axios.patch(`http://localhost:3001/api/users/${selectedOption?.value}`, modifies, { withCredentials: true })
         } catch (error) {
             console.error("error", error)
@@ -52,6 +68,45 @@ export default function ListUsers() {
 
     return (
         <div className="flex flex-col  text-black dark:text-white bg-gradient-to-b from-cyan-100 to-cyan-300 dark:from-gray-700 dark:to-gray-900 ">
+            <h1 className="text-3xl font-bold text-center ">Dashboard</h1>
+            <div className=" flex  justify-evenly items-center w-full outline h-40 ">
+                <CardAdmin onClick={() => console.log("hello")} className="" ><Settings /> Testo </CardAdmin>
+                <CardAdmin />
+                <CardAdmin />
+                <CardAdmin />
+                <CardAdmin />
+
+            </div>
+            <div className="flex justify-evenly  w-full h-40 items-center">
+                <CardAdminStats titleCard="Utenti Registrati" vari={users?.length}></CardAdminStats>
+                <CardAdminStats titleCard="Pazienti" vari={stats.patients}></CardAdminStats>
+                <CardAdminStats titleCard="Dottori" vari={stats.doctors} ></CardAdminStats>
+
+            </div>
+            <div className="justify-center items-center outline place-items-center ">
+                <PieChart width={300} height={300} >
+                    <Pie
+                        data={[
+                            { name: "pazieti", value: stats.patients },
+                            { name: "dottori", value: stats.doctors },
+                            { name: "Admin", value: stats.admins },
+                        ]} // alcune descrizione per non dimenticare
+                        dataKey="value"   // usa "value" per le dimensioni
+                        nameKey="name"    // etichetta per ogni fetta
+                        cx="50%"          // posizione centro X
+                        cy="50%"          // posizione centro Y
+                        outerRadius={100} // raggio della torta
+                        label             // mostra le etichette
+                    >    {/* colorare le fette di torta  1 per 1 chiamo sempre Cell (per non dimenticare)*/}
+                        <Cell stroke="black" strokeWidth={2} fill="green" />
+                        <Cell fill="blue" strokeWidth={2} />
+                        <Cell fill="purple" />
+
+                    </Pie>
+                    <Tooltip />
+                    <Legend />
+                </PieChart>
+            </div>
             <div className="basis-1/2 flex flex-col border-b rounded-xl shrink-0  ">
                 <div className="w-full flex flex-col border-b border-y-gray-500 ">
                     <span className="self-center text-2xl font-bold">Seleziona Utente</span>
