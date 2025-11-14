@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
+import Link from "next/link";
 
 export default function Login() {
   const router = useRouter();
@@ -61,9 +62,9 @@ export default function Login() {
 
           {/* 🔹 Password dimenticata */}
           <p className="mt-3 text-center text-sm">
-            <a href="/forgot-password" className="text-blue-400 hover:underline">
+            <Link href="/login/forgot-password" className="text-blue-400 hover:underline">
               Password dimenticata?
-            </a>
+            </Link>
           </p>
         </form>
 
@@ -74,21 +75,8 @@ export default function Login() {
             Registrati qui
           </a>
         </p>
-
-        {/* 🔹 Bottone login con Google */}
-        <div className="mt-6">
-          <button
-            onClick={() =>
-              (window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/api/auth/google`)
-            }
-           className="w-full flex items-center justify-center gap-2 bg-blue-600 text-white font-semibold py-2 rounded hover:bg-blue-700 transition"
-
-          >
-            <img src="/google.svg" alt="Google" className="w-5 h-5" />
-            Accedi con Google
-          </button>
-        </div>
+         </div>
       </div>
-    </div>
+  
   );
 }
