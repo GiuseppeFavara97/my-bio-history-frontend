@@ -1,5 +1,5 @@
-'use client';
-import React, { useState } from 'react';
+"use client";
+import React, { useState } from "react";
 
 interface FileEntry {
   id: number;
@@ -12,13 +12,13 @@ interface FileEntry {
 }
 
 export default function FileSearch() {
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState<FileEntry[]>([]);
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState('');
-  const [viewMode, setViewMode] = useState<'search' | 'latest' | null>(null);
+  const [message, setMessage] = useState("");
+  const [viewMode, setViewMode] = useState<"search" | "latest" | null>(null);
 
-  const token = typeof window !== 'undefined' ? localStorage.getItem('auth_token') : null;
+  const token = typeof window !== "undefined" ? localStorage.getItem("auth_token") : null;
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
@@ -26,30 +26,33 @@ export default function FileSearch() {
 
   const handleSearch = async (event: React.FormEvent) => {
     event.preventDefault();
-    setViewMode('search');
+    setViewMode("search");
 
     if (!searchTerm.trim()) {
       setSearchResults([]);
-      setMessage('Inserisci un nome per la ricerca.');
+      setMessage("Inserisci un nome per la ricerca.");
       return;
     }
 
     setLoading(true);
-    setMessage('Ricerca in corso...');
+    setMessage("Ricerca in corso...");
     setSearchResults([]);
 
     try {
-      const response = await fetch(`http://localhost:3001/api/uploadDocuments/search?name=${encodeURIComponent(searchTerm)}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-      });
+      const response = await fetch(
+        `http://localhost:3001/api/uploadDocuments/search?name=${encodeURIComponent(searchTerm)}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
       if (response.ok) {
         const data: FileEntry[] = await response.json();
         setSearchResults(data);
-        setMessage(data.length === 0 ? 'Nessun file trovato con questo nome.' : `Trovati ${data.length} file.`);
+        setMessage(data.length === 0 ? "Nessun file trovato con questo nome." : `Trovati ${data.length} file.`);
       } else {
         const errorData = await response.json();
         setMessage(`Errore nella ricerca: ${errorData.message || response.statusText}`);
@@ -62,16 +65,16 @@ export default function FileSearch() {
   };
 
   const handleLatest = async () => {
-    setViewMode('latest');
+    setViewMode("latest");
     setLoading(true);
-    setMessage('Caricamento ultimi file...');
+    setMessage("Caricamento ultimi file...");
     setSearchResults([]);
 
     try {
-      const response = await fetch('http://localhost:3001/api/uploadDocuments/latest?limit=5', {
+      const response = await fetch("http://localhost:3001/api/uploadDocuments/latest?limit=5", {
         headers: {
           Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
       });
 
@@ -91,15 +94,15 @@ export default function FileSearch() {
   };
 
   const refreshList = async () => {
-    if (viewMode === 'search') {
+    if (viewMode === "search") {
       await handleSearch({ preventDefault: () => {} } as React.FormEvent);
-    } else if (viewMode === 'latest') {
+    } else if (viewMode === "latest") {
       await handleLatest();
     }
   };
 
   const handleDownload = (file: FileEntry) => {
-    const link = document.createElement('a');
+    const link = document.createElement("a");
     link.href = `http://localhost:3001${file.url}`;
     link.download = file.originalName || file.name;
     document.body.appendChild(link);
@@ -108,19 +111,19 @@ export default function FileSearch() {
   };
 
   const handleDelete = async (id: number) => {
-    const conferma = window.confirm('Sei sicuro di voler eliminare il documento?');
+    const conferma = window.confirm("Sei sicuro di voler eliminare il documento?");
     if (!conferma) return;
 
     try {
       const response = await fetch(`http://localhost:3001/api/uploadDocuments/${id}`, {
-        method: 'DELETE',
+        method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
 
       if (response.ok) {
-        setMessage('File eliminato con successo.');
+        setMessage("File eliminato con successo.");
         await refreshList();
       } else {
         const errorData = await response.json();
@@ -132,60 +135,58 @@ export default function FileSearch() {
   };
 
   return (
-    <div className="max-w-3xl mx-auto p-4 border rounded-md shadow-sm bg-gray-50 space-y-4">
-      <form onSubmit={handleSearch} className="flex items-center space-x-4">
+    <div className="max-w-3xl mx-auto p-3 border rounded-md shadow-sm bg-gray-50 space-y-2">
+      <form onSubmit={handleSearch} className="flex items-center space-x-2">
         <input
           type="text"
           placeholder="Cerca file per nome..."
           value={searchTerm}
           onChange={handleSearchChange}
-          className="flex-grow p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="flex-grow p-1 text-xs border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500"
         />
         <button
           type="submit"
           disabled={loading}
-          className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50"
+          className="px-2 py-1 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none text-xs disabled:opacity-50"
         >
-          {loading ? 'Ricerca...' : 'Cerca'}
+          {loading ? "Ricerca..." : "Cerca"}
         </button>
         <button
           type="button"
           onClick={handleLatest}
           disabled={loading}
-          className="px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 disabled:opacity-50"
+          className="px-2 py-1 bg-gray-600 text-white rounded-md hover:bg-gray-700 focus:outline-none text-xs disabled:opacity-50"
         >
-          {loading ? 'Caricamento...' : 'Files recenti'}
+          {loading ? "Caricamento..." : "Files recenti"}
         </button>
       </form>
 
       {viewMode && (
-        <p className="text-sm text-gray-500 italic">
-          Vista attiva: {viewMode === 'search' ? 'Risultati della ricerca' : 'Ultimi file caricati'}
+        <p className="text-xs text-gray-500 italic">
+          Vista attiva: {viewMode === "search" ? "Risultati della ricerca" : "Ultimi file caricati"}
         </p>
       )}
 
       {message && (
-        <p className={`text-sm ${searchResults.length > 0 ? 'text-green-600' : 'text-gray-600'}`}>
-          {message}
-        </p>
+        <p className={`text-xs ${searchResults.length > 0 ? "text-green-600" : "text-gray-600"}`}>{message}</p>
       )}
 
       {searchResults.length > 0 && (
         <div className="overflow-x-auto">
-          <table className="min-w-full divide-y divide-gray-200">
+          <table className="min-w-full divide-y divide-gray-200 text-xs">
             <thead className="bg-gray-50">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nome File</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tipo</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Dimensione</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Caricato il</th>
-                <th className="relative px-6 py-3"><span className="sr-only">Azioni</span></th>
+                <th className="px-4 py-2 text-left font-medium text-gray-500 uppercase">Nome File</th>
+                <th className="px-4 py-2 text-left font-medium text-gray-500 uppercase">Tipo</th>
+                <th className="px-4 py-2 text-left font-medium text-gray-500 uppercase">Dimensione</th>
+                <th className="px-4 py-2 text-left font-medium text-gray-500 uppercase">Caricato il</th>
+                <th className="relative px-4 py-2"><span className="sr-only">Azioni</span></th>
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
               {searchResults.map((file) => (
                 <tr key={file.id}>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-blue-600 hover:underline">
+                  <td className="px-4 py-2 whitespace-nowrap text-blue-600 hover:underline">
                     <a
                       href={`http://localhost:3001${file.url}`}
                       target="_blank"
@@ -194,23 +195,23 @@ export default function FileSearch() {
                       {file.originalName || file.name}
                     </a>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{file.type}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  <td className="px-4 py-2 whitespace-nowrap text-gray-500">{file.type}</td>
+                  <td className="px-4 py-2 whitespace-nowrap text-gray-500">
                     {(file.size / 1024).toFixed(2)} KB
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {new Date(file.createdAt).toLocaleDateString('it-IT')}
+                  <td className="px-4 py-2 whitespace-nowrap text-gray-500">
+                    {new Date(file.createdAt).toLocaleDateString("it-IT")}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-4">
+                  <td className="px-4 py-2 whitespace-nowrap text-right font-medium space-x-2">
                     <button
                       onClick={() => handleDownload(file)}
-                      className="text-indigo-600 hover:text-indigo-900"
+                      className="text-indigo-600 hover:text-indigo-900 text-xs"
                     >
                       Download
                     </button>
                     <button
                       onClick={() => handleDelete(file.id)}
-                      className="text-red-600 hover:text-red-800"
+                      className="text-red-600 hover:text-red-800 text-xs"
                     >
                       Elimina
                     </button>
@@ -224,4 +225,3 @@ export default function FileSearch() {
     </div>
   );
 }
-

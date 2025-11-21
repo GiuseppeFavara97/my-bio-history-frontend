@@ -15,7 +15,7 @@ export default function Login() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const API_URL = process.env.NEXT_PUBLIC_API_URL;
+    const API_URL = process.env.NEXT_PUBLIC_API_URL || '';
 
     try {
       await axios.post(`${API_URL}/api/auth/login`, formData, {
@@ -59,7 +59,6 @@ export default function Login() {
             Accedi
           </button>
 
-          {/* 🔹 Password dimenticata */}
           <p className="mt-3 text-center text-sm">
             <a href="/forgot-password" className="text-blue-400 hover:underline">
               Password dimenticata?
@@ -67,7 +66,6 @@ export default function Login() {
           </p>
         </form>
 
-        {/* 🔹 Link registrazione */}
         <p className="mt-4 text-center text-sm text-gray-300">
           Non hai un account?{" "}
           <a href="/register" className="text-blue-400 hover:underline">
@@ -75,14 +73,12 @@ export default function Login() {
           </a>
         </p>
 
-        {/* 🔹 Bottone login con Google */}
         <div className="mt-6">
           <button
             onClick={() =>
-              (window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/api/auth/google`)
+              (window.location.href = `${process.env.NEXT_PUBLIC_API_URL || ''}/api/auth/google`)
             }
            className="w-full flex items-center justify-center gap-2 bg-blue-600 text-white font-semibold py-2 rounded hover:bg-blue-700 transition"
-
           >
             <img src="/google.svg" alt="Google" className="w-5 h-5" />
             Accedi con Google
