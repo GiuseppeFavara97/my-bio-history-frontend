@@ -52,7 +52,7 @@ export default function Contatti() {
             <p><strong>MY-BIO-HISTORY</strong></p>
             <p>Via della Salute 123, 00100 Roma (RM)</p>
             <p>📞 <a href="tel:+390612345678" className="text-blue-400 hover:underline">0923-254658</a></p>
-            <p>📧 <a href="mailto:info@san-salute.it" className="text-blue-400 hover:underline">email@example.com</a></p>
+            <p>📧 <a href="mailto:info@san-salute.it" className="text-blue-400 hover:underline">amministrazionemybiohistory@gmail.com</a></p>
             <p>🕒 Lun–Ven: 08:00–18:00</p>
 
             {/* 🗺️ Mappa */}
