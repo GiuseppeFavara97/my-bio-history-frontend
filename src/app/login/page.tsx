@@ -16,7 +16,7 @@ export default function LoginPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const API_URL = process.env.NEXT_PUBLIC_API_URL;
+    const API_URL = process.env.NEXT_PUBLIC_API_URL || '';
 
     try {
       await axios.post(`${API_URL}/api/auth/login`, formData, {

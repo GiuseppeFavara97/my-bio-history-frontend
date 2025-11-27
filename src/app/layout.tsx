@@ -14,8 +14,13 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html className="" lang="en" suppressHydrationWarning>
-      <body className={`${inter.className} flex flex-col min-h-screen bg-white dark:bg-gradient-to-b dark:from-gray-900 dark:via-slate-950 dark:to-gray-950 `}>
+    <html 
+      className="" 
+      lang="en" 
+      suppressHydrationWarning 
+      data-scroll-behavior="smooth"
+    >
+      <body className={`${inter.className} flex flex-col min-h-screen bg-white dark:bg-gradient-to-b dark:from-gray-900 dark:via-slate-950 dark:to-gray-950`}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <Navbar />
           <main className="flex-grow">{children}</main>
@@ -25,3 +30,4 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     </html>
   );
 }
+
