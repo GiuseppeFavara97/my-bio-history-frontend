@@ -17,13 +17,13 @@ interface TemplateProps {
 }
 
 const main = {
-  backgroundColor: '#f6f9fc',
+  backgroundColor: '#2c1db5ff',
   fontFamily:
     '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Ubuntu,sans-serif'
 };
 
 const container = {
-  backgroundColor: '#ffffff',
+  backgroundColor: '#0c0a0aff',
   margin: '0 auto',
   marginBottom: '64px',
   padding: '20px 0 48px'
@@ -34,7 +34,7 @@ const box = {
 };
 
 const hr = {
-  borderColor: '#e6ebf1',
+  borderColor: '#1860b8ff',
   margin: '20px 0'
 };
 

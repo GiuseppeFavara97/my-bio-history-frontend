@@ -2,9 +2,10 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import axios from "axios";
 
-export default function Login() {
+export default function LoginPage() {
   const router = useRouter();
   const [formData, setFormData] = useState({ email: "", password: "" });
 
@@ -23,14 +24,14 @@ export default function Login() {
       });
       router.push("/dashboard");
     } catch {
-      alert("Credenziali non valide");
+      alert("❌ Credenziali non valide");
     }
   };
-  
+
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-900">
-      <div className="bg-gray-950 shadow-lg rounded-2xl p-6 w-full max-w-lg">
-        <h2 className="text-2xl font-bold mb-4 text-center text-white">Login</h2>
+      <div className="bg-gray-950 shadow-lg rounded-2xl p-6 w-full max-w-lg text-white">
+        <h2 className="text-2xl font-bold mb-4 text-center">Login</h2>
 
         <form onSubmit={handleSubmit}>
           <input
@@ -54,40 +55,26 @@ export default function Login() {
 
           <button
             type="submit"
-            className="w-full bg-blue-600 text-white font-semibold py-2 rounded hover:bg-blue-700 transition"
+            className="w-full bg-blue-600 py-2 rounded hover:bg-blue-700 transition"
           >
             Accedi
           </button>
-
-          {/* 🔹 Password dimenticata */}
-          <p className="mt-3 text-center text-sm">
-            <a href="/forgot-password" className="text-blue-400 hover:underline">
-              Password dimenticata?
-            </a>
-          </p>
         </form>
 
-        {/* 🔹 Link registrazione */}
-        <p className="mt-4 text-center text-sm text-gray-300">
-          Non hai un account?{" "}
-          <a href="/register" className="text-blue-400 hover:underline">
-            Registrati qui
-          </a>
+        {/* 🔹 Link per password dimenticata */}
+        <p className="mt-3 text-center text-sm">
+          <Link href="/forgotpassword" className="text-blue-400 hover:underline">
+            Password dimenticata?
+          </Link>
         </p>
 
-        {/* 🔹 Bottone login con Google */}
-        <div className="mt-6">
-          <button
-            onClick={() =>
-              (window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/api/auth/google`)
-            }
-           className="w-full flex items-center justify-center gap-2 bg-blue-600 text-white font-semibold py-2 rounded hover:bg-blue-700 transition"
-
-          >
-            <img src="/google.svg" alt="Google" className="w-5 h-5" />
-            Accedi con Google
-          </button>
-        </div>
+        {/* 🔹 Link per registrazione */}
+        <p className="mt-4 text-center text-sm text-gray-300">
+          Non hai un account?{" "}
+          <Link href="/register" className="text-blue-400 hover:underline">
+            Registrati qui
+          </Link>
+        </p>
       </div>
     </div>
   );
