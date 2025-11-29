@@ -1,4 +1,4 @@
-import { NextResponse, NextRequest} from "next/server";
+import { NextResponse, NextRequest } from "next/server";
 
 function parseJwt(token: string) {
   try {
@@ -11,7 +11,7 @@ function parseJwt(token: string) {
 
 export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
-  const token = req.cookies.get("token")?.value;
+  const token = req.cookies.get("access_token")?.value;
 
   // Non autenticato → redirect login
   if (!token && pathname.startsWith("/dashboard")) {
@@ -48,5 +48,5 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/dashboard/:path*"],
+  matcher: ["/dashboard/:path*", "/dashboard"],
 };

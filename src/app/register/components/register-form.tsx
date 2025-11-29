@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { register as registerUser } from "@/lib/api/auth";
 
 const FormSchema = z
     .object({
@@ -37,27 +38,31 @@ export function RegisterForm() {
 
     const onSubmit = async (data: z.infer<typeof FormSchema>) => {
         try {
-            const res = await fetch("/api/auth/register", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    name: data.name?.trim(),
-                    email: data.email.trim(),
-                    password: data.password,
-                }),
+            const payload = await registerUser({
+                name: data.name.trim(),
+                email: data.email.trim(),
+                password: data.password,
             });
 
-            const payload = await res.json().catch(() => null);
-
-            if (!res.ok) {
-                toast.error(payload?.message || payload?.error || "Registrazione fallita.");
-                return;
+            // ✅ Redirect automatico in base al ruolo
+            const role = payload.user.role.toUpperCase();
+            switch (role) {
+                case "ADMIN":
+                    router.push("/dashboard/admin");
+                    break;
+                case "DOCTOR":
+                    router.push("/dashboard/doctor");
+                    break;
+                case "PATIENT":
+                    router.push("/dashboard/patient");
+                    break;
+                default:
+                    router.push("/login");
             }
 
-            toast.success("Registrazione completata. Reindirizzamento al login...");
-            router.push("/login");
-        } catch (err) {
-            toast.error("Errore di rete. Riprova più tardi.");
+            toast.success("Registrazione completata!");
+        } catch (err: any) {
+            toast.error(err.response?.data?.error || "Errore di rete. Riprova più tardi.");
             console.error(err);
         }
     };

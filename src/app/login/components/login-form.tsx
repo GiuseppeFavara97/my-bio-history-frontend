@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { login } from "@/lib/api/auth";
 
 export function LoginForm() {
     const router = useRouter();
@@ -16,28 +17,10 @@ export function LoginForm() {
         setError(null);
 
         try {
-            const res = await fetch("/api/auth/login", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ email, password }),
-                credentials: "include", // ✅ Importante per cookie
-            });
-
-            const data = await res.json().catch(() => ({}));
-
-            if (!res.ok) {
-                setError((data as any)?.error || "Credenziali non valide");
-                return;
-            }
-
-            // ✅ Redirect automatico in base al ruolo
-            if (data.user.role === "admin") {
-                router.push("/dashboard/admin");
-            }else router.push("/dashboard/business");
-            console.log(data.user.role);
-            
-        } catch (err) {
-            setError("Errore di rete");
+            const data = await login(email, password);
+            router.push("/dashboard"); // middleware leggerà il cookie e smisterà
+        } catch (err: any) {
+            setError(err.response?.data?.error || "Errore di rete");
             console.error(err);
         } finally {
             setLoading(false);

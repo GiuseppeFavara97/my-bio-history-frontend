@@ -35,10 +35,10 @@ export default function Sidebar({
         >
             <div className="flex items-center gap-2 mb-8">
                 <div className="h-10 w-10 rounded-md bg-primary/20 flex items-center justify-center text-primary font-bold">
-                    BU
+                    MB
                 </div>
                 <div>
-                    <div className="text-lg font-semibold">Buzz Up</div>
+                    <div className="text-lg font-semibold">My Bio History</div>
                     <div className="text-sm text-slate-500">Admin</div>
                 </div>
             </div>
