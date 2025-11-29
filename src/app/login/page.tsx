@@ -1,80 +1,46 @@
-"use client";
-
-import { useState } from "react";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
-import axios from "axios";
+import Image from 'next/image'
 
-export default function LoginPage() {
-  const router = useRouter();
-  const [formData, setFormData] = useState({ email: "", password: "" });
+import { LoginForm } from "./components/login-form";
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const API_URL = process.env.NEXT_PUBLIC_API_URL || '';
-
-    try {
-      await axios.post(`${API_URL}/api/auth/login`, formData, {
-        withCredentials: true,
-      });
-      router.push("/dashboard");
-    } catch {
-      alert("❌ Credenziali non valide");
-    }
-  };
-
+export default function Login() {
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-900">
-      <div className="bg-gray-950 shadow-lg rounded-2xl p-6 w-full max-w-lg text-white">
-        <h2 className="text-2xl font-bold mb-4 text-center">Login</h2>
+    <div className="flex h-dvh">
+      <div className="bg-primary hidden lg:block lg:w-1/3">
+        <div className="flex h-full flex-col items-center justify-center p-12 text-center">
+          <div className="space-y-6">
+             <Image
+                src="logo.png" 
+                width={200}
+                height={200}
+                alt="Picture of the author"
+              />
+            <div className="space-y-2">
+              <h1 className="text-primary-foreground text-5xl font-light">Bentornato</h1>
+              <p className="text-primary-foreground/80 text-xl">Accedi per continuare</p>
+            </div>
+          </div>
+        </div>
+      </div>
 
-        <form onSubmit={handleSubmit}>
-          <input
-            type="email"
-            name="email"
-            placeholder="Email"
-            value={formData.email}
-            onChange={handleChange}
-            className="w-full mb-3 p-2 border border-gray-600 rounded bg-gray-800 text-white"
-            required
-          />
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            value={formData.password}
-            onChange={handleChange}
-            className="w-full mb-3 p-2 border border-gray-600 rounded bg-gray-800 text-white"
-            required
-          />
-
-          <button
-            type="submit"
-            className="w-full bg-blue-600 py-2 rounded hover:bg-blue-700 transition"
-          >
-            Accedi
-          </button>
-        </form>
-
-        {/* 🔹 Link per password dimenticata */}
-        <p className="mt-3 text-center text-sm">
-          <Link href="/forgotpassword" className="text-blue-400 hover:underline">
-            Password dimenticata?
-          </Link>
-        </p>
-
-        {/* 🔹 Link per registrazione */}
-        <p className="mt-4 text-center text-sm text-gray-300">
-          Non hai un account?{" "}
-          <Link href="/register" className="text-blue-400 hover:underline">
-            Registrati qui
-          </Link>
-        </p>
+      <div className="bg-background flex w-full items-center justify-center p-8 lg:w-2/3">
+        <div className="w-full max-w-md space-y-10 py-24 lg:py-32">
+          <div className="space-y-4 text-center">
+            <div className="font-medium tracking-tight">My Bio History</div>
+            <div className="text-muted-foreground mx-auto max-w-xl">
+              Bentornato! Accedi al tuo account per continuare a esplorare le funzionalità di My Bio History.
+            </div>
+          </div>
+          <div className="space-y-4">
+            <LoginForm />
+            <p className="text-muted-foreground text-center text-xs">
+              Non hai un account?{" "}
+              <Link href="register" className="text-primary">
+                Registrati ora!
+              </Link>
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   );

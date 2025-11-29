@@ -1,24 +1,25 @@
-import React from 'react'
-import { cookies } from 'next/headers'
-import { redirect } from 'next/navigation'
-import { DashboardProvider } from '../_shared/SharedData'
-import Sidebar from './components/sidebar'
+"use client";
 
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import PatientSidebar from "./components/sidebar";
+import PatientHeader from "./components/header";
 
-export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
-  const cookie = await cookies()
-  const token = cookie.get('auth_token')?.value
-  if (!token) redirect('/login')
-  return (
-    
-    
-      <div className='flex flex-1 bg-gradient-to-b from-gray-900 via-slate-950 to-gray-950 w-full '>
-        <div className="flex flex-1  ">
-          <Sidebar />
-          <main className="p-0.5 flex-1"> {children} </main>
+export default function BusinessLayout({ children }: { children: React.ReactNode }) {
+
+    const [open, setOpen] = useState(false);
+
+    return (
+        <div className="min-h-screen bg-slate-50 text-slate-900">
+            <div className="flex">
+                <PatientSidebar open={open} setOpen={setOpen} />
+                <div className="flex-1 min-h-screen ml-0 sm:ml-64">
+                    <PatientHeader setOpen={setOpen} />
+                    <main className="p-6">
+                        <div className="mx-auto max-w-7xl">{children}</div>
+                    </main>
+                </div>
+            </div>
         </div>
-      </div>
-      
-    
-  )
+    );
 }

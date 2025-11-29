@@ -1,103 +1,66 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-import { useSharedData } from "../../_shared/SharedData";
-import {
-  Activity,
-  HeartMinus,
-  Settings,
-  SquareChartGantt,
-  ClipboardPlus,
-  PillBottle,
-  CircleUserRound,
-  Syringe,
-} from "lucide-react";
-import { useState } from "react";
 import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
 
-export default function Sidebar() {
-  const { selectedTab, setSelectedTab, patientName } = useSharedData();
-  const [open, setOpen] = useState(false);
+export default function Sidebar({ open, setOpen }: { open: boolean; setOpen: (s: boolean) => void }) {
+  const pathname = usePathname() ?? "/dashboard/business";
   const router = useRouter();
 
+  const nav = [
+    { label: "Dashboard", href: "/dashboard/business", exact: true },
+    { label: "Campagne", href: "/dashboard/business/campaigns" },
+    { label: "Contatti", href: "/dashboard/business/products" },
+  ];
+
+  const handleLogout = () => {
+    // Rimuovi il cookie
+    document.cookie = "token=; path=/; max-age=0";
+
+    // Redirect al login
+    router.push("/");
+  };
+
   return (
-    <div className="text-white h-screen">
-      <div
-        onMouseLeave={() => setOpen(false)}
-        onMouseEnter={() => setOpen(true)}
-        className={`flex flex-col h-full transition-all duration-300 ease-in-out
-          ${open ? "w-56" : "w-28"}
-          bg-gradient-to-b from-gray-950 via-gray-700 to-gray-950 border-r border-gray-700 rounded-r-xl`}
-      >
-        <div className="flex flex-col space-y-2 p-2 h-full">
-          <p className="text-center font-bold font-serif">Benvenuto</p>
-          <p className="text-center">{patientName}</p>
-
-          <div className="py-5 flex justify-center items-center gap-2">
-            <Settings className={`${open ? "hidden" : ""} cursor-none w-5 h-5`} />
-            {open && <span>Menu</span>}
-          </div>
-
-          <button
-            onClick={() => setSelectedTab("dati")}
-            className="cursor-pointer flex items-center gap-2 px-3 py-2 rounded-md transition-all duration-300 hover:bg-gray-700"
-          >
-            <CircleUserRound className="w-5 h-5 text-blue-400" />
-            {open && <Link href="/profile">Profilo</Link>}
-          </button>
-
-          <button
-            onClick={() => setSelectedTab("medical")}
-            className="cursor-pointer flex items-center gap-2 px-3 py-2 rounded-md transition-all duration-300 hover:bg-gray-700"
-          >
-            <Activity className="w-5 h-5 text-green-400" />
-            {open && "Cartella clinica"}
-          </button>
-
-          <button
-            onClick={() => setSelectedTab("allergy")}
-            className="cursor-pointer flex items-center gap-2 px-3 py-2 rounded-md transition-all duration-300 hover:bg-gray-700"
-          >
-            <HeartMinus className="w-5 h-5 text-red-400" />
-            {open && "Allergie"}
-          </button>
-
-          <button
-            onClick={() => setSelectedTab("vaccine")}
-            className="cursor-pointer flex items-center gap-2 px-3 py-2 rounded-md transition-all duration-300 hover:bg-gray-700"
-          >
-            <Syringe className="w-5 h-5 text-blue-400" />
-            {open && "Vaccini"}
-          </button>
-
-          <button
-            onClick={() => setSelectedTab("diagnoses")}
-            className="cursor-pointer flex items-center gap-2 px-3 py-2 rounded-md transition-all duration-300 hover:bg-gray-700"
-          >
-            <ClipboardPlus className="w-5 h-5 text-red-400" />
-            {open && "Diagnosi"}
-          </button>
-
-          <button
-            onClick={() => setSelectedTab("care")}
-            className="cursor-pointer flex items-center gap-2 px-3 py-2 rounded-md transition-all duration-300 hover:bg-gray-700"
-          >
-            <PillBottle className="w-5 h-5 text-amber-700" />
-            {open && "Terapie"}
-          </button>
-
-          <button
-            onClick={() => {
-              setSelectedTab("documents");
-              router.push("/dashboard/documents");
-            }}
-            className="cursor-pointer flex items-center gap-2 px-3 py-2 rounded-md transition-all duration-300 hover:bg-gray-700"
-          >
-            <SquareChartGantt className="w-5 h-5 text-indigo-600" />
-            {open && "Documenti"}
-          </button>
+    <aside
+      className={`fixed inset-y-0 left-0 z-20 w-64 transform border-r bg-white px-4 py-6 transition-transform duration-200 ease-in-out ${open ? "translate-x-0" : "-translate-x-full sm:translate-x-0"}`}
+    >
+      <div className="mb-8 flex items-center gap-2">
+        <div className="bg-primary/20 text-primary flex h-10 w-10 items-center justify-center rounded-md font-bold">
+          BU
+        </div>
+        <div>
+          <div className="text-lg font-semibold">Buzz Up</div>
+          <div className="text-sm text-slate-500">Business</div>
         </div>
       </div>
-    </div>
+
+      <nav className="space-y-1">
+        {nav.map((item) => {
+          const active = item.exact ? pathname === item.href : pathname.startsWith(item.href);
+          return (
+            <Link
+              key={item.href}
+              href={item.href}
+              className={`block rounded-md px-3 py-2 text-sm font-medium ${active ? "bg-primary text-white" : "text-slate-700 hover:bg-slate-100"}`}
+              onClick={() => setOpen(false)}
+              aria-current={active ? "page" : undefined}
+            >
+              {item.label}
+            </Link>
+          );
+        })}
+      </nav>
+
+      <div className="mt-8 border-t pt-6">
+        <button
+          type="button"
+          className="w-full text-left text-sm text-slate-600 hover:text-slate-900"
+          onClick={handleLogout}
+        >
+          Logout
+        </button>
+      </div>
+    </aside>
   );
 }

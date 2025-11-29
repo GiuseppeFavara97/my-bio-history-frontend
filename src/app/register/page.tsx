@@ -1,226 +1,42 @@
-"use client";
+import Link from "next/link";
 
-import { useState } from "react";
-import axios from "axios";
-import { useRouter } from "next/navigation";
-type Role = "patient" | "doctor";
-type Sex = "M" | "F" | "O" | "";
-
-interface RegisterFormData {
-  email: string;
-  password: string;
-  firstName: string;
-  lastName: string;
-  birthday: string;
-  birthdayPlace: string;
-  province: string;
-  sex: Sex;
-  phoneNumber: string;
-  role: Role;
-  patient?: {
-    mainpatientId?: string;
-    fullname?: string;
-    address?: string;
-  };
-  doctor?: {
-    specializer: string;
-    licenseNumber: string;
-  };
-}
+import { Command } from "lucide-react";
+import { RegisterForm } from "./components/register-form";
 
 export default function Register() {
-  const router = useRouter();
-  const [formData, setFormData] = useState<RegisterFormData>({
-    email: "",
-    password: "",
-    firstName: "",
-    lastName: "",
-    birthday: "",
-    birthdayPlace: "",
-    province: "",
-    sex: "",
-    phoneNumber: "",
-    role: "patient",
-  });
+    return (
+        <div className="flex h-dvh">
+            <div className="bg-background flex w-full items-center justify-center p-8 lg:w-2/3">
+                <div className="w-full max-w-md space-y-10 py-24 lg:py-32">
+                    <div className="space-y-4 text-center">
+                        <div className="font-medium tracking-tight">Register</div>
+                        <div className="text-muted-foreground mx-auto max-w-xl">
+                            Fill in your details below. We promise not to quiz you about your first pet&apos;s name (this time).
+                        </div>
+                    </div>
+                    <div className="space-y-4">
+                        <RegisterForm />
+                        <p className="text-muted-foreground text-center text-xs">
+                            Already have an account?{" "}
+                            <Link href="login" className="text-primary">
+                                Login
+                            </Link>
+                        </p>
+                    </div>
+                </div>
+            </div>
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
-    const { name, value } = e.target;
-
-    if (
-      formData.role === "doctor" &&
-      (name === "specializer" || name === "licenseNumber")
-    ) {
-      setFormData((prev) => ({
-        ...prev,
-        doctor: {
-          ...prev.doctor,
-          [name]: value,
-        } as RegisterFormData["doctor"],
-      }));
-    } else if (formData.role === "patient") {
-        setFormData((old) => ({
-          ...old,
-          [name]: value,
-          patient : {
-            ...old.patient,
-            fullName: `${name === "firstName" ? value:old.firstName} ${name === "lastName" ? value : old.lastName}`.trim()
-          }
-        }))
-    } else {
-      setFormData((prev) => ({ ...prev, [name]: value }));
-    }
-  };
-  const dataToSend = {
-    ...formData,
-    ...(formData.role === "patient" ? { patient: {} } : {}),
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const API_URL = process.env.NEXT_PUBLIC_API_URL;
-
-    try {
-      await axios.post(`${API_URL}/api/users/create`, formData, {
-        withCredentials: true,
-      });
-      alert("Registrazione avvenuta con successo!");
-      router.push("/login");
-    } catch (error) {
-      console.error("Errore:", error);
-      alert("Errore durante la registrazione");
-    }
-  };
-
-  return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100">
-      <div className="bg-white shadow-lg rounded-xl p-6 w-full max-w-lg dark:bg-zinc-900 dark:text-white">
-        <h2 className="text-2xl font-bold mb-4 text-center">Registrazione</h2>
-
-        <form onSubmit={handleSubmit}>
-          {/* campi base */}
-          <input
-            type="text"
-            name="firstName"
-            placeholder="Nome"
-            value={formData.firstName}
-            onChange={handleChange}
-            className="w-full mb-3 p-2 border rounded"
-            required
-          />
-          <input
-            type="text"
-            name="lastName"
-            placeholder="Cognome"
-            value={formData.lastName}
-            onChange={handleChange}
-            className="w-full mb-3 p-2 border rounded"
-            required
-          />
-          <input
-            type="email"
-            name="email"
-            placeholder="Email"
-            value={formData.email}
-            onChange={handleChange}
-            className="w-full mb-3 p-2 border rounded"
-            required
-          />
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            value={formData.password}
-            onChange={handleChange}
-            className="w-full mb-3 p-2 border rounded"
-            required
-          />
-          <input
-            type="date"
-            name="birthday"
-            value={formData.birthday}
-            onChange={handleChange}
-            className="w-full mb-3 p-2 border rounded"
-            required
-          />
-          <input
-            type="text"
-            name="birthdayPlace"
-            placeholder="Luogo di nascita"
-            value={formData.birthdayPlace}
-            onChange={handleChange}
-            className="w-full mb-3 p-2 border rounded"
-          />
-          <input
-            type="text"
-            name="province"
-            placeholder="Provincia"
-            value={formData.province}
-            onChange={handleChange}
-            className="w-full mb-3 p-2 border rounded"
-          />
-          <select
-            name="sex"
-            value={formData.sex}
-            onChange={handleChange}
-            className="w-full mb-3 p-2 border rounded"
-          >
-            <option value="">Sesso</option>
-            <option value="M">Maschio</option>
-            <option value="F">Femmina</option>
-            <option value="O">Altro</option>
-          </select>
-          <input
-            type="text"
-            name="phoneNumber"
-            placeholder="Numero di telefono"
-            value={formData.phoneNumber}
-            onChange={handleChange}
-            className="w-full mb-3 p-2 border rounded"
-          />
-          <select
-            name="role"
-            value={formData.role}
-            onChange={handleChange}
-            className="w-full mb-3 p-2 border rounded"
-          >
-            <option value="patient">Paziente</option>
-            <option value="doctor">Medico</option>
-          </select>
-
-          {/* campi extra medico */}
-          {formData.role === "doctor" && (
-            <>
-              <input
-                type="text"
-                name="specializer"
-                placeholder="Specializzazione"
-                value={formData.doctor?.specializer || ""}
-                onChange={handleChange}
-                className="w-full mb-3 p-2 border rounded"
-                required
-              />
-              <input
-                type="text"
-                name="licenseNumber"
-                placeholder="Numero licenza"
-                value={formData.doctor?.licenseNumber || ""}
-                onChange={handleChange}
-                className="w-full mb-3 p-2 border rounded"
-                required
-              />
-            </>
-          )}
-
-          <button
-            type="submit"
-            className="w-full bg-blue-500 text-white font-semibold py-2 rounded hover:bg-blue-600"
-          >
-            Registrati
-          </button>
-        </form>
-      </div>
-    </div>
-  );
+            <div className="bg-primary hidden lg:block lg:w-1/3">
+                <div className="flex h-full flex-col items-center justify-center p-12 text-center">
+                    <div className="space-y-6">
+                        <Command className="text-primary-foreground mx-auto size-12" />
+                        <div className="space-y-2">
+                            <h1 className="text-primary-foreground text-5xl font-light">Welcome!</h1>
+                            <p className="text-primary-foreground/80 text-xl">You&apos;re in the right place.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
 }

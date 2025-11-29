@@ -1,42 +1,102 @@
-import React from "react";
-import "../../app/globals.css";
-import { AtSign, Copyright, Smartphone } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import Image from 'next/image'
+import { Separator } from "@/components/ui/separator";
+import { DribbbleIcon, GithubIcon, TwitchIcon, TwitterIcon } from "lucide-react";
+import Link from "next/link";
 
-const Footer: React.FC = () => {
+const footerLinks = [
+  {
+    title: "Overview",
+    href: "#",
+  },
+  {
+    title: "Features",
+    href: "#",
+  },
+  {
+    title: "Pricing",
+    href: "#",
+  },
+  {
+    title: "Careers",
+    href: "#",
+  },
+  {
+    title: "Help",
+    href: "#",
+  },
+  {
+    title: "Privacy",
+    href: "#",
+  },
+];
+
+const Footer = () => {
   return (
-    <footer className="footer flex items-center h-30 w-full border-t text-white px-4 md:px-10">
-      {/* Logo */}
-      <div>
-        <img src="/myLogo.png" alt="logo" width={50} height={50} />
-      </div>
+    <div className="flex flex-col">
+      <div className="bg-muted grow" />
+      <footer className="border-t">
+        <div className="mx-auto max-w-(--breakpoint-xl)">
+          <div className="flex flex-col items-start justify-between gap-x-8 gap-y-10 px-6 py-12 sm:flex-row xl:px-0">
+            <div>
+              <Image
+                src="logo.png" 
+                width={100}
+                height={100}
+                alt="Picture of the author"
+              />
 
-      {/* Titolo centrale */}
-      <div className="text-center md:w-full flex justify-center space-x-2">
-        <div className="text-sm md:text-base">My Bio-History</div>
-        <Copyright color="lightblue" />
-      </div>
+              <ul className="mt-6 flex flex-wrap items-center gap-4">
+                {footerLinks.map(({ title, href }) => (
+                  <li key={title}>
+                    <Link href={href} className="text-muted-foreground hover:text-foreground">
+                      {title}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
 
-      {/* Contatti */}
-      <div className="ml-auto flex flex-col gap-2 items-end text-sm font-thin">
-        {/* Email */}
-        <div className="flex items-center space-x-2">
-          <AtSign color="orange" aria-label="Email Icon" />
-          <p className="underline underline-offset-4 decoration-blue-400">
-            email@example.com
-          </p>
+            {/* Subscribe Newsletter */}
+            <div className="w-full max-w-xs">
+              <h6 className="font-medium">Rimani aggiornato</h6>
+              <form className="mt-6 flex items-center gap-2">
+                <Input type="email" placeholder="Inserisci la tua email" />
+                <Button>Iscriviti</Button>
+              </form>
+            </div>
+          </div>
+          <Separator />
+          <div className="flex flex-col-reverse items-center justify-between gap-x-2 gap-y-5 px-6 py-8 sm:flex-row xl:px-0">
+            {/* Copyright */}
+            <span className="text-muted-foreground">
+              &copy; {new Date().getFullYear()}{" "}
+              <Link href="/" target="_blank">
+                My Bio History
+              </Link>
+              . All rights reserved.
+            </span>
+
+            <div className="text-muted-foreground flex items-center gap-5">
+              <Link href="#" target="_blank">
+                <TwitterIcon className="h-5 w-5" />
+              </Link>
+              <Link href="#" target="_blank">
+                <DribbbleIcon className="h-5 w-5" />
+              </Link>
+              <Link href="#" target="_blank">
+                <TwitchIcon className="h-5 w-5" />
+              </Link>
+              <Link href="#" target="_blank">
+                <GithubIcon className="h-5 w-5" />
+              </Link>
+            </div>
+          </div>
         </div>
-
-        {/* Telefono */}
-        <div className="flex items-center space-x-2">
-          <Smartphone color="green" aria-label="Phone Icon" />
-          <p className="underline underline-offset-4 decoration-blue-400">
-            0923-254658
-          </p>
-        </div>
-      </div>
-    </footer>
+      </footer>
+    </div>
   );
 };
 
 export default Footer;
-
