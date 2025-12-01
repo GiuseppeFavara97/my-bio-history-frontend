@@ -23,7 +23,6 @@ export default function PatientClient({
   const [medical, setMedical] = useState<MedicalRecord>(medicalrecord);
   const { selectedTab, setPatientName } = useSharedData();
 
-  
   useEffect(() => {
     setUser(userData);
     if (userData) setPatientName(userData.firstName);
@@ -210,6 +209,10 @@ export default function PatientClient({
         <AllergyPage />
       ) : selectedTab === "care" ? (
         <CarePage />
+      ) : selectedTab === "documents" ? (
+        <div className="flex-1 p-4">
+          <FileManager />
+        </div>
       ) : (
         <VaccinePage />
       )}
