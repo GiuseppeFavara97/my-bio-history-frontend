@@ -7,7 +7,9 @@ import axios from "axios";
 
 export default function LoginPage() {
   const router = useRouter();
-  const [formData, setFormData] = useState({ email: "", password: "" });
+  const [formData, setFormData] = useState({ identifier: "", password: "" });
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -17,14 +19,18 @@ export default function LoginPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const API_URL = process.env.NEXT_PUBLIC_API_URL;
+    setLoading(true);
+    setMessage("");
 
     try {
-      await axios.post(`${API_URL}/api/auth/login`, formData, {
+      await axios.post(`${API_URL}/auth/login`, formData, {
         withCredentials: true,
       });
       router.push("/dashboard");
-    } catch {
-      alert("❌ Credenziali non valide");
+    } catch (err: any) {
+      setMessage("❌ Credenziali non valide. Riprova.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -35,10 +41,10 @@ export default function LoginPage() {
 
         <form onSubmit={handleSubmit}>
           <input
-            type="email"
-            name="email"
-            placeholder="Email"
-            value={formData.email}
+            type="text"
+            name="identifier"
+            placeholder="Email o telefono"
+            value={formData.identifier}
             onChange={handleChange}
             className="w-full mb-3 p-2 border border-gray-600 rounded bg-gray-800 text-white"
             required
@@ -56,19 +62,22 @@ export default function LoginPage() {
           <button
             type="submit"
             className="w-full bg-blue-600 py-2 rounded hover:bg-blue-700 transition"
+            disabled={loading}
           >
-            Accedi
+            {loading ? "Accesso in corso..." : "Accedi"}
           </button>
         </form>
 
-        {/* 🔹 Link per password dimenticata */}
+        {message && (
+          <p className="mt-4 text-center text-red-400 font-semibold">{message}</p>
+        )}
+
         <p className="mt-3 text-center text-sm">
           <Link href="/forgotpassword" className="text-blue-400 hover:underline">
             Password dimenticata?
           </Link>
         </p>
 
-        {/* 🔹 Link per registrazione */}
         <p className="mt-4 text-center text-sm text-gray-300">
           Non hai un account?{" "}
           <Link href="/register" className="text-blue-400 hover:underline">

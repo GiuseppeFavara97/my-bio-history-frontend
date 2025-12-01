@@ -28,7 +28,7 @@ export default function ForgotPassword() {
       if (!res.ok) throw new Error(data.message || data.error || "Errore nell'invio del codice.");
 
       setStep("code");
-      setMessage("📩 Codice inviato alla tua email.");
+      setMessage("Codice inviato alla tua email.");
     } catch (err: any) {
       setMessage(err.message);
     } finally {
@@ -52,7 +52,7 @@ export default function ForgotPassword() {
       if (!res.ok) throw new Error(data.message || data.error || "Codice errato.");
 
       setStep("reset");
-      setMessage("🔐 Codice corretto! Ora imposta una nuova password.");
+      setMessage("Codice corretto! Ora imposta una nuova password.");
     } catch (err: any) {
       setMessage(err.message);
     } finally {
