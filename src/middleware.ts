@@ -12,7 +12,7 @@ function parseJwt(token: string) {
 export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
   const token = req.cookies.get("access_token")?.value;
-
+/*
   // Non autenticato → redirect login
   if (!token && pathname.startsWith("/dashboard")) {
     return NextResponse.redirect(new URL("/login", req.url));
@@ -37,6 +37,7 @@ export async function middleware(req: NextRequest) {
   }
 
   // Accesso errato: admin vs business
+  */
   if (pathname.startsWith("/dashboard/admin") && role !== "admin") {
     return NextResponse.redirect(new URL("/dashboard/business", req.url));
   }

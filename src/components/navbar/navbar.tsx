@@ -7,7 +7,7 @@ import Link from "next/link";
 const Navbar = () => {
   return (
     <div className="bg-muted">
-      <nav className="bg-background h-16 border-b">
+      <nav className="bg-[#244673] h-16 border-b ">
         <div className="mx-auto flex h-full max-w-(--breakpoint-xl) items-center justify-between px-4 sm:px-6 lg:px-8">
           <Logo />
 

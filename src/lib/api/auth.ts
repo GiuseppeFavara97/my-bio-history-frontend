@@ -2,6 +2,7 @@ import { api } from "./api";
 
 export const login = async (email: string, password: string) => {
     const { data } = await api.post("/auth/login", { email, password });
+    console.log(data)
     return data; // backend imposta cookie HttpOnly, data contiene info utente (role, email)
 };
 
