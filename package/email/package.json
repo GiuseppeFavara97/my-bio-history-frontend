@@ -9,7 +9,7 @@
     "dev": "email preview ./templates"
   },
   "dependencies": {
-    "jsx-email": "^2.8.1"
+    "jsx-email": "^2.8.3"
   },
   "devDependencies": {
     "@types/react": "^19.2.4",
