@@ -1,5 +1,3 @@
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import Image from 'next/image'
 import { Separator } from "@/components/ui/separator";
 import { DribbbleIcon, GithubIcon, TwitchIcon, TwitterIcon } from "lucide-react";
@@ -34,69 +32,71 @@ const footerLinks = [
 
 const Footer = () => {
   return (
-    <div className="flex flex-col bg-[#244673]">
-      <div className="bg-muted grow" />
-      <footer className="border-t">
-        <div className="mx-auto max-w-(--breakpoint-xl)">
-          <div className="flex flex-col items-start justify-between gap-x-8 gap-y-10 px-6 py-12 sm:flex-row xl:px-0">
-            <div>
+    <footer className="bg-[#244673] text-white border-t border-white/10">
+      <div className="mx-auto w-full max-w-7xl px-6 sm:px-10 py-12">
+        {/* --- TOP SECTION --- */}
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-8">
+          {/* LOGO + LINKS ALLINEATI */}
+          <div className="flex flex-wrap items-center justify-center sm:justify-start gap-6">
+            {/* LOGO */}
+            <Link href="/" className="flex items-center gap-3 hover:opacity-90 transition-opacity">
               <Image
-                src="logo.png" 
-                width={100}
-                height={100}
-                alt="Picture of the author"
+                src="/logo.png"
+                width={60}
+                height={60}
+                alt="Logo My Bio History"
+                className="rounded-md"
               />
+            </Link>
 
-              <ul className="mt-6 flex flex-wrap items-center gap-4">
-                {footerLinks.map(({ title, href }) => (
-                  <li key={title}>
-                    <Link href={href} className="text-muted-foreground hover:text-foreground">
-                      {title}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Subscribe Newsletter */}
-            <div className="w-full max-w-xs">
-              <h6 className="font-medium">Rimani aggiornato</h6>
-              <form className="mt-6 flex items-center gap-2">
-                <Input type="email" placeholder="Inserisci la tua email" />
-                <Button>Iscriviti</Button>
-              </form>
-            </div>
-          </div>
-          <Separator />
-          <div className="flex flex-col-reverse items-center justify-between gap-x-2 gap-y-5 px-6 py-8 sm:flex-row xl:px-0">
-            {/* Copyright */}
-            <span className="text-muted-foreground">
-              &copy; {new Date().getFullYear()}{" "}
-              <Link href="/" target="_blank">
-                My Bio History
-              </Link>
-              . All rights reserved.
-            </span>
-
-            <div className="text-muted-foreground flex items-center gap-5">
-              <Link href="#" target="_blank">
-                <TwitterIcon className="h-5 w-5" />
-              </Link>
-              <Link href="#" target="_blank">
-                <DribbbleIcon className="h-5 w-5" />
-              </Link>
-              <Link href="#" target="_blank">
-                <TwitchIcon className="h-5 w-5" />
-              </Link>
-              <Link href="#" target="_blank">
-                <GithubIcon className="h-5 w-5" />
-              </Link>
-            </div>
+            {/* LINKS */}
+            <ul className="flex flex-wrap items-center gap-x-6 gap-y-3 text-sm font-medium ml-4">
+              {footerLinks.map(({ title, href }) => (
+                <li key={title}>
+                  <Link
+                    href={href}
+                    className="text-white/80 hover:text-white transition-colors duration-200"
+                  >
+                    {title}
+                  </Link>
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
-      </footer>
-    </div>
-  );
+
+        <Separator className="my-8 bg-white/20" />
+
+        {/* --- BOTTOM SECTION --- */}
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-y-6 text-sm">
+          {/* COPYRIGHT */}
+          <span className="text-white/70 text-center sm:text-left">
+            &copy; {new Date().getFullYear()}{" "}
+            <Link href="/" className="hover:text-white transition-colors">
+              My Bio History
+            </Link>
+            . Tutti i diritti riservati.
+          </span>
+
+          {/* SOCIAL ICONS */}
+          <div className="flex items-center gap-6">
+            <Link href="#" target="_blank" className="hover:text-white transition-transform hover:scale-110">
+              <TwitterIcon className="h-5 w-5" />
+            </Link>
+            <Link href="#" target="_blank" className="hover:text-white transition-transform hover:scale-110">
+              <DribbbleIcon className="h-5 w-5" />
+            </Link>
+            <Link href="#" target="_blank" className="hover:text-white transition-transform hover:scale-110">
+              <TwitchIcon className="h-5 w-5" />
+            </Link>
+            <Link href="#" target="_blank" className="hover:text-white transition-transform hover:scale-110">
+              <GithubIcon className="h-5 w-5" />
+            </Link>
+          </div>
+        </div>
+      </div>
+    </footer>
+  )
 };
 
 export default Footer;
