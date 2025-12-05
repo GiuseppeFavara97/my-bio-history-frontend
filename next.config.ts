@@ -8,7 +8,7 @@ const nextConfig: NextConfig = {
     return [
       {
         source: "/access",
-        destination: "/login-register",
+        destination: "/auth",
       },
     ];
   },
@@ -16,7 +16,7 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       {
-        source: "/login-register",
+        source: "/auth",
         destination: "/access",
         permanent: false,
       },

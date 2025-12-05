@@ -2,8 +2,8 @@
 import { AnimatePresence, motion } from "motion/react"
 import { useState } from "react"
 import Image from "next/image"
-import Register from "../auth/components/register/page"
 import Login from "../auth/components/login/page"
+import Register from "./components/register/page"
 
 export default function LoginRegister() {
     const [isRegister, setIsRegister] = useState<boolean>(false)
