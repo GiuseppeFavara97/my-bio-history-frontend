@@ -15,7 +15,7 @@ const Navbar = () => {
           <NavMenu className="hidden md:block" />
 
           <div className="flex items-center gap-3">
-            <Link href="/login">
+            <Link href="/login-register">
               <Button variant="outline" className="hidden sm:inline-flex">
                 Accedi
               </Button>

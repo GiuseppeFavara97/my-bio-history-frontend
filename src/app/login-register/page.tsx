@@ -6,7 +6,7 @@ import Register from "./components/register/page"
 import Login from "./components/login/page"
 
 export default function LoginRegister() {
-    const [isRegister, setIsRegister] = useState(false)
+    const [isRegister, setIsRegister] = useState<boolean>(false)
 
     return (
         <div className="flex w-full outline relative overflow-hidden">
@@ -85,7 +85,7 @@ export default function LoginRegister() {
                             transition={{ duration: 0.6 }}
                             className="w-[70%]"
                         >
-                            <Register />
+                            <Register setIsRegister={setIsRegister}/>
                         </motion.div>
                     )}
                 </div>
@@ -100,7 +100,7 @@ export default function LoginRegister() {
                             transition={{ duration: 0.6 }}
                             className="w-[70%]"
                         >
-                            <Login />
+                            <Login setIsRegister={setIsRegister}/>
                         </motion.div>
                     )}
                 </div>
