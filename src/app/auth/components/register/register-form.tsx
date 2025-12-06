@@ -44,7 +44,6 @@ export function RegisterForm() {
                 password: data.password,
             });
 
-            // ✅ Redirect automatico in base al ruolo
             const role = payload.user.role.toUpperCase();
             switch (role) {
                 case "ADMIN":

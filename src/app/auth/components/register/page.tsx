@@ -1,7 +1,6 @@
-import Link from "next/link";
+"use client";
 
-import { Command } from "lucide-react";
-import { RegisterForm } from "./components/register-form";
+import { RegisterForm } from "./register-form";
 
 export default function Register({ setIsRegister }: { setIsRegister: (value: boolean) => void }) {
   return (
