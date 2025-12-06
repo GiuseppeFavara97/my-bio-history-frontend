@@ -1,5 +1,6 @@
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator";
+import { FolderOpen, UserRound, Stethoscope, BriefcaseMedical, ClipboardPlus } from "lucide-react";
 import React from "react";
 
 const Home = () => {
@@ -69,26 +70,32 @@ const Home = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 w-full max-w-7xl">
               {[
                 {
+                  icona: < FolderOpen className="text-6xl text-white mb-4" />,
                   titolo: "Archivio Digitale",
                   testo: "Conserva e organizza in modo sicuro tutti i tuoi documenti medici, referti e prescrizioni in un unico spazio digitale accessibile sempre."
                 },
                 {
+                  icona: < ClipboardPlus className="text-6xl text-white mb-4" />,
                   titolo: "Appuntamenti",
                   testo: "Pianifica e tieni traccia dei tuoi appuntamenti medici, ricevendo promemoria per non dimenticare visite e controlli."
                 },
                 {
+                  icona: < BriefcaseMedical className="text-6xl text-white mb-4" />,
                   titolo: "Esami",
                   testo: "Gestisci e archivia i risultati degli esami diagnostici, con la possibilità di consultarli facilmente quando vuoi."
                 },
                 {
+                  icona: < UserRound className="text-6xl text-white mb-4" />,
                   titolo: "Visita",
                   testo: "Monitora le visite mediche programmate e registra informazioni importanti, per tenere sempre sotto controllo la tua salute."
                 },
                 {
+                  icona: < Stethoscope className="text-6xl text-white mb-4" />,
                   titolo: "Risultati",
                   testo: "Visualizza rapidamente i risultati di analisi e test diagnostici, suddivisi per data e tipologia."
                 },
                 {
+                  icona: < UserRound className="text-6xl text-white mb-4" />,
                   titolo: "Prescrizioni",
                   testo: "Archivia e consulta le prescrizioni mediche, per avere sempre sotto mano le indicazioni terapeutiche e farmaci da assumere."
                 }
@@ -98,6 +105,9 @@ const Home = () => {
                   className="text-white shadow-lg border-none rounded-2xl p-6 transition-transform duration-300 hover:-translate-y-2 hover:shadow-xl min-h-[300px] flex flex-col justify-between"
                   style={{ backgroundColor: "#61747b" }}
                 >
+                  <CardHeader className="flex justify-center">
+                    {servizio.icona}
+                  </CardHeader>
                   <CardHeader>
                     <CardTitle className="text-center text-lg font-semibold">
                       {servizio.titolo}
@@ -111,8 +121,8 @@ const Home = () => {
             </div>
           </section>
         </div>
-      </div>
-    </div>
+      </div >
+    </div >
   )
 }
 

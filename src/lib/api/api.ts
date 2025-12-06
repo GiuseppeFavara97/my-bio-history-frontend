@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const api = axios.create({
-    baseURL: process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001/api",
+    baseURL: process.env.NEXT_PUBLIC_API_URL,
     withCredentials: true,
     headers: {
         "Content-Type": "application/json",
@@ -15,7 +15,7 @@ api.interceptors.response.use(
         if (error.response?.status === 401) {
             // Token scaduto o invalido
             if (typeof window !== "undefined") {
-                window.location.href = "/login";
+                window.location.href = "/auth";
             }
         }
         return Promise.reject(error);

@@ -1,7 +1,6 @@
-import Link from "next/link";
-import Image from "next/image";
+"use client";
 
-import { LoginForm } from "./components/login-form";
+import { LoginForm } from "./login-form";
 
 export default function Login({ setIsRegister }: { setIsRegister: (value: boolean) => void }) {
   return (
