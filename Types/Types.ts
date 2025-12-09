@@ -1,17 +1,16 @@
-
 export type User = {
   id: number;
   username: string;
   email: string;
-  password: string;
   softDeleted: boolean;
-  imageProfileURL: string;
-  role: UserRole
+  role: UserRole;
+  createdAt: string;
+  updatedAt: string;
 };
 
 export enum UserRole {
   ADMIN = "ADMIN",
-  PATIENT ="PATIENT",
+  PATIENT = "PATIENT",
   DOCTOR = "DOCTOR"
 }
 
@@ -26,7 +25,7 @@ export type MedicalRecord = {
   diagnoses: Diagnosis[];
   patient: Patient;
   vaccines: Vaccine[];
-  upload: UploadFile [];
+  upload: UploadFile[];
 };
 
 export type Patient = {
@@ -36,7 +35,7 @@ export type Patient = {
   softDeleted: boolean;
   createdAt: Date;
   updatedAt: Date;
-  allergies: Allergy [];
+  allergies: Allergy[];
   upload: UploadFile[];
   vaccines: Vaccine[];
   user: User;
@@ -60,7 +59,7 @@ export type Allergy = {
 
 export enum Severity {
   LIEVE = "LIEVE",
-  MODERATA ="MODERATA",
+  MODERATA = "MODERATA",
   GRAVE = "GRAVE"
 }
 

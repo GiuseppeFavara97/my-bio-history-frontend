@@ -3,22 +3,24 @@
 import { useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 import { Edit2, Save, X } from "lucide-react";
-
-type User = {
-    id: string;
-    name: string | null;
-    email: string;
-    role: string | null;
-    createdAt: string;
-};
+import { getUsers } from "@/lib/api/users";
+import { User } from "../../../lib/types";
 
 export default function AdminDashboardPage() {
     const [users, setUsers] = useState<User[]>([]);
     const [loading, setLoading] = useState(false);
-    const [editingId, setEditingId] = useState<string | null>(null);
-    const [editData, setEditData] = useState<{ name: string; email: string; role: string }>({ name: "", email: "", role: "user" });
+    const [editingId, setEditingId] = useState<number>(null);
     const [search, setSearch] = useState("");
     const [error, setError] = useState<string | null>(null);
+    const [editData, setEditData] = useState<{
+        username: string;
+        email: string;
+        role: string;
+    }>({
+        username: "",
+        email: "",
+        role: "",
+    });
 
     useEffect(() => {
         fetchUsers();
@@ -28,9 +30,7 @@ export default function AdminDashboardPage() {
         setLoading(true);
         setError(null);
         try {
-            const res = await fetch("/users");
-            if (!res.ok) throw new Error("Caricamento utenti fallito");
-            const data = (await res.json()) as User[];
+            const data = await getUsers();
             setUsers(data);
         } catch (err) {
             console.error(err);
@@ -44,18 +44,18 @@ export default function AdminDashboardPage() {
         const q = search.trim().toLowerCase();
         if (!q) return users;
         return users.filter((u) => {
-            const name = (u.name ?? "").toLowerCase();
-            const email = (u.email ?? "").toLowerCase();
-            return name.includes(q) || email.includes(q);
+            const username = u.username.toLowerCase();
+            const email = u.email.toLowerCase();
+            return username.includes(q) || email.includes(q);
         });
     }, [users, search]);
 
     function startEditing(user: User) {
         setEditingId(user.id);
         setEditData({
-            name: user.name ?? "",
+            username: user.username,
             email: user.email,
-            role: user.role ?? "user",
+            role: user.role,
         });
     }
 
@@ -63,19 +63,14 @@ export default function AdminDashboardPage() {
         setEditingId(null);
     }
 
-    async function saveUser(id: string) {
+    async function saveUser(id: number) {
         try {
-            const res = await fetch("/api/admin/users", {
-                method: "PATCH",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ id, ...editData }),
-            });
-            const data = await res.json().catch(() => null);
-            if (!res.ok) {
-                toast.error((data as any)?.message || "Aggiornamento fallito");
-                return;
-            }
-            setUsers((prev) => prev.map((u) => (u.id === id ? { ...u, ...editData } : u)));
+            const updatedUser = await updateUser(id, editData);
+
+            setUsers(prev =>
+                prev.map(u => (u.id === id ? { ...u, ...updatedUser } : u))
+            );
+
             toast.success("Utente aggiornato");
             setEditingId(null);
         } catch (err) {
@@ -109,83 +104,51 @@ export default function AdminDashboardPage() {
                 <table className="min-w-full divide-y">
                     <thead className="bg-slate-50">
                         <tr>
-                            <th className="px-4 py-3 text-left text-sm font-medium text-slate-600">Nome</th>
+                            <th className="px-4 py-3 text-left text-sm font-medium text-slate-600">Username</th>
                             <th className="px-4 py-3 text-left text-sm font-medium text-slate-600">Email</th>
                             <th className="px-4 py-3 text-left text-sm font-medium text-slate-600">Ruolo</th>
                             <th className="px-4 py-3 text-left text-sm font-medium text-slate-600">Creato</th>
+                            <th className="px-4 py-3 text-left text-sm font-medium text-slate-600">Modificato</th>
+                            <th className="px-4 py-3 text-left text-sm font-medium text-slate-600">Eliminato</th>
                             <th className="px-4 py-3 text-right text-sm font-medium text-slate-600">Azioni</th>
                         </tr>
                     </thead>
                     <tbody className="divide-y">
                         {loading ? (
                             <tr>
-                                <td colSpan={5} className="px-4 py-6 text-center text-sm text-slate-500">
+                                <td colSpan={6} className="px-4 py-6 text-center text-sm text-slate-500">
                                     Caricamento...
                                 </td>
                             </tr>
                         ) : filtered.length === 0 ? (
                             <tr>
-                                <td colSpan={5} className="px-4 py-6 text-center text-sm text-slate-500">
+                                <td colSpan={6} className="px-4 py-6 text-center text-sm text-slate-500">
                                     Nessun utente trovato.
                                 </td>
                             </tr>
                         ) : (
                             filtered.map((u) => (
                                 <tr key={u.id}>
-                                    <td className="px-4 py-3">
-                                        {editingId === u.id ? (
-                                            <input
-                                                value={editData.name}
-                                                onChange={(e) => setEditData({ ...editData, name: e.target.value })}
-                                                className="border rounded px-2 py-1 text-sm w-full"
-                                            />
-                                        ) : (
-                                            <div className="text-sm font-medium">{u.name ?? "—"}</div>
-                                        )}
-                                    </td>
-                                    <td className="px-4 py-3">
-                                        {editingId === u.id ? (
-                                            <input
-                                                value={editData.email}
-                                                onChange={(e) => setEditData({ ...editData, email: e.target.value })}
-                                                className="border rounded px-2 py-1 text-sm w-full"
-                                            />
-                                        ) : (
-                                            <div className="text-sm text-slate-600 break-all">{u.email}</div>
-                                        )}
-                                    </td>
-                                    <td className="px-4 py-3">
-                                        {editingId === u.id ? (
-                                            <select
-                                                value={editData.role}
-                                                onChange={(e) => setEditData({ ...editData, role: e.target.value })}
-                                                className="px-2 py-1 border rounded-md text-sm"
-                                            >
-                                                <option value="business">Business</option>
-                                                <option value="admin">Admin</option>
-                                            </select>
-                                        ) : (
-                                            <div className="text-sm">{u.role ?? "user"}</div>
-                                        )}
-                                    </td>
+                                    <td className="px-4 py-3 text-sm font-medium">{u.username}</td>
+                                    <td className="px-4 py-3 text-sm text-slate-600 break-all">{u.email}</td>
+                                    <td className="px-4 py-3 text-sm text-slate-600 break-all">{u.role}</td>
                                     <td className="px-4 py-3 text-sm text-slate-500">
                                         {new Date(u.createdAt).toLocaleString()}
                                     </td>
-                                    <td className="px-4 py-3 text-right flex justify-end gap-2">
-                                        {editingId === u.id ? (
-                                            <>
-                                                <button onClick={() => saveUser(u.id)} className="text-green-600 hover:text-green-800">
-                                                    <Save size={18} />
-                                                </button>
-                                                <button onClick={cancelEditing} className="text-red-600 hover:text-red-800">
-                                                    <X size={18} />
-                                                </button>
-                                            </>
+                                    <td className="px-4 py-3 text-sm text-slate-500">
+                                        {new Date(u.updatedAt).toLocaleString()}
+                                    </td>
+                                    <td className="px-4 py-3 text-sm">
+                                        {u.softDeleted ? (
+                                            <span className="text-red-600 font-medium">Sì</span>
                                         ) : (
-                                            <button onClick={() => startEditing(u)} className="text-blue-600 hover:text-blue-800">
-                                                <Edit2 size={18} />
-                                            </button>
+                                            <span className="text-green-600 font-medium">No</span>
                                         )}
+                                    </td>
+                                    <td className="px-4 py-3 text-right">
+                                        <button onClick={() => startEditing(u)} className="text-blue-600 hover:text-blue-800">
+                                            <Edit2 size={18} />
+                                        </button>
                                     </td>
                                 </tr>
                             ))
