@@ -10,18 +10,21 @@ import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { register as registerUser } from "@/lib/api/auth";
+import { useNavigate } from "react-router-dom";
 
-const FormSchema = z
-    .object({
-        name: z.string().min(1, { message: "Inserisci il tuo nome." }),
-        email: z.string().email({ message: "Inserisci un'email valida." }),
-        password: z.string().min(6, { message: "La password deve avere almeno 6 caratteri." }),
-        confirmPassword: z.string().min(6, { message: "Conferma la password." }),
-    })
-    .refine((data) => data.password === data.confirmPassword, {
-        message: "Le password non corrispondono.",
-        path: ["confirmPassword"],
-    });
+const FormSchema = z.object({
+    role: z.enum(["DOCTOR", "PATIENT"]),
+    name: z.string().min(1, { message: "Inserisci il tuo nome." }),
+    surname: z.string().min(1, { message: "Inserisci il tuo cognome." }),
+    email: z.string().email({ message: "Inserisci un'email valida." }),
+    password: z.string().min(6, { message: "La password deve avere almeno 6 caratteri." }),
+    birthday: z.string().optional(),
+    taxCode: z.string().optional(),
+    phoneNumber: z.string().optional(),
+    specialization: z.string().optional(),
+    licenseNumber: z.string().optional(),
+    place: z.string().optional(),
+});
 
 export function RegisterForm() {
     const router = useRouter();
@@ -29,46 +32,87 @@ export function RegisterForm() {
     const form = useForm<z.infer<typeof FormSchema>>({
         resolver: zodResolver(FormSchema),
         defaultValues: {
+            role: "PATIENT",
             name: "",
+            surname: "",
             email: "",
             password: "",
-            confirmPassword: "",
+            birthday: "",
+            taxCode: "",
+            phoneNumber: "",
+            specialization: "",
+            licenseNumber: "",
+            place: "",
         },
     });
 
     const onSubmit = async (data: z.infer<typeof FormSchema>) => {
         try {
-            const payload = await registerUser({
-                name: data.name.trim(),
-                email: data.email.trim(),
-                password: data.password,
-            });
+            let payload;
 
-            const role = payload.user.role.toUpperCase();
-            switch (role) {
-                case "ADMIN":
-                    router.push("/dashboard/admin");
-                    break;
-                case "DOCTOR":
-                    router.push("/dashboard/doctor");
-                    break;
-                case "PATIENT":
-                    router.push("/dashboard/patient");
-                    break;
-                default:
-                    router.push("/login");
+            if (data.role === "DOCTOR") {
+                payload = {
+                    email: data.email.trim(),
+                    password: data.password,
+                    role: "DOCTOR",
+                    doctor: {
+                        firstName: data.name,
+                        lastName: data.surname,
+                        birthday: data.birthday,
+                        taxCode: data.taxCode,
+                        phoneNumber: data.phoneNumber,
+                        specialization: data.specialization,
+                        licenseNumber: data.licenseNumber,
+                        place: data.place,
+                    },
+                };
+            } else {
+                payload = {
+                    email: data.email.trim(),
+                    password: data.password,
+                    role: "PATIENT",
+                    patient: {
+                        firstName: data.name,
+                        lastName: data.surname,
+                        birthday: data.birthday,
+                        taxCode: data.taxCode,
+                        phoneNumber: data.phoneNumber,
+                    },
+                };
             }
 
+            const res = await registerUser(payload);
+
+            const role = res.user.role.toUpperCase();
+            router.push(`/auth/email-verification?role=${role}`);
             toast.success("Registrazione completata!");
         } catch (err: any) {
             toast.error(err.response?.data?.error || "Errore di rete. Riprova più tardi.");
-            console.error(err);
         }
     };
 
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                {/* Ruolo */}
+                <FormField
+                    control={form.control}
+                    name="role"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>Ruolo</FormLabel>
+                            <FormControl>
+                                <select {...field} className="w-full p-2 border rounded">
+                                    <option value="PATIENT">Paziente</option>
+                                    <option value="DOCTOR">Dottore</option>
+                                </select>
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+
+                {/* Campi comuni */}
                 <FormField
                     control={form.control}
                     name="name"
@@ -76,7 +120,21 @@ export function RegisterForm() {
                         <FormItem>
                             <FormLabel>Nome</FormLabel>
                             <FormControl>
-                                <Input id="name" type="text" placeholder="Mario Rossi" autoComplete="name" {...field} />
+                                <Input placeholder="Mario" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+
+                <FormField
+                    control={form.control}
+                    name="surname"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>Cognome</FormLabel>
+                            <FormControl>
+                                <Input placeholder="Rossi" {...field} />
                             </FormControl>
                             <FormMessage />
                         </FormItem>
@@ -88,9 +146,9 @@ export function RegisterForm() {
                     name="email"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel>Indirizzo email</FormLabel>
+                            <FormLabel>Email</FormLabel>
                             <FormControl>
-                                <Input id="email" type="email" placeholder="tuo@esempio.com" autoComplete="email" {...field} />
+                                <Input type="email" placeholder="tuo@esempio.com" {...field} />
                             </FormControl>
                             <FormMessage />
                         </FormItem>
@@ -104,7 +162,7 @@ export function RegisterForm() {
                         <FormItem>
                             <FormLabel>Password</FormLabel>
                             <FormControl>
-                                <Input id="password" type="password" placeholder="••••••••" autoComplete="new-password" {...field} />
+                                <Input type="password" placeholder="••••••••" {...field} />
                             </FormControl>
                             <FormMessage />
                         </FormItem>
@@ -113,23 +171,92 @@ export function RegisterForm() {
 
                 <FormField
                     control={form.control}
-                    name="confirmPassword"
+                    name="birthday"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel>Conferma password</FormLabel>
+                            <FormLabel>Data di nascita</FormLabel>
                             <FormControl>
-                                <Input
-                                    id="confirmPassword"
-                                    type="password"
-                                    placeholder="••••••••"
-                                    autoComplete="new-password"
-                                    {...field}
-                                />
+                                <Input type="date" {...field} />
                             </FormControl>
                             <FormMessage />
                         </FormItem>
                     )}
                 />
+
+                <FormField
+                    control={form.control}
+                    name="taxCode"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>Codice Fiscale</FormLabel>
+                            <FormControl>
+                                <Input placeholder="CF..." {...field} />
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+
+                <FormField
+                    control={form.control}
+                    name="phoneNumber"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>Telefono</FormLabel>
+                            <FormControl>
+                                <Input placeholder="320..." {...field} />
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+
+                {/* Campi solo per DOCTOR */}
+                {form.watch("role") === "DOCTOR" && (
+                    <>
+                        <FormField
+                            control={form.control}
+                            name="specialization"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Specializzazione</FormLabel>
+                                    <FormControl>
+                                        <Input placeholder="Cardiologo" {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+
+                        <FormField
+                            control={form.control}
+                            name="licenseNumber"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Numero Licenza</FormLabel>
+                                    <FormControl>
+                                        <Input placeholder="12345" {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+
+                        <FormField
+                            control={form.control}
+                            name="place"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Luogo</FormLabel>
+                                    <FormControl>
+                                        <Input placeholder="Trapani" {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                    </>
+                )}
 
                 <Button className="w-full" type="submit" disabled={form.formState.isSubmitting}>
                     {form.formState.isSubmitting ? "Registrazione in corso..." : "Registrati"}
