@@ -5,14 +5,13 @@ export type User = {
   firstName: string;
   lastName: string;
   role: string;
-  birthday?: Date
+  birthday?: Date;
   birthdayPlace?: string;
   phoneNumber?: number;
-  profileImageUrl?: string
-  province?:string
-  sex?:string
-  taxCode?:string
-  
+  profileImageUrl?: string;
+  province?: string;
+  sex?: string;
+  taxCode?: string;
 };
 export interface UserProfile {
   id: number;
@@ -41,10 +40,22 @@ export type MedicalRecord = {
 
 export type patient = {
   id: number;
-  mainPatientId?: number;
-  fullName: string;
-  address: string;
-  relationToMainPatient?: string;
+  age: number;
+  birthday: Date;
+  first_name: string;
+  last_name: string;
+  municipality: string;
+  phone_number: number;
+  province: string;
+  sex: string;
+  state: string;
+  tax_code: string;
+  created_at: Date;
+  main_patient_id: number;
+  relation_to_main_patient: string;
+  soft_deleted: boolean;
+  updated_at: Date;
+  user_id: number;
 };
 
 export type allergies = {
@@ -55,6 +66,7 @@ export type allergies = {
   severity: string;
   end_date: Date;
   start_date: Date;
+  patient_id?: number;
 };
 
 export type care = {
