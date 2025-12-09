@@ -28,7 +28,7 @@ export default function AdminDashboardPage() {
         setLoading(true);
         setError(null);
         try {
-            const res = await fetch("/api/admin/users");
+            const res = await fetch("/users");
             if (!res.ok) throw new Error("Caricamento utenti fallito");
             const data = (await res.json()) as User[];
             setUsers(data);
@@ -185,8 +185,8 @@ export default function AdminDashboardPage() {
                                             <button onClick={() => startEditing(u)} className="text-blue-600 hover:text-blue-800">
                                                 <Edit2 size={18} />
                                             </button>
-                                    )}
-                                </td>
+                                        )}
+                                    </td>
                                 </tr>
                             ))
                         )}

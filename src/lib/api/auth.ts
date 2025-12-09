@@ -7,7 +7,7 @@ export const login = async (email: string, password: string) => {
 };
 
 export const register = async (userData: any) => {
-    const { data } = await api.post("/auth/register", userData);
+    const { data } = await api.post("/users/create", userData);
     return data; // backend imposta eventualmente cookie login automatico
 };
 
