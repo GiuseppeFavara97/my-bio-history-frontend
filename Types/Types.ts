@@ -1,94 +1,145 @@
+
 export type User = {
   id: number;
   username: string;
   email: string;
-  firstName: string;
-  lastName: string;
-  role: string;
-  birthday?: Date;
-  birthdayPlace?: string;
-  phoneNumber?: number;
-  profileImageUrl?: string;
-  province?: string;
-  sex?: string;
-  taxCode?: string;
+  password: string;
+  softDeleted: boolean;
+  imageProfileURL: string;
+  role: UserRole
 };
-export interface UserProfile {
-  id: number;
-  username: string;
-  email: string;
-  firstName: string;
-  lastName: string;
-  birthday: Date;
-  birthdayPlace: string;
-  province: string;
-  sex: string;
-  phoneNumber: number;
-  profileImageUrl?: string;
-  taxCode: string;
+
+export enum UserRole {
+  ADMIN = "ADMIN",
+  PATIENT ="PATIENT",
+  DOCTOR = "DOCTOR"
 }
 
 export type MedicalRecord = {
   id: number;
   createdAt: Date;
-  allergies: allergies[];
-  cares: care[];
-  diagnoses: diagnoses[];
-  patient: patient;
-  vaccines: vaccines[];
+  updatedAt: Date;
+  deletedAt: Date;
+  softDeleted: boolean;
+  allergies: Allergy[];
+  cares: Care[];
+  diagnoses: Diagnosis[];
+  patient: Patient;
+  vaccines: Vaccine[];
+  upload: UploadFile [];
 };
 
-export type patient = {
+export type Patient = {
   id: number;
-  age: number;
-  birthday: Date;
-  first_name: string;
-  last_name: string;
-  municipality: string;
-  phone_number: number;
-  province: string;
-  sex: string;
-  state: string;
-  tax_code: string;
-  created_at: Date;
-  main_patient_id: number;
-  relation_to_main_patient: string;
-  soft_deleted: boolean;
-  updated_at: Date;
-  user_id: number;
+  mainPatientId: number;
+  relationToMainPatient: string;
+  softDeleted: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+  allergies: Allergy [];
+  upload: UploadFile[];
+  vaccines: Vaccine[];
+  user: User;
+  medicalRecord: MedicalRecord;
 };
 
-export type allergies = {
+export type Allergy = {
   id: number;
   allergen: string;
   note: string;
   reaction: string;
   severity: string;
   end_date: Date;
-  start_date: Date;
-  patient_id?: number;
+  startDate: Date;
+  patientId?: number;
+  softDelete: boolean;
+  doctor: Doctor;
+  patient: Patient;
+  medicalRecord: MedicalRecord;
 };
 
-export type care = {
+export enum Severity {
+  LIEVE = "LIEVE",
+  MODERATA ="MODERATA",
+  GRAVE = "GRAVE"
+}
+
+export type Care = {
   id: number;
-  name: string;
   description: string;
-  duration_days: string | number;
-  daily_frequency: number | string;
+  durationDays: string | number;
+  dailyFrequency: number | string;
+  softDeleted: boolean;
+  doctor: Doctor;
+  medicalRecord: MedicalRecord;
 };
 
-export type diagnoses = {
+export type Diagnosis = {
   id: number;
   pathologyName: string;
   description: string;
+  softDeleted: boolean;
   createdAt: Date;
   updatedAt: Date;
+  doctor: Doctor;
+  medicalRecord: MedicalRecord;
+
 };
 
-export type vaccines = {
+export type Vaccine = {
   id: number;
   name: string;
-  note: string;
+  vaccinationBooster: Date;
   type: number;
   vaccinationDate?: Date;
+  softDeleted: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+  doctor: Doctor;
+  patient: Patient;
+  medicalRecord: MedicalRecord;
+
 };
+
+export type UploadFile = {
+  id: number;
+  name: string;
+  type: string;
+  size: number;
+  url: string;
+  fileData: string;
+  softDeleted: boolean;
+  doctor: Doctor;
+  patient: Patient;
+  medicalRecord: MedicalRecord;
+};
+
+export type Doctor = {
+  id: number;
+  specialization: string;
+  licenseNumber: string;
+  place: string;
+  softDeleted: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+  user: User;
+  diagnosis: Diagnosis[];
+  care: Care[];
+  uploadFile: UploadFile[];
+  vaccine: Vaccine[];
+
+};
+
+export type PersonData = {
+  firstName: string;
+  lastName: string;
+  state: string;
+  municipality: string;
+  birthday: Date;
+  province: string;
+  sex: string;
+  taxCode: string;
+  phoneNumber: string;
+  age: number;
+
+}
