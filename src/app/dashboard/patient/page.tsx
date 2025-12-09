@@ -6,9 +6,9 @@ import { createCookieSessionStorage } from "react-router-dom";
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export default async function DashboardPatientData() {
-    const cookieStore = cookies();
+    const cookieStore = await cookies();
 
-    const res = await fetch(`${API_URL}l/auth/userID`, {
+    const res = await fetch(`${API_URL}/auth/userID`, {
         method: "GET",
         headers: {
             Cookie: cookieStore.toString(),
@@ -24,7 +24,7 @@ export default async function DashboardPatientData() {
         return <p>Non sei autenticato</p>;
     }
 
-    const data = await fetch(`${API_URL}/users/${userData.id}`, {
+    const data = await fetch(`http://localhost:3000/fakeapi/user/1`, {
         method: "GET",
         headers: {
             Cookie: cookieStore.toString()
@@ -40,7 +40,7 @@ export default async function DashboardPatientData() {
     const dataUser = await data.json()
 
 
-    const dataAllergy = await fetch(`${API_URL}/allergies/userallergies/${userData.id}`, {
+    const dataAllergy = await fetch(`http://localhost:3000/fakeapi/allergies/2`, {
         method: "GET",
         headers: {
             Cookie: cookieStore.toString()
