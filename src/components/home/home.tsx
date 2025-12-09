@@ -21,7 +21,7 @@ const Home = () => {
         <Separator className="my-12 lg:col-span-2 bg-gray-500" />
 
         <div className="lg:col-span-2">
-          <h2 className="text-2xl font-semibold mb-8">Chi siamo</h2>
+          <h2 id= "chi-siamo" className="text-2xl font-semibold mb-8">Chi siamo</h2>
           <section className="w-full px-6 py-8 flex justify-center">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl w-full">
               <Card
