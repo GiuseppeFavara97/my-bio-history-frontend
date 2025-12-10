@@ -1,4 +1,4 @@
-import { Edit } from "lucide-react";
+import { ArrowLeft, Edit } from "lucide-react";
 import { patient } from "../../../../../Types/Types";
 import PatientProfileField from "./patientProfileField";
 import { useState } from "react";
@@ -28,7 +28,9 @@ export default function PatientProfile({
         <p className="mt-4 text-sm text-gray-600">Prova stampa ID Utente: {userData.user_id}</p>
       </aside>
 
-      <div className="flex flex-1 flex-col">
+      <div className="relative flex flex-1 flex-col">
+        <div className="cursor-pointer absolute -left-8 top-1" onClick={() => setMainArea("home")}> <ArrowLeft className="hover:scale-120" /></div>
+
         <header className="relative mb-6 flex border-b pb-4 ">
           <div className="flex flex-col">
             <h1 className="text-4xl font-semibold">
@@ -45,9 +47,10 @@ export default function PatientProfile({
         </header>
 
         <div className="grid grid-cols-2 gap-6">
+
           <div className="space-y-4">
             <PatientProfileField
-            //PRIMO ESEMPIO per poi compilare tutti gli altri campi con questo stile di onchange Attualmente lascio cosi
+              //PRIMO ESEMPIO per poi compilare tutti gli altri campi con questo stile di onchange Attualmente lascio cosi
               onChange={(e) => setPatientData((old) => ({ ...old, first_name: e.target.value }))}
               editMode={editMode}
               label="Nome"

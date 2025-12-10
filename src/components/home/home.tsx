@@ -3,12 +3,12 @@ import { Separator } from "@/components/ui/separator";
 import { FolderOpen, UserRound, Stethoscope, BriefcaseMedical, ClipboardPlus } from "lucide-react";
 import React from "react";
 
-const Home = () => {
+const  Home = () => {
   return (
-    <div className="flex items-center justify-center">
-      <div className="mx-auto grid w-full max-w-7xl gap-12 px-6 py-12 lg:grid-cols-2">
+    <div className="flex items-center justify-center ">
+      <div className=" grid w-full  gap-12 px-6 py-12 lg:grid-cols-2">
         <div>
-          <h1 className="mt-6 max-w-[17ch] text-4xl font-semibold leading-tight tracking-tighter md:text-5xl xl:text-[3.25rem]">
+          <h1 className="mt-6  text-4xl font-semibold leading-tight tracking-tighter md:text-5xl xl:text-[3.25rem]">
             Innovazione e sicurezza per la tua salute
           </h1>
           <p className="mt-6 max-w-[60ch] sm:text-lg">
