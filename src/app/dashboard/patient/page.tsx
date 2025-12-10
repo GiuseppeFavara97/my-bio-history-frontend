@@ -40,13 +40,21 @@ export default async function DashboardPatientData() {
     const dataUser = await data.json()
 
 
-    const dataAllergy = await fetch(`http://localhost:3000/fakeapi/allergies/2`, {
+    /*const dataAllergy = await fetch(`http://localhost:3000/fakeapi/allergies/2`, {
+        method: "GET",
+        headers: {
+            Cookie: cookieStore.toString()
+        },
+        cache: "no-store"
+    }) */
+const dataAllergy = await fetch(`${API_URL}/allergies/2`, {
         method: "GET",
         headers: {
             Cookie: cookieStore.toString()
         },
         cache: "no-store"
     })
+
 
     const patientAllergies = await dataAllergy.json()
 

@@ -33,7 +33,6 @@ export default function PatientMiniProfile({ userData, setPatientData }: { userD
             <p className="text-sm font-bold text-center">Data di nascita :</p>
             <p className="text-center">{new Date(userData.birthday)?.toLocaleDateString()}</p>
             </div>
-            <div onClick={() => setPatientData("menu")} className=" absolute bottom-0 right-0 cursor-pointer"> <ArrowLeft className="hover:scale-120" /></div>
         </div>
     )
 }

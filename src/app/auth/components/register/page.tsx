@@ -5,7 +5,7 @@ import { RegisterForm } from "./register-form";
 export default function Register({ setIsRegister }: { setIsRegister: (value: boolean) => void }) {
   return (
     <div className="flex h-dvh    ">
-      <div className="bg-background flex w-full items-center justify-center   lg:w-2/3">
+      <div className=" flex w-full items-center justify-center   lg:w-2/3">
         <div className="w-full max-w-md space-y-10 p-2 outline rounded-2xl bg-gray-500/10 lg:p-5">
           <div className="space-y-4 text-center">
             <div className="font-medium tracking-tight">Register</div>
