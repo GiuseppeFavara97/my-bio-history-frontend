@@ -11,7 +11,7 @@ export type User = {
 export enum UserRole {
   ADMIN = "ADMIN",
   PATIENT = "PATIENT",
-  DOCTOR = "DOCTOR"
+  DOCTOR = "DOCTOR",
 }
 
 export type MedicalRecord = {
@@ -28,7 +28,7 @@ export type MedicalRecord = {
   upload: UploadFile[];
 };
 
-export type Patient = {
+export type oldPatient = {
   id: number;
   mainPatientId: number;
   relationToMainPatient: string;
@@ -41,6 +41,26 @@ export type Patient = {
   user: User;
   medicalRecord: MedicalRecord;
 };
+
+export class Patient {
+  id!: number;
+  firstName!: string;
+  lastName!: string;
+  age!: number;
+  birthday!: string;
+  taxCode!: string;
+  phoneNumber!: string;
+  state!: string;
+  province?: string;
+  municipality?: string;
+  sex?: string;
+  mainPatientId?: number;
+  relationToMainPatient?: string;
+  softDeleted!: boolean;
+  createdAt!: string;
+  updatedAt!: string;
+  uploadId?: number;
+}
 
 export type Allergy = {
   id: number;
@@ -60,7 +80,7 @@ export type Allergy = {
 export enum Severity {
   LIEVE = "LIEVE",
   MODERATA = "MODERATA",
-  GRAVE = "GRAVE"
+  GRAVE = "GRAVE",
 }
 
 export type Care = {
@@ -82,7 +102,6 @@ export type Diagnosis = {
   updatedAt: Date;
   doctor: Doctor;
   medicalRecord: MedicalRecord;
-
 };
 
 export type Vaccine = {
@@ -97,7 +116,6 @@ export type Vaccine = {
   doctor: Doctor;
   patient: Patient;
   medicalRecord: MedicalRecord;
-
 };
 
 export type UploadFile = {
@@ -126,7 +144,6 @@ export type Doctor = {
   care: Care[];
   uploadFile: UploadFile[];
   vaccine: Vaccine[];
-
 };
 
 export type PersonData = {
@@ -140,5 +157,4 @@ export type PersonData = {
   taxCode: string;
   phoneNumber: string;
   age: number;
-
-}
+};
