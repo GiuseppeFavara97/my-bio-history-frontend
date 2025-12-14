@@ -12,7 +12,7 @@ export type User = {
 export enum UserRole {
   ADMIN = "ADMIN",
   PATIENT = "PATIENT",
-  DOCTOR = "DOCTOR"
+  DOCTOR = "DOCTOR",
 }
 
 export type MedicalRecord = {
@@ -74,7 +74,7 @@ export type Allergy = {
 export enum Severity {
   LIEVE = "LIEVE",
   MODERATA = "MODERATA",
-  GRAVE = "GRAVE"
+  GRAVE = "GRAVE",
 }
 
 export type Care = {
@@ -96,7 +96,6 @@ export type Diagnosis = {
   updatedAt: Date;
   doctor: Doctor;
   medicalRecord: MedicalRecord;
-
 };
 
 export type Vaccine = {
@@ -111,7 +110,6 @@ export type Vaccine = {
   doctor: Doctor;
   patient: Patient;
   medicalRecord: MedicalRecord;
-
 };
 
 export type UploadFile = {
@@ -140,5 +138,4 @@ export type Doctor = {
   care: Care[];
   uploadFile: UploadFile[];
   vaccine: Vaccine[];
-
 };
