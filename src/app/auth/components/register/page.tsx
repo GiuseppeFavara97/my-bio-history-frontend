@@ -1,6 +1,8 @@
 "use client";
 
-import { RegisterForm } from "./register-form";
+import dynamic from "next/dynamic";
+
+const RegisterForm = dynamic(() => import("./register-form").then((mod) => mod.RegisterForm), { ssr: false });
 
 export default function Register({ setIsRegister }: { setIsRegister: (value: boolean) => void }) {
   return (

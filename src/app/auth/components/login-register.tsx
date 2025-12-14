@@ -12,7 +12,7 @@ export default function LoginRegister() {
     return (
         <div className="flex w-full outline relative overflow-hidden">
 
-            <motion.div
+            <motion.div suppressHydrationWarning
 
                 initial={false}
                 animate={{ x: isRegister ? "200%" : "0%" }}
@@ -22,7 +22,7 @@ export default function LoginRegister() {
             >
                 <AnimatePresence mode="wait">
                     {!isRegister ? (
-                        <motion.div
+                        <motion.div suppressHydrationWarning
                             key="login-text"
                             initial={{ opacity: 0, x: -50 }}
                             animate={{ opacity: 1, x: 0 }}
@@ -40,7 +40,7 @@ export default function LoginRegister() {
                             <p>Accedi per continuare</p>
                         </motion.div>
                     ) : (
-                        <motion.div
+                        <motion.div suppressHydrationWarning
                             key="register-text"
                             initial={{ opacity: 0, x: 50 }}
                             animate={{ opacity: 1, x: 0 }}
@@ -65,7 +65,7 @@ export default function LoginRegister() {
 
                 <div className={` flex justify-center items-center ${isRegister ? "w-full" : " w-3/4"}`}>
                     {isRegister && (
-                        <motion.div
+                        <motion.div suppressHydrationWarning
                             key="register-form"
                             initial={{ opacity: 0, x: -100 }}
                             animate={{ opacity: 1, x: 0 }}
@@ -80,7 +80,7 @@ export default function LoginRegister() {
 
                 <div className={` flex justify-center items-center ${isRegister ? "w-1/3" : "w-full"}`}>
                     {!isRegister && (
-                        <motion.div
+                        <motion.div suppressHydrationWarning
                             key="login-form"
                             initial={{ opacity: 0, x: 100 }}
                             animate={{ opacity: 1, x: 0 }}

@@ -2,6 +2,7 @@ export type User = {
   id: number;
   username: string;
   email: string;
+  password: string;
   softDeleted: boolean;
   role: UserRole;
   createdAt: string;
@@ -28,7 +29,20 @@ export type MedicalRecord = {
   upload: UploadFile[];
 };
 
-export type Patient = {
+export interface PersonData {
+  firstName: string;
+  lastName: string;
+  state: string;
+  municipality: string;
+  birthday: Date;
+  province: string;
+  sex: string;
+  taxCode: string;
+  phoneNumber: string;
+  age: number;
+}
+
+export interface Patient extends PersonData {
   id: number;
   mainPatientId: number;
   relationToMainPatient: string;
@@ -128,17 +142,3 @@ export type Doctor = {
   vaccine: Vaccine[];
 
 };
-
-export type PersonData = {
-  firstName: string;
-  lastName: string;
-  state: string;
-  municipality: string;
-  birthday: Date;
-  province: string;
-  sex: string;
-  taxCode: string;
-  phoneNumber: string;
-  age: number;
-
-}

@@ -10,7 +10,6 @@ import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { register as registerUser } from "@/lib/api/auth";
-import { useNavigate } from "react-router-dom";
 
 const FormSchema = z.object({
     role: z.enum(["DOCTOR", "PATIENT"]),
