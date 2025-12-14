@@ -1,7 +1,7 @@
 'use client'
 
 
-import { ArrowLeft, ChevronDown, ChevronFirst, ChevronLeft, ChevronRight, CircleUser, CircleUserRound, ClipboardClock, ClipboardPlus, Folder, FolderArchive, ListFilter, PillBottle, Stethoscope } from "lucide-react"
+import { ArrowLeft, ChevronDown, ChevronFirst, ChevronLeft, ChevronRight, CircleUser, CircleUserRound, ClipboardClock, ClipboardPlus, Folder, FolderArchive, ListFilter, PillBottle, Stethoscope, FileText } from "lucide-react"
 import { useState } from "react"
 import PatientProfile from "./components/patientProfile"
 import PatientAllergy from "./components/patientAllergy"
@@ -78,6 +78,15 @@ export default function DashPatient({ userData, patientAllergies }: { userData: 
                         </div>
                         <ChevronRight />
                     </div>
+
+                     <div className="flex justify-between">
+                        <div className="flex gap-x-3">
+                            <FileText />
+                            <h3>Caricamento File</h3>
+                        </div>
+                        <ChevronRight/>
+                        </div>
+
                     <div className="flex justify-between">
                         <div className="flex gap-x-3">
                             <ClipboardClock />
@@ -86,6 +95,7 @@ export default function DashPatient({ userData, patientAllergies }: { userData: 
                         <ChevronRight />
                     </div>
                 </div>
+                
             </aside>
             <div id="right" className=" w-full">
                 <div className="p-5 bg-[#ffffff] m-6 h-9/12 outline  rounded-2xl">
