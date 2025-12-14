@@ -21,8 +21,6 @@ import PatientAllergy from "./components/allergy/page"
 import PatientVaccines from "./components/vaccine/page"
 import PatientDocuments from "./components/upload/page"
 import { User, Allergy } from "@/Types/Types"
-import PatientCalendar from "./components/patientCalendar"
-import PatientHome from "./components/patientHome"
 import { logout } from "@/lib/api/auth"
 
 type MainArea =
@@ -56,11 +54,7 @@ export default function DashPatient({
 
     return (
         <main className="flex flex-col sm:flex-row h-full m-10 bg-[#f4f5f7]">
-
-            {/* SIDEBAR */}
             <aside className="m-1 gap-y-6 flex flex-col h-full w-full sm:w-1/3">
-
-                {/* PROFILO */}
                 <div className="bg-white rounded-2xl p-5 flex gap-4 items-center">
                     <img
                         src="/barney.webp"
@@ -105,8 +99,6 @@ export default function DashPatient({
                         />
                     )}
                 </div>
-
-                {/* CARTELLA CLINICA */}
                 <div className="bg-white p-4 rounded-2xl space-y-2">
                     <span className="font-bold text-center block mb-2">
                         Cartella Clinica
@@ -137,8 +129,6 @@ export default function DashPatient({
                     />
                 </div>
             </aside>
-
-            {/* CONTENUTO */}
             <section className="flex-1 bg-white m-6 rounded-2xl p-6">
                 {toggleMainArea === "profilo" && (
                     <PatientProfile userData={userData} />
