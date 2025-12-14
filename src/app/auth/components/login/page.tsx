@@ -7,7 +7,7 @@ const LoginForm = dynamic(() => import("./login-form").then((mod) => mod.LoginFo
 export default function Login({ setIsRegister }: { setIsRegister: (value: boolean) => void }) {
   return (
     <div className="flex h-dvh">
-      <div className="bg-background  flex w-full items-center justify-center lg:w-2/3">
+      <div className="  flex w-full items-center justify-center lg:w-2/3">
         <div className="w-full max-w-md space-y-10 p-2 lg:py-25 outline rounded-2xl bg-gray-500/10">
           <div className="space-y-4 text-center">
             <div className="font-medium tracking-tight">My Bio History</div>

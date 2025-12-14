@@ -17,13 +17,12 @@ import { useState } from "react"
 import { useRouter } from "next/navigation"
 
 import PatientProfile from "./components/profile"
-import PatientVisits from "./components/patientVisits"
 import PatientAllergy from "./components/allergy/page"
 import PatientVaccines from "./components/vaccine/page"
 import PatientDocuments from "./components/upload/page"
-import PatientMiniProfile from "./components/profile"
-
 import { User, Allergy } from "@/Types/Types"
+import PatientCalendar from "./components/patientCalendar"
+import PatientHome from "./components/patientHome"
 import { logout } from "@/lib/api/auth"
 
 type MainArea =
