@@ -1,65 +1,35 @@
-import { get } from "http";
+"use client";
+
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { getCurrentPatient } from "@/lib/api/patient";
+import { Patient } from "@/Types/Types";
 import DashPatient from "./patientDash";
-import { cookies } from "next/headers";
-import { createCookieSessionStorage } from "react-router-dom";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
+export default function PatientPage() {
+    const router = useRouter();
+    const [patient, setPatient] = useState<Patient | null>(null);
+    const [loading, setLoading] = useState(true);
 
-export default async function DashboardPatientData() {
-    const cookieStore = await cookies();
+    useEffect(() => {
+        getCurrentPatient()
+            .then(setPatient)
+            .catch(() => router.push("/auth"))
+            .finally(() => setLoading(false));
+    }, [router]);
 
-    const res = await fetch(`${API_URL}/auth/userID`, {
-        method: "GET",
-        headers: {
-            Cookie: cookieStore.toString(),
-        },
-        cache: "no-store"
-
-    });
-    const userData = await res.json();
-
-
-    if (res.status === 401) {
-        console.log("Non autenticato");
-        return <p>Non sei autenticato</p>;
+    if (loading) {
+        return <p className="p-6">Caricamento...</p>;
     }
 
-    const data = await fetch(`http://localhost:3000/fakeapi/user/1`, {
-        method: "GET",
-        headers: {
-            Cookie: cookieStore.toString()
-        },
-        cache: "no-store"
+    if (!patient) {
+        return null;
+    }
 
-
-    });
-    /*if (!data.ok) {
-        console.log("errore,", data.status)
-        return <p>Errore Raccolta dati utente</p>
-    }*/
-    const dataUser = await data.json()
-
-
-    /*const dataAllergy = await fetch(`http://localhost:3000/fakeapi/allergies/2`, {
-        method: "GET",
-        headers: {
-            Cookie: cookieStore.toString()
-        },
-        cache: "no-store"
-    }) */
-const dataAllergy = await fetch(`${API_URL}/allergies/2`, {
-        method: "GET",
-        headers: {
-            Cookie: cookieStore.toString()
-        },
-        cache: "no-store"
-    })
-
-
-    const patientAllergies = await dataAllergy.json()
-
-    //console.log(dataUser, "testingsssss")
-    //console.log(userData, "RES")
-    console.log(patientAllergies, "allergie")
-    return <DashPatient userData={dataUser} patientAllergies={patientAllergies} />;
+    return (
+        <DashPatient
+            userData={patient}
+            patientAllergies={patient.allergies}
+        />
+    );
 }
