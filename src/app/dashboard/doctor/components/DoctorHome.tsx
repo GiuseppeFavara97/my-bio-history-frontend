@@ -21,7 +21,7 @@ export default function DoctorHome() {
 
     useEffect(() => {
         async function fetchUsers() {
-            const data = await axios.get("https://my-bh-backend.onrender.com/api/patients", { withCredentials: true })
+            const data = await axios.get("http://localhost:8080/api/patients", { withCredentials: true })
             setPatients(data.data)
         }
         fetchUsers()
@@ -30,11 +30,11 @@ export default function DoctorHome() {
 
     useEffect(() => {
         async function fetchAllergyByUserId(id: number) {
-            const data = await axios.get(`https://my-bh-backend.onrender.com/api/allergies/patient/${id}`, { withCredentials: true })
+            const data = await axios.get(`http://localhost:8080/api/allergies/patient/${id}`, { withCredentials: true })
             setAllergies(data.data)
         }
         async function fetchVaccineByUserId(id: number) {
-            const data = await axios.get(`https://my-bh-backend.onrender.com/api/vaccines`, { withCredentials: true })
+            const data = await axios.get(`http://localhost:8080/api/vaccines`, { withCredentials: true })
             setVaccines(data.data)
         }
         if (!selectedPatient) return;
