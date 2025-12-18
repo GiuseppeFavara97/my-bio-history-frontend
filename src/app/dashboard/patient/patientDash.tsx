@@ -1,21 +1,23 @@
 'use client'
 
 
-import { ArrowLeft, ChevronDown, ChevronFirst, ChevronLeft, ChevronRight, CircleUser, CircleUserRound, ClipboardClock, ClipboardPlus, Folder, FolderArchive, ListFilter, PillBottle, Stethoscope, FileText } from "lucide-react"
+import { ArrowLeft, ChevronDown, ChevronFirst, ChevronLeft, ChevronRight, CircleUser, CircleUserRound, ClipboardClock, ClipboardPlus, Folder, FolderArchive, ListFilter, PillBottle, Stethoscope, Upload } from "lucide-react"
 import { useState } from "react"
+import { useRouter } from "next/navigation"
 import PatientProfile from "./components/patientProfile"
 import PatientAllergy from "./components/patientAllergy"
 import PatientVisits from "./components/patientVisits"
 import PatientMiniProfile from "./components/patientMiniProfile"
-import { User, allergies } from "../../../../Types/Types"
+import { User, Allergy} from "../../../../Types/Types"
 
-export default function DashPatient({ userData, patientAllergies }: { userData: User, patientAllergies: allergies[] }) {
+export default function DashPatient({ userData, patientAllergies }: { userData: User, patientAllergies: Allergy[] }) {
 
     const [user, setUser] = useState<User>(userData)
     const [toggle, setToggle] = useState<Boolean>(false)
-    const [allergies, setAllergies] = useState<allergies[]>(patientAllergies)
+    const [allergies, setAllergies] = useState<Allergy[]>(patientAllergies)
     const [togglePatientData, setPatientData] = useState<string>("menu")
     const [toggleMainArea, setMainArea] = useState<string>("profilo")
+        const router = useRouter();
 
     return (
         <main className="flex flex-col sm:flex-row h-full m-10 bg-[#f4f5f7]  ">
@@ -30,6 +32,9 @@ export default function DashPatient({ userData, patientAllergies }: { userData: 
                                 <h3 className="group-hover:scale-120 group-hover:translate-x-5 group-hover:font-bold duration-500 ">Dati personali</h3>
                                 <ChevronRight className="duration-300 group-hover:-translate-x-5 group-hover:scale-120 group-hover:text-blue-500" />
                             </div>
+
+                            
+
                             <div onClick={() => setMainArea("allergy")} className="flex justify-between cursor-pointer group hover:bg-gray-200 hover:rounded-2xl ">
                                 <h3 className="group-hover:scale-120  group-hover:translate-x-5 group-hover:font-bold duration-500 ">Allergie</h3>
                                 <ChevronRight className="duration-300 group-hover:-translate-x-5 group-hover:scale-120 group-hover:text-blue-500" />
@@ -48,79 +53,60 @@ export default function DashPatient({ userData, patientAllergies }: { userData: 
                     (<PatientMiniProfile userData={userData} setPatientData={setPatientData} />)
                     }
                 </div>
-                <div className="bg-[#ffffff] p-2 gap-y-3  w-10/12 h-80  rounded-2xl  flex flex-col ">
+               
+
                     <span className="self-center font-bold">Cartella Clinica</span>
-                    <div className="flex justify-between">
-                        <div className="flex gap-x-3 ">
-                            <CircleUser />
-                            <h3>Visite</h3>
-                        </div>
-                        <ChevronRight />
+                <div className="flex flex-col gap-2 mt-2">
+                    <div
+                        onClick={() => router.push("/dashboard/patient/components/uploadFile")}
+                        className="flex items-center gap-x-3 cursor-pointer group hover:bg-gray-200 hover:rounded-2xl px-3 py-2"
+                    >
+                        <Upload />
+                        <h3>Caricamento File</h3>
+                        <ChevronRight className="ml-auto" />
                     </div>
-                    <div className="flex justify-between">
-                        <div className="flex gap-x-3">
-                            <ClipboardPlus />
-                            <h3>Esami</h3>
-                        </div>
-                        <ChevronRight />
+                    <div className="flex items-center gap-x-3 cursor-pointer group hover:bg-gray-200 hover:rounded-2xl px-3 py-2">
+                        <CircleUser />
+                        <h3>Visite</h3>
+                        <ChevronRight className="ml-auto" />
                     </div>
-                    <div className="flex justify-between">
-                        <div className="flex gap-x-3">
-                            <PillBottle />
-                            <h3>Prescrizioni</h3>
-                        </div>
-                        <ChevronRight />
+                    <div className="flex items-center gap-x-3 cursor-pointer group hover:bg-gray-200 hover:rounded-2xl px-3 py-2">
+                        <ClipboardPlus />
+                        <h3>Esami</h3>
+                        <ChevronRight className="ml-auto" />
                     </div>
-                    <div className="flex justify-between">
-                        <div className="flex gap-x-3">
-                            <Stethoscope />
-                            <h3>Risultati</h3>
-                        </div>
-                        <ChevronRight />
+                    <div className="flex items-center gap-x-3 cursor-pointer group hover:bg-gray-200 hover:rounded-2xl px-3 py-2">
+                        <PillBottle />
+                        <h3>Prescrizioni</h3>
+                        <ChevronRight className="ml-auto" />
                     </div>
-
-                     <div className="flex justify-between">
-                        <div className="flex gap-x-3">
-                            <FileText />
-                            <h3>Caricamento File</h3>
-                        </div>
-                        <ChevronRight/>
-                        </div>
-
-                    <div className="flex justify-between">
-                        <div className="flex gap-x-3">
-                            <ClipboardClock />
-                            <h3>Appuntamenti</h3>
-                        </div>
-                        <ChevronRight />
+                    <div className="flex items-center gap-x-3 cursor-pointer group hover:bg-gray-200 hover:rounded-2xl px-3 py-2">
+                        <Stethoscope />
+                        <h3>Risultati</h3>
+                        <ChevronRight className="ml-auto" />
+                    </div>
+                    <div className="flex items-center gap-x-3 cursor-pointer group hover:bg-gray-200 hover:rounded-2xl px-3 py-2">
+                        <ClipboardClock />
+                        <h3>Appuntamenti</h3>
+                        <ChevronRight className="ml-auto" />
                     </div>
                 </div>
-                
+                    
+    
             </aside>
+            
             <div id="right" className=" w-full">
                 <div className="p-5 bg-[#ffffff] m-6 h-9/12 outline  rounded-2xl">
                     {toggleMainArea == "allergy" ? (<PatientAllergy allergies={patientAllergies} setMainArea={setMainArea} />)
                         : toggleMainArea == "visite" ? (<PatientVisits />)
                             : toggleMainArea == "profilo" ? (<PatientProfile userData={userData} setMainArea={setMainArea} />) : ("")
-
                     }
-                    <div>
-
-                    </div>
                 </div>
             </div>
+            
+
         </main>
-    )
-}
-
-
-
-
-
-/*
-
-
-
+    )/*
 <div className="outline relative flex duration-300 transition-all rounded-2xl justify-center items-center h-20 w-50 shadow-2xl shadow-black ">
                         <span> Ordina per</span>
                         <ChevronDown className="" onClick={() => setToggle(toggle => !toggle)} />
@@ -137,10 +123,14 @@ export default function DashPatient({ userData, patientAllergies }: { userData: 
                             <h1 className="hover:scale-120 hover:font-bold">opzione2</h1>
                             <h1 className="hover:scale-120 hover:font-bold">opzione3</h1>
                         </div>
+                        
                     </div>
+                    
+                    
 
 
 
 
 
-                    */
+    */
+    }
