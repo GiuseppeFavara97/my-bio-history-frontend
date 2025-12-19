@@ -22,8 +22,8 @@ export function LoginForm() {
             const trimmedPassword = password.trim();
 
             console.log("[Login] Tentativo login con:", {
-                email: trimmedEmail,
-                password: `${trimmedPassword.substring(0, 3)}***`,
+                email: `${trimmedEmail.substring(0,3)}********`,
+                password: `${trimmedPassword.substring(0,0)}********`,
                 emailLength: trimmedEmail.length,
                 passwordLength: trimmedPassword.length,
             });

@@ -1,10 +1,14 @@
 import axios from "axios";
 import { Bell, CircleUser, Notebook, SlidersHorizontal } from "lucide-react";
 import { useEffect, useState } from "react";
-import { Allergy, Patient, Vaccine } from "../../../../../Types/Types";
 import DoctorHomeCards from "./DoctorHomeCards";
 import { motion } from "framer-motion";
-import DoctorVaccinesPatient from "./DoctorVaccinesPatient";
+import DoctorVaccinesPatient from "./vaccines/DoctorVaccinesList";
+import DoctorAllergiesPatient from "./allergies/DoctorAllergiesList";
+import { Allergy, Patient, Vaccine } from "@/Types/Types";
+import { api } from "@/lib/api/api";
+import { getPatients } from "@/lib/api/patient";
+import { dataFocusVisibleClasses } from "@heroui/react";
 
 
 export default function DoctorHome() {
@@ -20,21 +24,22 @@ export default function DoctorHome() {
 
 
     useEffect(() => {
-        async function fetchUsers() {
-            const data = await axios.get("https://my-bh-backend.onrender.com/api/patients", { withCredentials: true })
-            setPatients(data.data)
+        async function fetchPatients() {
+            const data = await getPatients()
+            setPatients(data)
         }
-        fetchUsers()
+        fetchPatients()
     }, [])
 
+        console.log(patients, "pazienti presi")
 
     useEffect(() => {
         async function fetchAllergyByUserId(id: number) {
-            const data = await axios.get(`https://my-bh-backend.onrender.com/api/allergies/patient/${id}`, { withCredentials: true })
+            const data = await axios.get(`http://localhost:8080/api/allergies/patient/${id}`, { withCredentials: true })
             setAllergies(data.data)
         }
         async function fetchVaccineByUserId(id: number) {
-            const data = await axios.get(`https://my-bh-backend.onrender.com/api/vaccines`, { withCredentials: true })
+            const data = await axios.get(`http://localhost:8080/api/vaccines`, { withCredentials: true })
             setVaccines(data.data)
         }
         if (!selectedPatient) return;
@@ -42,6 +47,7 @@ export default function DoctorHome() {
         fetchVaccineByUserId(selectedPatient.id)
     }, [selectedPatient])
 
+    
 
     return (
         <main className="flex flex-col h-full w-full overflow-hidden">
@@ -134,33 +140,12 @@ export default function DoctorHome() {
                             ) : selectedButton == "Allergie" ? (
                                 <div>
                                     <span>Allergie</span>
-                                    {allergies.map((allergy: Allergy, i: number) => (
-
-                                        <div className=" flex  items-center border-b  rounded-2xl p-3  gap-5" key={allergy.id}>
-                                            <div className="flex flex-col w-50 overflow-auto">
-                                                <span className="font-bold text-2xl ">{allergy.allergen} </span>
-                                                <p>{allergy.reaction} </p>
-                                            </div>
-
-                                            {toggle === true && (<motion.div className="w-full h-full" initial={{ opacity: 0 }} animate={{
-                                                transition: { duration: 0.5 },
-
-                                                opacity: 1
-                                            }}>
-                                                <textarea placeholder={allergy.note} defaultValue={allergy.note} className="flex resize h-full w-8/10 outline " />
-                                            </motion.div>)}
-
-                                            <Notebook className="ml-auto cursor-pointer hover:scale-120" onClick={() => setToggle(toggle => !toggle)} />
-
-                                        </div>
-
-                                    ))}
-
+                                <DoctorAllergiesPatient selectedPatient={selectedPatient} allergies={allergies}/>
                                 </div>
                             ) : selectedButton == "Esami" ? (
                                 <div>
                                     <span>Vaccini</span>
-                                    <DoctorVaccinesPatient vaccines={vaccines} />
+                                    <DoctorVaccinesPatient selectedPatient={selectedPatient}  vaccines={vaccines} />
                                 </div>) : ("")}
                         </div>
 
