@@ -1,5 +1,5 @@
 
-import { Calendar, ChartLine, FilePen, Home, MessageSquare, NotebookPen } from "lucide-react";
+import { Calendar, ChartLine, FilePen, Home, LogOut, MessageSquare, NotebookPen } from "lucide-react";
 import { Dispatch, HTMLAttributes, HtmlHTMLAttributes, SetStateAction, useState } from "react"
 import { SidebarItem } from "./SidebarItem";
 import { motion } from "motion/react"
@@ -14,6 +14,14 @@ type SidebarDoctorProps = {
 
 export default function SidebarDoctor({ open, currentView, toggle, setCurrentView }: SidebarDoctorProps) {
     const router = useRouter()
+
+    const handleLogout = () => {
+        // Rimuovi il cookie
+        document.cookie = "token=; path=/; max-age=0";
+
+        // Redirect al login
+        router.push("/");
+    };
 
     function home() {
         router.push("/")
@@ -46,6 +54,8 @@ export default function SidebarDoctor({ open, currentView, toggle, setCurrentVie
                 <SidebarItem active={currentView === "report"} onClick={() => setCurrentView("report")} open={!open} icon={<ChartLine />} label="Report" />
                 <SidebarItem active={currentView === "calendario"} onClick={() => setCurrentView("calendario")} open={!open} icon={<Calendar />} label="Calendario" />
                 <SidebarItem active={currentView === "messaggi"} onClick={() => setCurrentView("messaggi")} open={!open} icon={<MessageSquare />} label="Messaggi" />
+                
+                <SidebarItem  onClick={handleLogout} open={!open} icon={<LogOut/>} label="Log-Out" />
             </main>
         </aside>
     )

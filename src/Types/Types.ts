@@ -1,3 +1,4 @@
+
 export type User = {
   id: number;
   username: string;
@@ -54,7 +55,7 @@ export interface Patient extends PersonData {
   vaccines: Vaccine[];
   user: User;
   medicalRecord: MedicalRecord;
-};
+}
 
 export type Allergy = {
   id: number;
@@ -69,6 +70,25 @@ export type Allergy = {
   doctor: Doctor;
   patient: Patient;
   medicalRecord: MedicalRecord;
+};
+
+export type AllergyFormData = {
+  allergen: string;
+  reaction: string;
+  startDate: Date;
+  note: string;
+  severity: Severity;
+};
+
+export type AllergyPayload = {
+  allergen?: string;
+  reaction?: string;
+  startDate?: Date;
+  note?: string;
+  severity?: string;
+  medicalRecordId: number;
+  doctorId?: number;
+  patientId?: number;
 };
 
 export enum Severity {
@@ -112,6 +132,23 @@ export type Vaccine = {
   medicalRecord: MedicalRecord;
 };
 
+export type VaccinesFormData = {
+  name?: string;
+  type?: string;
+  vaccinationDate?: Date;
+  vaccinationBooster?: Date;
+
+};
+export type VaccinesPayload = {
+  name?: string;
+  type?: string;
+  vaccinationDate?: Date;
+  vaccinationBooster?: Date;
+  doctorId?: number;
+  patientId?: number;
+  medicalRecordId: number;
+};
+
 export type UploadFile = {
   id: number;
   name: string;
@@ -138,4 +175,11 @@ export type Doctor = {
   care: Care[];
   uploadFile: UploadFile[];
   vaccine: Vaccine[];
+};
+
+export type DoctorAuthData = {
+  id: number;
+  username: string;
+  email: string;
+  role: UserRole;
 };

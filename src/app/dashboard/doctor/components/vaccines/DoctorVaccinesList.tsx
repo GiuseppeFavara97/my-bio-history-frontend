@@ -1,14 +1,19 @@
 import { useState } from "react";
-import { Vaccine } from "../../../../../Types/Types";
-import { motion } from "framer-motion";
-import { Notebook } from "lucide-react";
 
-export default function DoctorVaccinesPatient({ vaccines }: { vaccines: Vaccine[] }) {
+import { motion } from "framer-motion";
+import { ClipboardPlus, Notebook } from "lucide-react";
+import { Patient, Vaccine } from "@/Types/Types";
+import DoctorVaccinesPatientAdd from "./DoctorVaccinesAddModal";
+
+export default function DoctorVaccinesList({ vaccines, selectedPatient }: { vaccines: Vaccine[], selectedPatient?: Patient }) {
     const [toggle, setToggle] = useState<boolean>(false)
+    const [modal, setModal] = useState<boolean>(false)
 
 
     return (
         <div>
+            <ClipboardPlus className={`ml-auto duration-700 rounded-full cursor-pointer ${modal && "bg-green-500 ring-1"}`} onClick={() => setModal(true)} />
+            {modal && <DoctorVaccinesPatientAdd selectedPatient={selectedPatient} setModal={setModal} />}
             {vaccines.map((vaccine: Vaccine, i: number) => (
 
                 <div className=" flex  items-center border-b  rounded-2xl p-3  gap-5" key={vaccine.id}>

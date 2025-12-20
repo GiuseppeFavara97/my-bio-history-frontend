@@ -3,7 +3,7 @@ import { useState } from "react";
 import SidebarDoctor from "./components/SidebarDoctor";
 import DoctorHome from "./components/DoctorHome";
 
-export default function homeDoctor() {
+export default function HomeDoctor() {
     const [toggleSidebar, setToggleSideBar] = useState<boolean>(true)
     const [currentView, setCurrentView] = useState<string>("home")
 

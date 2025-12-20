@@ -1,4 +1,4 @@
-import { Patient } from "@/Types/Types";
+import { Patient, Vaccine } from "@/Types/Types";
 import { api } from "./api";
 
 export const getVaccines = () => api.get("/vaccines").then(res => res.data);
