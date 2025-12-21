@@ -2,10 +2,10 @@ import { AllergyPayload, Doctor, DoctorAuthData, User, VaccinesPayload } from "@
 import { api } from "./api";
 
 export const createAllergyByDoctor = (payload: AllergyPayload) => {
-  return api.post("/allergies/create").then((res) => res.data);
+  return api.post("/allergies/create",payload).then((res) => res.data);
 };
-export const createVaccinesByDoctor = (payload:VaccinesPayload) => {
-  return api.post("/vaccines/create").then((res) => res.data);
+export const createVaccineByDoctor = (payload:VaccinesPayload) => {
+  return api.post("/vaccines/create",payload).then((res) => res.data);
 };
 export const getCurrentDoctor = async () => {
   const { data }: { data: Doctor } = await api.get("/doctors/me");

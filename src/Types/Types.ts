@@ -123,7 +123,7 @@ export type Vaccine = {
   name: string;
   vaccinationBooster: Date;
   type: number;
-  vaccinationDate?: Date;
+  vaccinationDate: Date;
   softDeleted: boolean;
   createdAt: Date;
   updatedAt: Date;
