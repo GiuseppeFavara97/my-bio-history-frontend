@@ -44,15 +44,15 @@ export function LoginForm() {
             switch (role.toUpperCase()) {
                 case "ADMIN":
                     console.log("[Login] Reindirizzamento a /dashboard/admin");
-                    router.push("/dashboard/admin");
+                    window.location.href = "/dashboard/admin";
                     break;
                 case "DOCTOR":
                     console.log("[Login] Reindirizzamento a /dashboard/doctor");
-                    router.push("/dashboard/doctor");
+                    window.location.href = "/dashboard/doctor";
                     break;
                 case "PATIENT":
                     console.log("[Login] Reindirizzamento a /dashboard/patient");
-                    router.push("/dashboard/patient");
+                    window.location.href = "/dashboard/patient";
                     break;
                 default:
                     console.warn("[Login] Role sconosciuto:", role);
