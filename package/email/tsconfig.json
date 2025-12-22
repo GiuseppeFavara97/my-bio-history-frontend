@@ -1,24 +1,11 @@
 {
-  "$schema": "https://json.schemastore.org/tsconfig",
+  "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "declaration": true,
-    "declarationMap": true,
-    "esModuleInterop": true,
-    "jsx": "react-jsx",
-    "lib": ["ES2023"],
-    "module": "ESNext",
-    "moduleResolution": "node",
+    "outDir": "dist",
     "noEmitOnError": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "preserveSymlinks": true,
-    "preserveWatchOutput": true,
-    "resolveJsonModule": true,
-    "skipLibCheck": true,
-    "strict": true,
-    "strictNullChecks": true,
-    "target": "ESNext"
+    "strict": true
   },
-  "exclude": ["**/dist", "**/node_modules"],
-  "include": ["templates"]
+  "include": [
+    "templates/**/*"
+  ]
 }

@@ -139,3 +139,11 @@ export type Doctor = {
   uploadFile: UploadFile[];
   vaccine: Vaccine[];
 };
+
+export type MainArea =
+  "profilo" |
+  "settings" |
+  "visite" |
+  "allergy" |
+  "vaccini" |
+  "documenti";

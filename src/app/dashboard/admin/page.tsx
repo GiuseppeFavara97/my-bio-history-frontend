@@ -4,22 +4,23 @@ import { useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 import { Edit2, Save, X } from "lucide-react";
 import { getUsers } from "@/lib/api/users";
-import { User } from "../../../lib/types";
+import { User, UserRole } from "../../../Types/Types";
+import { updateUser } from "@/lib/api/users";
 
 export default function AdminDashboardPage() {
     const [users, setUsers] = useState<User[]>([]);
     const [loading, setLoading] = useState(false);
-    const [editingId, setEditingId] = useState<number>(null);
+    const [editingId, setEditingId] = useState<number | undefined>(undefined);
     const [search, setSearch] = useState("");
-    const [error, setError] = useState<string | null>(null);
+    const [error, setError] = useState<string | undefined>(undefined);
     const [editData, setEditData] = useState<{
         username: string;
         email: string;
-        role: string;
+        role: UserRole;
     }>({
         username: "",
         email: "",
-        role: "",
+        role: UserRole.PATIENT,
     });
 
     useEffect(() => {
@@ -28,7 +29,7 @@ export default function AdminDashboardPage() {
 
     async function fetchUsers() {
         setLoading(true);
-        setError(null);
+        setError(undefined);
         try {
             const data = await getUsers();
             setUsers(data);
@@ -60,7 +61,7 @@ export default function AdminDashboardPage() {
     }
 
     function cancelEditing() {
-        setEditingId(null);
+        setEditingId(undefined);
     }
 
     async function saveUser(id: number) {
@@ -72,7 +73,7 @@ export default function AdminDashboardPage() {
             );
 
             toast.success("Utente aggiornato");
-            setEditingId(null);
+            setEditingId(undefined);
         } catch (err) {
             console.error(err);
             toast.error("Errore di rete");

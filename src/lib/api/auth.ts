@@ -11,13 +11,6 @@ export const login = async (email: string, password: string) => {
 
     const { data } = response;
 
-    if (data?.token) {
-        if (typeof window !== "undefined") {
-            sessionStorage.setItem("auth_token", data.token);
-            console.log("[Auth] Token salvato in sessionStorage:", data.token);
-        }
-    }
-
     return data;
 };
 

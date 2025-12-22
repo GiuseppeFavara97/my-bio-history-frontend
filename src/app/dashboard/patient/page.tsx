@@ -1,5 +1,7 @@
 "use client";
 
+import React from "react";
+import { useEffect, useState } from "react";
 import {
     ChevronRight,
     CircleUser,
@@ -10,19 +12,16 @@ import {
     Syringe,
     Upload
 } from "lucide-react";
-import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+
 import { getCurrentPatient } from "@/lib/api/patient";
 import { logout } from "@/lib/api/auth";
-import { Patient, Allergy } from "@/Types/Types";
+import { Patient, Allergy, MainArea } from "@/Types/Types";
 
 import PatientProfile from "./components/profile";
-import PatientAllergy from "./components/allergy/page";
-import PatientVaccines from "./components/vaccine/page";
-import PatientDocuments from "./components/upload/page";
-import { getAllergyById } from "@/lib/api/allergy";
-
-type MainArea = "profilo" | "settings" | "visite" | "allergy" | "vaccini" | "documenti";
+import AllergyPage from "./components/allergy";
+import PatientVaccines from "./components/vaccine";
+import PatientDocuments from "./components/upload";
 
 export default function PatientPage() {
     const router = useRouter();
@@ -42,9 +41,8 @@ export default function PatientPage() {
             }
         }
         fetchPatient();
-    }, [router]);
+    }, []);
 
-    // Logout
     async function handleLogout() {
         await logout();
         router.push("/auth");
@@ -62,11 +60,16 @@ export default function PatientPage() {
 
     const { firstName, lastName, user, allergies } = patient;
 
-    // Mappa delle sezioni principali
-    const sections: Record<MainArea, JSX.Element> = {
-        profilo: <PatientProfile userData={patient} userDataAccount={user} setMainArea={setMainArea} />,
-        visite: <div>Sezione Visite</div>, // Placeholder per PatientVisits
-        allergy: <PatientAllergy allergies={allergies as Allergy[]} />,
+    const sections: Record<MainArea, React.ReactNode> = {
+        profilo: (
+            <PatientProfile
+                userData={patient}
+                userDataAccount={user}
+                setMainArea={setMainArea}
+            />
+        ),
+        visite: <div>Sezione Visite</div>,
+        allergy: <AllergyPage />,
         vaccini: <PatientVaccines />,
         documenti: <PatientDocuments />,
         settings: <div>Impostazioni utente</div>,
@@ -74,7 +77,6 @@ export default function PatientPage() {
 
     return (
         <main className="flex flex-col sm:flex-row h-full m-10 bg-[#f4f5f7]">
-            {/* Sidebar */}
             <aside className="m-1 gap-y-6 flex flex-col h-full w-full sm:w-1/3">
                 <div className="bg-white rounded-2xl p-5 flex gap-4 items-center">
                     <img src="/barney.webp" alt="Foto profilo" width={80} className="rounded" />
@@ -133,7 +135,6 @@ export default function PatientPage() {
                 </div>
             </aside>
 
-            {/* Contenuto principale */}
             <section className="flex-1 bg-white m-6 rounded-2xl p-6 overflow-y-auto">
                 {sections[mainArea]}
             </section>
@@ -141,7 +142,6 @@ export default function PatientPage() {
     );
 }
 
-// Componente riutilizzabile per voci della sidebar
 function SidebarItem({
     icon,
     label,

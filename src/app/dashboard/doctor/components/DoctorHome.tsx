@@ -1,7 +1,7 @@
 import axios from "axios";
 import { Bell, CircleUser, Notebook, SlidersHorizontal } from "lucide-react";
 import { useEffect, useState } from "react";
-import { Allergy, Patient, Vaccine } from "../../../../../Types/Types";
+import { Allergy, Patient, Vaccine } from "@/Types/Types";
 import DoctorHomeCards from "./DoctorHomeCards";
 import { motion } from "framer-motion";
 import DoctorVaccinesPatient from "./DoctorVaccinesPatient";

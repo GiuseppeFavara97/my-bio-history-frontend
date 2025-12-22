@@ -9,9 +9,9 @@ import { Allergy } from "@/Types/Types";
 export default function AllergyPage() {
     const [allergies, setAllergies] = useState<Allergy[]>([]);
     const [loading, setLoading] = useState(false);
-    const [editingId, setEditingId] = useState<number>(null);
+    const [editingId, setEditingId] = useState<number | undefined>(undefined);
     const [search, setSearch] = useState("");
-    const [error, setError] = useState<string | null>(null);
+    const [error, setError] = useState<string | undefined>(undefined);
     const [editData, setEditData] = useState<{
         allergen: string;
         reaction: string;
@@ -30,7 +30,7 @@ export default function AllergyPage() {
 
     async function fetchAllergies() {
         setLoading(true);
-        setError(null);
+        setError(undefined);
         try {
             const data = await getAllergies();
             setAllergies(data);
@@ -63,7 +63,7 @@ export default function AllergyPage() {
     }
 
     function cancelEditing() {
-        setEditingId(null);
+        setEditingId(undefined);
     }
 
     async function saveAllergy(id: number) {
@@ -75,7 +75,7 @@ export default function AllergyPage() {
             );
 
             toast.success("Allergia aggiornata");
-            setEditingId(null);
+            setEditingId(undefined);
         } catch (err) {
             console.error(err);
             toast.error("Errore di rete");

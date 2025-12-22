@@ -70,7 +70,12 @@ export default function VaccinePage() {
 
     async function saveVaccine(vaccineId: number) {
         try {
-            const updatedVaccine = await updateVaccine(vaccineId, editData);
+            const updatedVaccine = await updateVaccine(vaccineId, {
+                ...editData,
+                vaccinationBooster: new Date(editData.vaccinationBooster),
+                vaccinationDate: new Date(editData.vaccinationDate),
+                createdAt: new Date(editData.createdAt),
+            });
             setVaccines(vaccines.map(v => v.id === vaccineId ? updatedVaccine : v));
             toast.success("Vaccino aggiornato con successo.");
             cancelEditing();

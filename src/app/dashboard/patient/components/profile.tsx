@@ -3,13 +3,14 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
 import { Badge } from "@/components/ui/badge"
-
+import React from "react"
+import type { MainArea } from "@/Types/Types"
 import type { PersonData, User } from "@/Types/Types";
 
 interface PatientProfileProps {
   userData: PersonData;
   userDataAccount: User;
-  setMainArea: React.Dispatch<React.SetStateAction<string>>;
+  setMainArea: React.Dispatch<React.SetStateAction<MainArea>>;
 }
 
 export default function PatientProfile({ userData, userDataAccount, setMainArea }: PatientProfileProps) {

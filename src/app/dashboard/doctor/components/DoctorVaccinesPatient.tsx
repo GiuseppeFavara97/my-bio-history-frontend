@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Vaccine } from "../../../../../Types/Types";
+import { Vaccine } from "@/Types/Types";
 import { motion } from "framer-motion";
 import { Notebook } from "lucide-react";
 

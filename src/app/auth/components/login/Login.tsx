@@ -2,6 +2,7 @@
 
 import dynamic from "next/dynamic";
 
+
 const LoginForm = dynamic(() => import("./login-form").then((mod) => mod.LoginForm), { ssr: false });
 
 export default function Login({ setIsRegister }: { setIsRegister: (value: boolean) => void }) {
