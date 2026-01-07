@@ -5,6 +5,11 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 type DoctorContextType = {
   doctor: Doctor | null;
   loading: boolean;
+  
+  currentView:string,
+  setCurrentView:(V:string)=>void
+  toggleSideBar:boolean,
+  setToggleSideBar:(v:boolean)=>void
 };
 
 const DoctorContext = createContext<DoctorContextType | null>(null);
@@ -12,6 +17,8 @@ const DoctorContext = createContext<DoctorContextType | null>(null);
 export default function DoctorProvider({ children }: { children: React.ReactNode }) {
   const [doctor, setDoctor] = useState<Doctor | null>(null);
   const [loading, setLoading] = useState(true);
+  const [currentView, setCurrentView] = useState<string>("home");
+  const [toggleSideBar, setToggleSideBar] = useState<boolean>(true);
 
   useEffect(() => {
     async function fetchLoggedDoctor() {
@@ -27,7 +34,7 @@ export default function DoctorProvider({ children }: { children: React.ReactNode
     fetchLoggedDoctor();
   }, []);
 
-  return <DoctorContext.Provider value={{ doctor, loading }}>{children}</DoctorContext.Provider>;
+  return <DoctorContext.Provider value={{ doctor, loading,currentView,setCurrentView,toggleSideBar,setToggleSideBar }}>{children}</DoctorContext.Provider>;
 }
 
 export function useDoctor() {
