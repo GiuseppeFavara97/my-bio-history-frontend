@@ -1,118 +1,95 @@
 import { createVaccineByDoctor } from "@/lib/api/doctor";
-import { Doctor, Patient, Vaccine, VaccinesFormData, VaccinesPayload } from "@/Types/Types";
-import { ArrowLeft } from "lucide-react";
+import { Patient, VaccinesFormData, VaccinesPayload } from "@/Types/Types";
 import { FormEvent, useState } from "react";
-import Select from "react-select";
 import { useDoctor } from "../shared/DoctorProvider";
+import ModalBaseLayout from "../ui/ModalBaseLayout";
+import { Button } from "@/components/ui/button";
+import DoctorModalInput from "../ui/DoctorModalInput";
+import { toast } from "sonner";
 
 type VaccinesProps = {
   selectedPatient?: Patient;
   setModal: (v: boolean) => void;
+  onVaccineChange: () => void;
 };
 
-export default function DoctorVaccinesAddModal({ selectedPatient, setModal }: VaccinesProps) {
+export default function DoctorVaccinesAddModal({ selectedPatient, setModal, onVaccineChange }: VaccinesProps) {
   const [data, setData] = useState<VaccinesFormData>();
   const doctor = useDoctor().doctor;
-  
+
   async function sendData(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    if (!selectedPatient || !doctor) {
-      console.error("Seleziona un paziente prima");
-      return;
-    }
-
+    if (!selectedPatient || !doctor) return;
     if (!data) return;
+
     const payload: VaccinesPayload = {
       ...data,
-      medicalRecordId: selectedPatient?.medicalRecord.id,
+      medicalRecordId: selectedPatient.medicalRecordId,
       doctorId: doctor.id,
     };
 
     try {
-      const sent = await createVaccineByDoctor(payload);
-      console.log(payload, "durante invio");
+      await createVaccineByDoctor(payload);
+      toast.success("Vaccino aggiunto correttamente")
+      onVaccineChange();
     } catch (err) {
+      toast.error("Errore creazione vaccino")
       console.error("errore nell'invio dati", err);
-            console.log(payload, "durante invio in catch");
-
     }
   }
-  console.log(selectedPatient?.id,"in addvaccino",selectedPatient?.medicalRecord.id)
-  console.log(data)
-  
-  return (
-    <div className="absolute left-0 top-0 flex h-full w-full items-center justify-center bg-black/30">
-      <form onSubmit={sendData} className=" relative flex flex-col gap-5 rounded-2xl bg-white p-5 outline">
-        <p
-          className="absolute right-1 top-1 flex h-5 w-5 cursor-pointer items-center justify-center rounded-full ring-2 hover:bg-red-400 hover:ring-red-800"
-          onClick={() => setModal(false)}
-        >
-          <ArrowLeft />{" "}
-        </p>
-        <span className="text-center">Aggiunta Vaccino </span>
-        <div className="flex flex-col">
-          <span className="font-light ">Nome Vaccino</span>
-          <input
-            type="text"
-            placeholder="Nome"
-            className="rounded-full p-1 outline focus:outline-blue-600"
-            onChange={(e) => {
-              setData((prev) => ({
-                ...prev,
-                name: e.target.value,
-              }));
-            }}
-          />
-        </div>
-        <div className="flex flex-col">
-          <span className="font-light ">Tipo Vaccino</span>
-          <input
-            type="text"
-            placeholder="Tipo"
-            className="rounded-full p-1 outline focus:outline-blue-600"
-            onChange={(e) => {
-              setData((prev) => ({
-                ...prev,
-                type: e.target.value,
-              }));
-            }}
-          />
-        </div>
-        <div className="flex flex-col">
-          <span className="font-light ">Somministrato in data</span>
-          <input
-            type="date"
-            placeholder="Data"
-            className="rounded-full p-1 outline focus:outline-blue-600"
-            onChange={(e) => {
-              setData((prev) => ({
-                ...prev,
-                vaccinationDate: new Date(e.target.value),
-              }));
-            }}
-          />
-        </div>
-        <div className="flex flex-col">
-          <span className="font-light ">Richiamo</span>
-          <input
-            type="date"
-            placeholder="Data"
-            className="rounded-full p-1 outline focus:outline-blue-600"
-            onChange={(e) => {
-              setData((prev) => ({
-                ...prev,
-                vaccinationBooster: new Date(e.target.value),
-              }));
-            }}
-          />
-        </div>
 
-        <button className="w-30 rounded border" type="submit">
-          {" "}
-          Aggiungi Allergia
-        </button>
+  return (
+    <ModalBaseLayout label="Aggiunta vaccino" onClose={() => setModal(false)}>
+      <form onSubmit={sendData} className="relative flex flex-col gap-5 rounded-2xl bg-white p-5">
+        <DoctorModalInput
+          label="Nome Vaccino"
+          type="text"
+          placeholder="Nome"
+          onChange={(e) =>
+            setData((prev) => ({
+              ...prev,
+              name: e.target.value,
+            }))
+          }
+        />
+
+        <DoctorModalInput
+          label="Tipo Vaccino"
+          type="text"
+          placeholder="Tipo"
+          onChange={(e) =>
+            setData((prev) => ({
+              ...prev,
+              type: e.target.value,
+            }))
+          }
+        />
+
+        <DoctorModalInput
+          label="Somministrato in data"
+          type="date"
+          onChange={(e) =>
+            setData((prev) => ({
+              ...prev,
+              vaccinationDate: new Date(e.target.value),
+            }))
+          }
+        />
+
+        <DoctorModalInput
+          label="Richiamo"
+          type="date"
+          onChange={(e) =>
+            setData((prev) => ({
+              ...prev,
+              vaccinationBooster: new Date(e.target.value),
+            }))
+          }
+        />
+
+        <Button type="submit">Aggiungi Vaccino</Button>
       </form>
-    </div>
+    </ModalBaseLayout>
   );
 }

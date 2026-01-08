@@ -1,54 +1,46 @@
-
 import { softDeleteAllergy } from "@/lib/api/allergy";
 import { Allergy } from "@/Types/Types";
-import { ArrowLeft } from "lucide-react";
-
+import ModalBaseLayout from "../ui/ModalBaseLayout";
+import { Button } from "@/components/ui/button";
+import DoctorModalReadOnlyField from "../ui/DoctorModalReadOnlyField";
+import { toast } from "sonner";
 
 type AllergyRemoveprops = {
   selectedAllergy: Allergy;
   setRemoveModal: (v: boolean) => void;
+  onAllergyChange: () => void;
 };
 
-export default function DoctorAllergiesRemoveModal({ selectedAllergy, setRemoveModal }: AllergyRemoveprops) {
-    
-    
-    function softDeletePatch(id:number) {
-        
-        softDeleteAllergy(id)
+export default function DoctorAllergiesRemoveModal({
+  selectedAllergy,
+  setRemoveModal,
+  onAllergyChange,
+}: AllergyRemoveprops) {
+  async function softDeletePatch(id: number) {
+    try {
+      await softDeleteAllergy(id);
+      toast.success("Allergia rimossa correttamente");
+      setRemoveModal(false);
+      onAllergyChange();
+    } catch (err) {
+      toast.error("Errore nella rimozione");
+      console.error("errore cancellazione Allergia", err);
     }
-    
+  }
+
   return (
-    <div className="absolute left-0 top-0 flex h-full w-full items-center justify-center bg-black/30">
-      <div className="relative flex flex-col gap-5 rounded-2xl bg-white p-5 outline">
-        <p
-          className="absolute right-1 top-1 flex h-5 w-5 cursor-pointer items-center justify-center rounded-full ring-2 hover:bg-red-400 hover:ring-red-800"
-          onClick={() => setRemoveModal(false)}
-        >
-          <ArrowLeft />{" "}
-        </p>
-        <span>Allergia selezionata</span>
-        <div className="flex flex-col gap-2">
-        <span className="font-light text-sm">Allergene</span>
-        <p className="border rounded-md text-center">{selectedAllergy?.allergen}</p>
-        </div>
-        <div className="flex flex-col gap-2">
-        <span className="font-light text-sm">Reazioni</span>
-        <p className="border rounded-md text-center">{selectedAllergy?.reaction}</p>
-        </div>
-        <div className="flex flex-col gap-2">
-        <span className="font-light text-sm">Data di inizio</span>
-        <p className="border rounded-md text-center">{selectedAllergy?.startDate ? selectedAllergy.startDate.toLocaleDateString() : "-"}</p>
-        </div>
-        <div className="flex flex-col gap-2">
-        <span className="font-light text-sm">Note</span>
-        <p className="border rounded-md text-center">{selectedAllergy?.note}</p>
-        </div>
-        <div className="flex flex-col gap-2">
-        <span className="font-light text-sm">Gravità</span>
-        <p className="border rounded-md text-center">{selectedAllergy?.severity}</p>
-        </div>
-        <button type="button" onClick={() => softDeletePatch(selectedAllergy?.id)} className="ring-2 ring-blue-600 hover:ring-red-500 hover:bg-red-200 cursor-pointer rounded-md">Conferma cancellazione</button>
-      </div>
-    </div>
+    <ModalBaseLayout label="Rimuovi allergia" onClose={() => setRemoveModal(false)}>
+      <DoctorModalReadOnlyField label="Allergene" value={selectedAllergy?.allergen} />
+      <DoctorModalReadOnlyField label="Reazioni" value={selectedAllergy?.reaction} />
+      <DoctorModalReadOnlyField
+        label="Data di inizio"
+        value={selectedAllergy?.startDate ? selectedAllergy.startDate.toLocaleDateString() : "-"}
+      />
+      <DoctorModalReadOnlyField label="Note" value={selectedAllergy?.note} />
+      <DoctorModalReadOnlyField label="Gravità" value={selectedAllergy?.severity} />
+      <Button type="button" onClick={() => softDeletePatch(selectedAllergy?.id)}>
+        Conferma cancellazione
+      </Button>
+    </ModalBaseLayout>
   );
 }
