@@ -16,21 +16,46 @@ export function LoginForm() {
         setError(null);
 
         try {
-            const data = await login(email, password);
-            const role = data.role;
+            // Trim email/password per rimuovere spazi
+            const trimmedEmail = email.trim();
+            const trimmedPassword = password.trim();
 
-            switch (role) {
+            console.log("[Login] Tentativo login con:", {
+                email: `${trimmedEmail.substring(0,3)}********`,
+                password: `${trimmedPassword.substring(0,0)}********`,
+                emailLength: trimmedEmail.length,
+                passwordLength: trimmedPassword.length,
+            });
+
+            const data = await login(trimmedEmail, trimmedPassword);
+            console.log("[Login] Risposta ricevuta dal server:", data);
+
+            const role = data?.role;
+            const token = data?.token;
+
+            console.log("[Login] Token ricevuto:", token ? "✓ Presente" : "✗ Mancante");
+            console.log("[Login] Role estratto:", role);
+
+            if (!role) {
+                throw new Error("Role non trovato nella risposta del server");
+            }
+
+            switch (role.toUpperCase()) {
                 case "ADMIN":
+                    console.log("[Login] Reindirizzamento a /dashboard/admin");
                     router.push("/dashboard/admin");
                     break;
                 case "DOCTOR":
+                    console.log("[Login] Reindirizzamento a /dashboard/doctor");
                     router.push("/dashboard/doctor");
                     break;
                 case "PATIENT":
+                    console.log("[Login] Reindirizzamento a /dashboard/patient");
                     router.push("/dashboard/patient");
                     break;
                 default:
-                    router.push("/auth");
+                    console.warn("[Login] Role sconosciuto:", role);
+                    setError(`Ruolo non riconosciuto: ${role}`);
             }
         } catch (err: any) {
             setError(err.response?.data?.error || "Password errata");
@@ -63,6 +88,7 @@ export function LoginForm() {
                 onChange={(e) => setEmail(e.target.value)}
                 className="w-full p-2 border rounded"
                 required
+                autoComplete="email"
             />
             <input
                 type="password"
@@ -71,6 +97,7 @@ export function LoginForm() {
                 onChange={(e) => setPassword(e.target.value)}
                 className="w-full p-2 border rounded"
                 required
+                autoComplete="current-password"
             />
             <button
                 type="submit"

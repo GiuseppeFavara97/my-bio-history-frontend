@@ -1,4 +1,4 @@
-import { User } from "../../../Types/Types";
+import { User } from "@/Types/Types";
 import { api } from "./api";
 
 export const getUsers = () => api.get("/users").then(res => res.data);

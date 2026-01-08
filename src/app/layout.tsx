@@ -1,3 +1,4 @@
+import { Toaster } from 'sonner'
 import './globals.css'
 import { Inter } from 'next/font/google'
 
@@ -13,6 +14,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="it">
       <body className={`${inter.className} bg-[#f4f5f7]   `}>
         {children}
+        <Toaster position='top-center' richColors />
       </body>
     </html>
   )

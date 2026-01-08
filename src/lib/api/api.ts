@@ -8,13 +8,12 @@ export const api = axios.create({
     },
 });
 
-// Interceptor per gestire errori di autenticazione
 api.interceptors.response.use(
     (response) => response,
     (error) => {
         if (error.response?.status === 401) {
-            // Token scaduto o invalido
             if (typeof window !== "undefined") {
+                sessionStorage.removeItem("auth_token");
                 window.location.href = "/auth";
             }
         }
