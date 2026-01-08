@@ -1,5 +1,4 @@
 "use client";
-
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { login } from "@/lib/api/auth";
@@ -34,7 +33,8 @@ export function LoginForm() {
                     router.push("/auth");
             }
         } catch (err: any) {
-            setError(err.response?.data?.error || "Errore di rete");
+            setError(err.response?.data?.error || "Password errata");
+            setPassword(""); // svuota la password se errata
             console.error(err);
         } finally {
             setLoading(false);
@@ -43,7 +43,19 @@ export function LoginForm() {
 
     return (
         <form onSubmit={handleSubmit} className="space-y-4">
-            {error && <div className="text-red-600">{error}</div>}
+            {error && (
+                <div className="text-red-600">
+                    {error}
+                    <div className="mt-2">
+                        <a
+                            href="/auth/forgot-password"
+                            className="text-sm text-blue-600 hover:underline"
+                        >
+                            Password dimenticata?
+                        </a>
+                    </div>
+                </div>
+            )}
             <input
                 type="email"
                 placeholder="Email"

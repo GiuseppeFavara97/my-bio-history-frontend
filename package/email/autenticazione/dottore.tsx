@@ -65,8 +65,8 @@ const footer = {
 };
 
 export const previewProps: TemplateProps = {
-  email: 'amministrazionemybiohistory@gmail.com',
-  name: 'Utente'
+  email: 'Utente@gmail.com',
+  name: 'Dottore'
 };
 
 export const templateName = 'email';
@@ -80,14 +80,14 @@ export const Template = ({ email, name }: TemplateProps) => (
       <Container style={container}>
         <Section style={{ textAlign: 'center', marginBottom: '20px' }}>
           <Img
-            src="/logo.png"
+            src="https://your-logo.png"
             width="80"
-            alt="My-bio-history"
+            alt="My Bio History"
             style={{ marginBottom: '12px' }}
           />
         </Section>
 
-        <Text style={title}>My Bio History</Text>
+        <Text style={title}>My Bio History – Notifica</Text>
 
         <Text style={paragraph}>
           Ciao {name},<br />
