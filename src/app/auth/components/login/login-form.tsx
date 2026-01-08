@@ -1,5 +1,4 @@
 "use client";
-
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { login } from "@/lib/api/auth";
@@ -59,24 +58,9 @@ export function LoginForm() {
                     setError(`Ruolo non riconosciuto: ${role}`);
             }
         } catch (err: any) {
-            console.error("[Login] Errore catturato:", err);
-            let errorMsg = "Errore di rete";
-
-            if (err.response?.data?.error) {
-                errorMsg = err.response.data.error;
-            } else if (err.response?.data?.message) {
-                errorMsg = err.response.data.message;
-            } else if (err.response?.status === 401) {
-                errorMsg = "Email o password non corretti";
-            } else if (err.response?.status === 404) {
-                errorMsg = "Utente non trovato";
-            } else if (err.message) {
-                errorMsg = err.message;
-            } else if (!err.response) {
-                errorMsg = "Impossibile contattare il server. Verifica che il backend sia in esecuzione.";
-            }
-
-            setError(errorMsg);
+            setError(err.response?.data?.error || "Password errata");
+            setPassword(""); // svuota la password se errata
+            console.error(err);
         } finally {
             setLoading(false);
         }
@@ -84,7 +68,19 @@ export function LoginForm() {
 
     return (
         <form onSubmit={handleSubmit} className="space-y-4">
-            {error && <div className="text-red-600">{error}</div>}
+            {error && (
+                <div className="text-red-600">
+                    {error}
+                    <div className="mt-2">
+                        <a
+                            href="/auth/forgot-password"
+                            className="text-sm text-blue-600 hover:underline"
+                        >
+                            Password dimenticata?
+                        </a>
+                    </div>
+                </div>
+            )}
             <input
                 type="email"
                 placeholder="Email"
