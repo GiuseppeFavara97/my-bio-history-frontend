@@ -1,10 +1,23 @@
 "use client";
 
 import dynamic from "next/dynamic";
+import { useSearchParams } from "next/navigation";
+import { useEffect } from "react";
+import { toast } from "sonner";
 
 const LoginForm = dynamic(() => import("./login-form").then((mod) => mod.LoginForm), { ssr: false });
 
 export default function Login({ setIsRegister }: { setIsRegister: (value: boolean) => void }) {
+  const searchParams = useSearchParams();
+  const verified = searchParams.get("verified");
+
+  useEffect(() => {
+    if (verified === "true") {
+      toast.success("Email verificata con successo!", {
+        duration: 5000,
+      });
+    }
+  }, [verified]);
   return (
     <div className="flex h-dvh">
       <div className="  flex w-full items-center justify-center lg:w-2/3">

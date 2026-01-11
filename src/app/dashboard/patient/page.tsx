@@ -20,7 +20,6 @@ import PatientProfile from "./components/profile";
 import PatientAllergy from "./components/allergy/page";
 import PatientVaccines from "./components/vaccine/page";
 import PatientDocuments from "./components/upload/page";
-import { getAllergyById } from "@/lib/api/allergy";
 
 type MainArea = "profilo" | "settings" | "visite" | "allergy" | "vaccini" | "documenti";
 

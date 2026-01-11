@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
+import { logout } from "@/lib/api/auth";
 
 export default function Sidebar({
     open,
@@ -19,11 +20,8 @@ export default function Sidebar({
         { label: "Impostazioni", href: "/dashboard/admin/settings" },
     ];
 
-    const handleLogout = () => {
-        // Rimuovi il cookie
-        document.cookie = "token=; path=/; max-age=0";
-
-        // Redirect al login
+    const handleLogout = async () => {
+        await logout();
         router.push("/");
     };
 

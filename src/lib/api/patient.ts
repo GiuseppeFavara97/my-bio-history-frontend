@@ -1,22 +1,32 @@
 import { Patient } from "@/Types/Types";
 import { api } from "./api";
 
-export const getPatients = () => api.get("/patients").then(res => res.data);
-export const getPatientById = (id: string) => api.get(`/patients/getById/${id}`).then(res => res.data);
-export const createPatient = (data: any) => api.post("/patients/create", data).then(res => res.data);
-export const updatePatient = (id: number, data: Partial<Patient>) => api.patch(`/patients/update/${id}`, data).then(res => res.data);
-export const softDeletePatient = (id: number) => api.patch(`/patients/softDelete/${id}`).then(res => res.data);
+export const getPatients = async () => {
+    const { data } = await api.get("patients");
+    return data;
+};
+
+export const getPatientById = async (id: string) => {
+    const { data } = await api.get(`patients/getById/${id}`);
+    return data;
+};
+
+export const createPatient = async (patientData: any) => {
+    const { data } = await api.post("patients/create", patientData);
+    return data;
+};
+
+export const updatePatient = async (id: number, patientData: Partial<Patient>) => {
+    const { data } = await api.patch(`patients/update/${id}`, patientData);
+    return data;
+};
+
+export const softDeletePatient = async (id: number) => {
+    const { data } = await api.delete(`patients/softDelete/${id}`);
+    return data;
+};
+
 export const getCurrentPatient = async () => {
-    try {
-        const { data } = await api.get("/patients/me");
-        return data as Patient;
-    } catch (err: any) {
-        if (err.response?.status === 401) {
-            console.warn("Utente non autenticato, redirect a /auth");
-            if (typeof window !== "undefined") {
-                window.location.href = "/auth";
-            }
-        }
-        throw err;
-    }
+    const { data } = await api.get("patients/me");
+    return data as Patient;
 };
