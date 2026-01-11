@@ -3,8 +3,8 @@
 import { useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 import { Edit2, Save, X } from "lucide-react";
-import { getUsers } from "@/lib/api/users";
-import { User } from "../../../lib/types";
+import { getUsers, updateUser } from "@/lib/api/users";
+import { User } from "@/Types/Types";
 
 export default function AdminDashboardPage() {
     const [users, setUsers] = useState<User[]>([]);

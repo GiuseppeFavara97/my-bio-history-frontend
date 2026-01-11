@@ -2,114 +2,143 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
 import { login } from "@/lib/api/auth";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import {
+    Form,
+    FormControl,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
+} from "@/components/ui/form";
+import { Loader2 } from "lucide-react";
+
+const loginSchema = z.object({
+    email: z.string().email({ message: "Inserisci un indirizzo email valido." }),
+    password: z.string().min(1, { message: "La password è obbligatoria." }),
+});
+
+type LoginFormValues = z.infer<typeof loginSchema>;
 
 export function LoginForm() {
     const router = useRouter();
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    async function handleSubmit(e: React.FormEvent) {
-        e.preventDefault();
+    const form = useForm<LoginFormValues>({
+        resolver: zodResolver(loginSchema),
+        defaultValues: {
+            email: "",
+            password: "",
+        },
+    });
+
+    async function onSubmit(values: LoginFormValues) {
         setLoading(true);
         setError(null);
 
         try {
-            // Trim email/password per rimuovere spazi
-            const trimmedEmail = email.trim();
-            const trimmedPassword = password.trim();
+            const trimmedEmail = values.email.trim();
+            const rawPassword = values.password;
 
             console.log("[Login] Tentativo login con:", {
-                email: `${trimmedEmail.substring(0,3)}********`,
-                password: `${trimmedPassword.substring(0,0)}********`,
+                url: `${process.env.NEXT_PUBLIC_API_URL}/auth/login`,
+                email: `${trimmedEmail.substring(0, 3)}********`,
                 emailLength: trimmedEmail.length,
-                passwordLength: trimmedPassword.length,
             });
 
-            const data = await login(trimmedEmail, trimmedPassword);
-            console.log("[Login] Risposta ricevuta dal server:", data);
+            const data = await login(trimmedEmail, rawPassword);
+            
+            const role = data?.user?.role;
+            if (!role) throw new Error("Ruolo non trovato nella risposta");
 
-            const role = data?.role;
-            const token = data?.token;
+            const dashboardPath = `/dashboard/${role.toLowerCase()}`;
+            console.log(`[Login] Successo, reindirizzamento a ${dashboardPath}`);
+            router.push(dashboardPath);
 
-            console.log("[Login] Token ricevuto:", token ? "✓ Presente" : "✗ Mancante");
-            console.log("[Login] Role estratto:", role);
-
-            if (!role) {
-                throw new Error("Role non trovato nella risposta del server");
-            }
-
-            switch (role.toUpperCase()) {
-                case "ADMIN":
-                    console.log("[Login] Reindirizzamento a /dashboard/admin");
-                    router.push("/dashboard/admin");
-                    break;
-                case "DOCTOR":
-                    console.log("[Login] Reindirizzamento a /dashboard/doctor");
-                    router.push("/dashboard/doctor");
-                    break;
-                case "PATIENT":
-                    console.log("[Login] Reindirizzamento a /dashboard/patient");
-                    router.push("/dashboard/patient");
-                    break;
-                default:
-                    console.warn("[Login] Role sconosciuto:", role);
-                    setError(`Ruolo non riconosciuto: ${role}`);
-            }
         } catch (err: any) {
-            console.error("[Login] Errore catturato:", err);
-            let errorMsg = "Errore di rete";
+            console.error("[Login] Errore:", err);
+            const status = err.response?.status;
+            const backendMsg = err.response?.data?.message || err.response?.data?.error;
 
-            if (err.response?.data?.error) {
-                errorMsg = err.response.data.error;
-            } else if (err.response?.data?.message) {
-                errorMsg = err.response.data.message;
-            } else if (err.response?.status === 401) {
-                errorMsg = "Email o password non corretti";
-            } else if (err.response?.status === 404) {
-                errorMsg = "Utente non trovato";
-            } else if (err.message) {
-                errorMsg = err.message;
-            } else if (!err.response) {
-                errorMsg = "Impossibile contattare il server. Verifica che il backend sia in esecuzione.";
+            if (status === 401) {
+                setError(backendMsg || "Email o password non corretti (o account non verificato)");
+            } else {
+                setError(backendMsg || "Si è verificato un errore durante l'accesso");
             }
-
-            setError(errorMsg);
         } finally {
             setLoading(false);
         }
     }
 
     return (
-        <form onSubmit={handleSubmit} className="space-y-4">
-            {error && <div className="text-red-600">{error}</div>}
-            <input
-                type="email"
-                placeholder="Email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="w-full p-2 border rounded"
-                required
-                autoComplete="email"
-            />
-            <input
-                type="password"
-                placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="w-full p-2 border rounded"
-                required
-                autoComplete="current-password"
-            />
-            <button
-                type="submit"
-                disabled={loading}
-                className="w-full bg-primary text-white p-2 rounded"
-            >
-                {loading ? "Caricamento..." : "Accedi"}
-            </button>
-        </form>
+        <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                {error && (
+                    <div className="p-3 text-sm font-medium text-red-600 bg-red-50 rounded-md border border-red-100">
+                        {error}
+                    </div>
+                )}
+                
+                <FormField
+                    control={form.control}
+                    name="email"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>Email</FormLabel>
+                            <FormControl>
+                                <Input 
+                                    placeholder="nome@esempio.it" 
+                                    {...field} 
+                                    autoComplete="email"
+                                    disabled={loading}
+                                />
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+
+                <FormField
+                    control={form.control}
+                    name="password"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>Password</FormLabel>
+                            <FormControl>
+                                <Input 
+                                    type="password" 
+                                    placeholder="••••••••" 
+                                    {...field} 
+                                    autoComplete="current-password"
+                                    disabled={loading}
+                                />
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+
+                <Button
+                    type="submit"
+                    disabled={loading}
+                    className="w-full"
+                >
+                    {loading ? (
+                        <>
+                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                            Accesso in corso...
+                        </>
+                    ) : (
+                        "Accedi"
+                    )}
+                </Button>
+            </form>
+        </Form>
     );
 }

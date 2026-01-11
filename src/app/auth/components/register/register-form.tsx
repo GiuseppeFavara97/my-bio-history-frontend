@@ -47,46 +47,43 @@ export function RegisterForm() {
 
     const onSubmit = async (data: z.infer<typeof FormSchema>) => {
         try {
-            let payload;
+            const commonFields = {
+                email: data.email.trim(),
+                password: data.password,
+                role: data.role,
+            };
 
-            if (data.role === "DOCTOR") {
-                payload = {
-                    email: data.email.trim(),
-                    password: data.password,
-                    role: "DOCTOR",
-                    doctor: {
-                        firstName: data.name,
-                        lastName: data.surname,
-                        birthday: data.birthday,
-                        taxCode: data.taxCode,
-                        phoneNumber: data.phoneNumber,
-                        specialization: data.specialization,
-                        licenseNumber: data.licenseNumber,
-                        place: data.place,
-                    },
+            const profileFields = {
+                firstName: data.name,
+                lastName: data.surname,
+                birthday: data.birthday,
+                taxCode: data.taxCode,
+                phoneNumber: data.phoneNumber,
+            };
+
+            const payload = data.role === "DOCTOR" 
+                ? { 
+                    ...commonFields, 
+                    doctor: { 
+                        ...profileFields, 
+                        specialization: data.specialization, 
+                        licenseNumber: data.licenseNumber, 
+                        place: data.place 
+                    } 
+                }
+                : { 
+                    ...commonFields, 
+                    patient: profileFields 
                 };
-            } else {
-                payload = {
-                    email: data.email.trim(),
-                    password: data.password,
-                    role: "PATIENT",
-                    patient: {
-                        firstName: data.name,
-                        lastName: data.surname,
-                        birthday: data.birthday,
-                        taxCode: data.taxCode,
-                        phoneNumber: data.phoneNumber,
-                    },
-                };
-            }
 
             const res = await registerUser(payload);
-
             const role = res.user.role.toUpperCase();
+            
+            toast.success("Registrazione completata! Controlla la tua email.");
             router.push(`/auth/email-verification?role=${role}`);
-            toast.success("Registrazione completata!");
         } catch (err: any) {
-            toast.error(err.response?.data?.error || "Errore di rete. Riprova più tardi.");
+            const errorMsg = err.response?.data?.error || err.response?.data?.message || "Errore di rete. Riprova più tardi.";
+            toast.error(errorMsg);
         }
     };
 

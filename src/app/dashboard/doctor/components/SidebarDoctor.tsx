@@ -4,6 +4,8 @@ import { Dispatch, HTMLAttributes, HtmlHTMLAttributes, SetStateAction, useState 
 import { SidebarItem } from "./SidebarItem";
 import { motion } from "motion/react"
 import { useRouter } from "next/navigation";
+import { logout } from "@/lib/api/auth";
+
 type SidebarDoctorProps = {
     open: boolean;
     currentView: string,
@@ -15,11 +17,12 @@ type SidebarDoctorProps = {
 export default function SidebarDoctor({ open, currentView, toggle, setCurrentView }: SidebarDoctorProps) {
     const router = useRouter()
 
-    const handleLogout = () => {
-        // Rimuovi il cookie
-        document.cookie = "token=; path=/; max-age=0";
-
-        // Redirect al login
+    const handleLogout = async () => {
+        try {
+            await logout();
+        } catch (err) {
+            console.error("Logout error:", err);
+        }
         router.push("/");
     };
 

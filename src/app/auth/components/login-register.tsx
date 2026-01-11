@@ -54,8 +54,8 @@ export default function LoginRegister() {
                                 height={200}
                                 alt="Picture of the author"
                             />
-                            <h1 className="text-4xl font-bold">Welcome!</h1>
-                            <p>You’re in the right place.</p>
+                            <h1 className="text-4xl font-bold">Benvenuto!</h1>
+                            <p>Sei nel posto giusto.</p>
                         </motion.div>
                     )}
                 </AnimatePresence>

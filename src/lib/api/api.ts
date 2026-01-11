@@ -3,17 +3,16 @@ import axios from "axios";
 export const api = axios.create({
     baseURL: process.env.NEXT_PUBLIC_API_URL,
     withCredentials: true,
-    headers: {
-        "Content-Type": "application/json",
-    },
+    xsrfCookieName: 'XSRF-TOKEN',
+    xsrfHeaderName: 'X-XSRF-TOKEN',
 });
 
 api.interceptors.response.use(
     (response) => response,
     (error) => {
-        if (error.response?.status === 401) {
+        // Evita il redirect se siamo in fase di login o se l'errore non è 401
+        if (error.response?.status === 401 && !error.config.url.includes("/auth/login")) {
             if (typeof window !== "undefined") {
-                sessionStorage.removeItem("auth_token");
                 window.location.href = "/auth";
             }
         }

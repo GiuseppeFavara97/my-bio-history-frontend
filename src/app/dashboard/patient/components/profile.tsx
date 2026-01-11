@@ -31,7 +31,6 @@ export default function PatientProfile({ userData, userDataAccount, setMainArea 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
             <Info label="Username" value={userDataAccount?.username} />
             <Info label="Email" value={userDataAccount?.email} />
-            <Info label="password" value={userDataAccount?.password} />
           </div>
         </section>
         <Separator />

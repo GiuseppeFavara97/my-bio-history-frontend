@@ -1,22 +1,15 @@
 import { api } from "./api";
 
 export const login = async (email: string, password: string) => {
-    const cleanEmail = email.trim().toLowerCase();
-    const cleanPassword = password.trim();
+    const cleanEmail = email.trim();
 
     const response = await api.post("/auth/login", {
-        email: cleanEmail,
-        password: cleanPassword
+        username: cleanEmail, // Standard per Spring Security
+        email: cleanEmail,    // Come specificato dall'utente
+        password: password 
     });
 
     const { data } = response;
-
-    if (data?.token) {
-        if (typeof window !== "undefined") {
-            sessionStorage.setItem("auth_token", data.token);
-            console.log("[Auth] Token salvato in sessionStorage:", data.token);
-        }
-    }
 
     return data;
 };
