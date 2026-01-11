@@ -1,80 +1,84 @@
-import { Patient, AllergyPayload, AllergyFormData, Severity } from "@/Types/Types";
-import Select from "react-select";
-import { FormEvent, useState } from "react";
-import { createAllergyByDoctor } from "@/lib/api/doctor";
-import { useDoctor } from "../shared/DoctorProvider";
+import { Allergy, AllergyFormData, AllergyUpdatePayload, Severity } from "@/Types/Types";
 import ModalBaseLayout from "../ui/ModalBaseLayout";
+import { FormEvent, useState } from "react";
+import Select from "react-select";
+import { updateAllergyByDoctor } from "@/lib/api/doctor";
+import { useDoctor } from "../shared/DoctorProvider";
 import { Button } from "@/components/ui/button";
 import DoctorModalInput from "../ui/DoctorModalInput";
 import DoctorModalInputTextArea from "../ui/DoctorModalInputTextArea";
 import { toast } from "sonner";
 
-type AllergiespatientAddprops = {
-  selectedPatient?: Patient;
-  setAddModal: (v: boolean) => void;
-  onAllergyChange:()=>void
+type DoctorAllergiesUpdateModalProps = {
+  selectedAllergy: Allergy;
+  setUpdateModal: (v: boolean) => void;
+  onAllergyChange: () => void;
 };
 
-export default function DoctorAllergiesAddModal({ selectedPatient, setAddModal,onAllergyChange }: AllergiespatientAddprops) {
+export default function DoctorAllergiesUpdateModal({
+  selectedAllergy,
+  setUpdateModal,
+  onAllergyChange,
+}: DoctorAllergiesUpdateModalProps) {
   const options = [
     { value: Severity.LIEVE, label: "Lieve" },
-    { value: Severity.MODERATA, label: "Media" },
+    { value: Severity.MODERATA, label: "Moderata" },
     { value: Severity.GRAVE, label: "Grave" },
   ] as const;
 
+  const doctor = useDoctor().doctor;
+
   const [data, setData] = useState<AllergyFormData>({
-    allergen: "",
-    reaction: "",
-    note: "",
-    startDate: new Date(),
-    severity: Severity.LIEVE,
+    allergen: selectedAllergy.allergen,
+    reaction: selectedAllergy.reaction,
+    note: selectedAllergy.note ?? "",
+    startDate: selectedAllergy.startDate ? new Date(selectedAllergy.startDate) : new Date(),
+    severity: selectedAllergy.severity,
   });
 
   const selected = options.find((option) => option.value === data.severity) ?? null;
-  const { doctor } = useDoctor();
 
   async function sendData(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-
-    if (!selectedPatient || !doctor) return;
-
-    const payload: AllergyPayload = {
-      ...data,
-      medicalRecordId: selectedPatient.medicalRecordId,
-      doctorId: doctor.id,
-    };
+    if (!doctor) return;
 
     try {
-      await createAllergyByDoctor(payload);
-      toast.success("Allergia creata correttamente")
-      setAddModal(false);
+      const payload: AllergyUpdatePayload = {
+        ...data,
+        doctorId: doctor.id,
+      };
+      await updateAllergyByDoctor(payload, selectedAllergy.id);
       onAllergyChange();
+      toast.success("Allergia aggiornata correttamente");
+
+      setUpdateModal(false);
     } catch (err) {
-      toast.error("errore nella creazioen")
-      console.error("errore nell'invio dati", err);
+      toast.success("errore nell'aggiornamento");
+      console.error("errore aggiornamento allergia", err);
     }
   }
 
   return (
-    <ModalBaseLayout label="Aggiungi Allergia" onClose={() => setAddModal(false)}>
+    <ModalBaseLayout label="Modifica Allergia" onClose={() => setUpdateModal(false)}>
       <form onSubmit={sendData} className="flex flex-col gap-5">
         <DoctorModalInput
           label="Allergene"
           type="text"
-          placeholder="Allergene"
+          value={data.allergen}
           onChange={(e) => setData((prev) => ({ ...prev, allergen: e.target.value }))}
         />
 
         <DoctorModalInput
           label="Reazioni"
           type="text"
-          placeholder="Reazioni"
+          value={data.reaction}
           onChange={(e) => setData((prev) => ({ ...prev, reaction: e.target.value }))}
         />
 
         <DoctorModalInput
           label="Data di inizio"
           type="date"
+          value={data.startDate.toISOString().split("T")[0]}
           onChange={(e) =>
             setData((prev) => ({
               ...prev,
@@ -85,7 +89,7 @@ export default function DoctorAllergiesAddModal({ selectedPatient, setAddModal,o
 
         <DoctorModalInputTextArea
           label="Note"
-          placeholder="Note"
+          value={data.note}
           onChange={(e) => setData((prev) => ({ ...prev, note: e.target.value }))}
         />
 
@@ -100,12 +104,11 @@ export default function DoctorAllergiesAddModal({ selectedPatient, setAddModal,o
                 severity: e?.value as Severity,
               }))
             }
-            placeholder="Seleziona una gravità"
             isClearable
           />
         </div>
 
-        <Button type="submit">Aggiungi Allergia</Button>
+        <Button type="submit">Salva modifiche</Button>
       </form>
     </ModalBaseLayout>
   );

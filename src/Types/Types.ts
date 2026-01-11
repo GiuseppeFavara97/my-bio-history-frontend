@@ -1,4 +1,3 @@
-
 export type User = {
   id: number;
   username: string;
@@ -24,7 +23,7 @@ export type MedicalRecord = {
   softDeleted: boolean;
   allergies: Allergy[];
   cares: Care[];
-  diagnoses: Diagnosis[];
+  diagnosis: Diagnosis[];
   patient: Patient;
   vaccines: Vaccine[];
   upload: UploadFile[];
@@ -54,6 +53,7 @@ export interface Patient extends PersonData {
   upload: UploadFile[];
   vaccines: Vaccine[];
   user: User;
+  medicalRecordId:number;
   medicalRecord: MedicalRecord;
 }
 
@@ -62,7 +62,7 @@ export type Allergy = {
   allergen: string;
   note: string;
   reaction: string;
-  severity: string;
+  severity: Severity;
   end_date: Date;
   startDate: Date;
   patientId?: number;
@@ -90,6 +90,15 @@ export type AllergyPayload = {
   doctorId?: number;
   patientId?: number;
 };
+export type AllergyUpdatePayload = {
+  allergen?: string;
+  reaction?: string;
+  startDate?: Date;
+  note?: string;
+  severity?: string;
+  doctorId?: number;
+  patientId?: number;
+};
 
 export enum Severity {
   LIEVE = "LIEVE",
@@ -105,7 +114,24 @@ export type Care = {
   softDeleted: boolean;
   doctor: Doctor;
   medicalRecord: MedicalRecord;
+  diagnosisId:number
 };
+export type CareFormData = {
+  description: string;
+  durationDays: string | number;
+  dailyFrequency: number | string;
+  diagnosisId:number
+};
+export type CarePayload = {
+  description: string;
+  durationDays: string | number;
+  dailyFrequency: number | string;
+  medicalRecordId: number;
+  patientId?: number;
+  doctorId?: number;
+};
+
+export type CareUpdatePayload= Omit<CarePayload,"medicalRecordId">
 
 export type Diagnosis = {
   id: number;
@@ -116,13 +142,29 @@ export type Diagnosis = {
   updatedAt: Date;
   doctor: Doctor;
   medicalRecord: MedicalRecord;
+  cares:Care[]
+  
 };
+
+export type DiagnosisFormData = {
+  pathologyName: string;
+  description: string;
+};
+
+export type DiagnosisPayload = {
+  pathologyName: string;
+  description: string;
+  doctorId?: number;
+  patientId?: number;
+  medicalRecordId: number;
+};
+export type DiagnosisUpdatePayload = Omit<DiagnosisPayload, "medicalRecordId">;
 
 export type Vaccine = {
   id: number;
   name: string;
   vaccinationBooster: Date;
-  type: number;
+  type: string;
   vaccinationDate: Date;
   softDeleted: boolean;
   createdAt: Date;
@@ -137,7 +179,6 @@ export type VaccinesFormData = {
   type?: string;
   vaccinationDate?: Date;
   vaccinationBooster?: Date;
-
 };
 export type VaccinesPayload = {
   name?: string;
@@ -147,6 +188,14 @@ export type VaccinesPayload = {
   doctorId?: number;
   patientId?: number;
   medicalRecordId: number;
+};
+export type VaccinesUpdatePayload = {
+  name?: string;
+  type?: string;
+  vaccinationDate?: Date;
+  vaccinationBooster?: Date;
+  doctorId?: number;
+  patientId?: number;
 };
 
 export type UploadFile = {
@@ -162,7 +211,7 @@ export type UploadFile = {
   medicalRecord: MedicalRecord;
 };
 
-export type Doctor = {
+export type oldDoctor = {
   id: number;
   specialization: string;
   licenseNumber: string;
@@ -177,6 +226,26 @@ export type Doctor = {
   vaccine: Vaccine[];
 };
 
+export type Doctor = {
+  id: number;
+  firstName: string;
+  lastName: string;
+  birthday: string | Date | null;
+  phoneNumber: string;
+  place: string;
+  province: string;
+  municipality: string;
+  state: string;
+  sex: string | null;
+  taxCode: string;
+  licenseNumber: string;
+  specialization: string;
+  medicalRecordId: number | null;
+  softDeleted: boolean;
+  createdAt: string | Date;
+  updatedAt: string | Date | null;
+  patients: Patient[];
+};
 export type DoctorAuthData = {
   id: number;
   username: string;
