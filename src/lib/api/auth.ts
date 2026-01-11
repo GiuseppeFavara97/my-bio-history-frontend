@@ -20,3 +20,13 @@ export const register = async (userData: any) => {
 export const logout = async () => {
     await api.post("/auth/logout");
 };
+
+export const forgotPassword = async (email: string) => {
+    const { data } = await api.post("/auth/forgot-password", { email });
+    return data;
+};
+
+export const resetPassword = async (payload: { email: string; otp: string; newPassword: string }) => {
+    const { data } = await api.post("/auth/reset-password", payload);
+    return data;
+};
