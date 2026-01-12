@@ -18,7 +18,6 @@ export default function PatientProfile({ userData, userDataAccount, setMainArea 
       <CardHeader>
         <CardTitle className="text-2xl flex items-center gap-3">
           {userData.firstName} {userData.lastName}
-          <Badge variant="outline">{userData.sex}</Badge>
         </CardTitle>
       </CardHeader>
 
