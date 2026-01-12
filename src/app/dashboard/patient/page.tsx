@@ -8,7 +8,8 @@ import {
     ClipboardClock,
     PillBottle,
     Syringe,
-    Upload
+    Upload,
+    LayoutDashboard
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -20,14 +21,15 @@ import PatientProfile from "./components/profile";
 import PatientAllergy from "./components/allergy/page";
 import PatientVaccines from "./components/vaccine/page";
 import PatientDocuments from "./components/upload/page";
+import PatientHome from "./components/patientHome";
 
-type MainArea = "profilo" | "settings" | "visite" | "allergy" | "vaccini" | "documenti";
+type MainArea = "cartella" | "profilo" | "settings" | "visite" | "allergy" | "vaccini" | "documenti";
 
 export default function PatientPage() {
     const router = useRouter();
     const [patient, setPatient] = useState<Patient | null>(null);
     const [loading, setLoading] = useState(true);
-    const [mainArea, setMainArea] = useState<MainArea>("profilo");
+    const [mainArea, setMainArea] = useState<MainArea>("cartella");
 
     useEffect(() => {
         async function fetchPatient() {
@@ -63,6 +65,7 @@ export default function PatientPage() {
 
     // Mappa delle sezioni principali
     const sections: Record<MainArea, JSX.Element> = {
+        cartella: <PatientHome patient={patient} />,
         profilo: <PatientProfile userData={patient} userDataAccount={user} setMainArea={setMainArea} />,
         visite: <div>Sezione Visite</div>, // Placeholder per PatientVisits
         allergy: <PatientAllergy allergies={allergies as Allergy[]} />,
@@ -105,6 +108,12 @@ export default function PatientPage() {
                 <div className="bg-white p-4 rounded-2xl space-y-2">
                     <span className="font-bold text-center block mb-2">Cartella Clinica</span>
 
+                    <SidebarItem
+                        icon={<LayoutDashboard />}
+                        label="Riepilogo"
+                        active={mainArea === "cartella"}
+                        onClick={() => setMainArea("cartella")}
+                    />
                     <SidebarItem
                         icon={<ClipboardClock />}
                         label="Visite"
