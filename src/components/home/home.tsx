@@ -29,6 +29,13 @@ const  Home = () => {
     Chi siamo
   </h2>
 
+
+  <h2 
+  id="servizi"
+  className="text-2xl font-semibold mb-8 scroll-mt-[-500px]"
+  ></h2>
+
+
   <section className="w-full px-6 py-8 flex justify-center">
     <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl w-full">
 
