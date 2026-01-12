@@ -22,6 +22,7 @@ import PatientAllergy from "./components/allergy/page";
 import PatientVaccines from "./components/vaccine/page";
 import PatientDocuments from "./components/upload/page";
 import PatientHome from "./components/patientHome";
+import PatientSettings from "./components/settings";
 
 type MainArea = "cartella" | "profilo" | "settings" | "visite" | "allergy" | "vaccini" | "documenti";
 
@@ -65,13 +66,13 @@ export default function PatientPage() {
 
     // Mappa delle sezioni principali
     const sections: Record<MainArea, JSX.Element> = {
-        cartella: <PatientHome patient={patient} />,
+        cartella: <PatientHome patient={patient} setMainArea={setMainArea} />,
         profilo: <PatientProfile userData={patient} userDataAccount={user} setMainArea={setMainArea} />,
         visite: <div>Sezione Visite</div>, // Placeholder per PatientVisits
         allergy: <PatientAllergy allergies={allergies as Allergy[]} />,
         vaccini: <PatientVaccines />,
         documenti: <PatientDocuments />,
-        settings: <div>Impostazioni utente</div>,
+        settings: <PatientSettings />,
     };
 
     return (
