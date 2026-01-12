@@ -17,18 +17,15 @@ export default function Register({ setIsRegister }: { setIsRegister: (value: boo
         
         <div className="bg-white/50 backdrop-blur-sm p-6 rounded-2xl border border-gray-100 shadow-sm">
           <RegisterForm />
-          
-          <div className="mt-6 pt-6 border-t text-center">
-            <p className="text-sm text-muted-foreground">
-              Hai già un account?{" "}
-              <button
-                onClick={() => setIsRegister(false)}
-                className="text-primary font-semibold hover:underline transition-all"
-              >
-                Accedi
-              </button>
-            </p>
-          </div>
+          <p className="mt-6 text-sm text-muted-foreground text-center">
+            Hai già un account?{" "}
+            <button
+              onClick={() => setIsRegister(false)}
+              className="text-primary font-semibold hover:underline transition-all"
+            >
+              Accedi
+            </button>
+          </p>
         </div>
       </div>
     </div>

@@ -19,7 +19,7 @@ export default function Login({ setIsRegister }: { setIsRegister: (value: boolea
     }
   }, [verified]);
   return (
-    <div className="flex h-dvh">
+    <div className="flex">
       <div className="  flex w-full items-center justify-center lg:w-2/3">
         <div className="w-full max-w-md space-y-10 p-2 lg:py-25 outline rounded-2xl bg-gray-500/10">
           <div className="space-y-4 text-center">
@@ -30,7 +30,7 @@ export default function Login({ setIsRegister }: { setIsRegister: (value: boolea
           </div>
           <div className="space-y-4">
             <LoginForm />
-            <p className="text-muted-foreground text-center text-xs">
+            <p className="mt-6 text-muted-foreground text-center text-xs">
               Non hai un account?{" "}
               <button
                 onClick={() => setIsRegister(true)}
