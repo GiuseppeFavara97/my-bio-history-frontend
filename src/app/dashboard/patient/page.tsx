@@ -79,7 +79,6 @@ export default function PatientPage() {
             {/* Sidebar */}
             <aside className="m-1 gap-y-6 flex flex-col h-full w-full sm:w-1/3">
                 <div className="bg-white rounded-2xl p-5 flex gap-4 items-center">
-                    <img src="/barney.webp" alt="Foto profilo" width={80} className="rounded" />
                     <div className="flex flex-col w-full">
                         <span className="text-lg font-semibold">{firstName} {lastName}</span>
                         <span className="text-sm text-gray-500 mb-3">{user?.email}</span>
