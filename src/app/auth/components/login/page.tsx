@@ -1,11 +1,26 @@
 "use client";
 
-import { LoginForm } from "./login-form";
+import dynamic from "next/dynamic";
+import { useSearchParams } from "next/navigation";
+import { useEffect } from "react";
+import { toast } from "sonner";
+
+const LoginForm = dynamic(() => import("./login-form").then((mod) => mod.LoginForm), { ssr: false });
 
 export default function Login({ setIsRegister }: { setIsRegister: (value: boolean) => void }) {
+  const searchParams = useSearchParams();
+  const verified = searchParams.get("verified");
+
+  useEffect(() => {
+    if (verified === "true") {
+      toast.success("Email verificata con successo!", {
+        duration: 5000,
+      });
+    }
+  }, [verified]);
   return (
     <div className="flex h-dvh">
-      <div className="bg-background  flex w-full items-center justify-center lg:w-2/3">
+      <div className="  flex w-full items-center justify-center lg:w-2/3">
         <div className="w-full max-w-md space-y-10 p-2 lg:py-25 outline rounded-2xl bg-gray-500/10">
           <div className="space-y-4 text-center">
             <div className="font-medium tracking-tight">My Bio History</div>

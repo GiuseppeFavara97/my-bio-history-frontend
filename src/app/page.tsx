@@ -25,7 +25,7 @@ export default function HomePage() {
   return (
     <>
       <Navbar />
-      <main className="flex flex-col items-center justify-center bg-[#f4f5f7] p-8">
+      <main className="flex flex-col items-center justify-center bg-[#f4f5f7] mx-10 p-8 ">
         <Home />
       </main>
       <Footer />

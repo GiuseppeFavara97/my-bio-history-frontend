@@ -1,25 +1,21 @@
 "use client";
+import React, { useState } from "react";
+import DoctorProvider, { useDoctor } from "./components/shared/DoctorProvider";
+import DoctorHeader from "./components/ui/DoctorHeader";
+import SidebarDoctor from "./components/ui/SidebarDoctor";
 
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-import DoctorSidebar from "./components/sidebar";
-import DoctorHeader from "./components/header";
-
-export default function BusinessLayout({ children }: { children: React.ReactNode }) {
-
-    const [open, setOpen] = useState(false);
-
-    return (
-        <div className="min-h-screen bg-slate-50 text-slate-900">
-            <div className="flex">
-                <DoctorSidebar open={open} setOpen={setOpen} />
-                <div className="flex-1 min-h-screen ml-0 sm:ml-64">
-                    <DoctorHeader setOpen={setOpen} />
-                    <main className="p-6">
-                        <div className="mx-auto max-w-7xl">{children}</div>
-                    </main>
-                </div>
-            </div>
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <main className="bg-[#D9D9D6]">
+      <DoctorProvider>
+        <div className="flex h-full w-full">
+          <SidebarDoctor />
+          <div className="flex h-full w-full flex-col">
+            <DoctorHeader />
+            {children}
+          </div>
         </div>
-    );
+      </DoctorProvider>
+    </main>
+  );
 }

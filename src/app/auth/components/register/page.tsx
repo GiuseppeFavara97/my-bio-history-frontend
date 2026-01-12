@@ -1,27 +1,31 @@
 "use client";
 
-import { RegisterForm } from "./register-form";
+import dynamic from "next/dynamic";
+
+const RegisterForm = dynamic(() => import("./register-form").then((mod) => mod.RegisterForm), { ssr: false });
 
 export default function Register({ setIsRegister }: { setIsRegister: (value: boolean) => void }) {
   return (
-    <div className="flex h-dvh    ">
-      <div className="bg-background flex w-full items-center justify-center   lg:w-2/3">
-        <div className="w-full max-w-md space-y-10 p-2 outline rounded-2xl bg-gray-500/10 lg:p-5">
-          <div className="space-y-4 text-center">
-            <div className="font-medium tracking-tight">Register</div>
-            <div className="text-muted-foreground mx-auto max-w-xl">
-              Fill in your details below. We promise not to quiz you about your first pet&apos;s name (this time).
-            </div>
-          </div>
-          <div className="space-y-4">
-            <RegisterForm />
-            <p className="text-muted-foreground text-center text-xs">
-              Already have an account?{" "}
+    <div className="w-full max-w-xl mx-auto py-8 px-4">
+      <div className="space-y-6">
+        <div className="text-center space-y-2">
+          <h2 className="text-3xl font-bold tracking-tight">Crea un account</h2>
+          <p className="text-muted-foreground">
+            Inserisci i tuoi dati per iniziare a gestire la tua storia clinica.
+          </p>
+        </div>
+        
+        <div className="bg-white/50 backdrop-blur-sm p-6 rounded-2xl border border-gray-100 shadow-sm">
+          <RegisterForm />
+          
+          <div className="mt-6 pt-6 border-t text-center">
+            <p className="text-sm text-muted-foreground">
+              Hai già un account?{" "}
               <button
                 onClick={() => setIsRegister(false)}
-                className="text-primary cursor-pointer duration-300 hover:translate-x-1 hover:scale-110 hover:font-bold hover:underline"
+                className="text-primary font-semibold hover:underline transition-all"
               >
-                Login
+                Accedi
               </button>
             </p>
           </div>

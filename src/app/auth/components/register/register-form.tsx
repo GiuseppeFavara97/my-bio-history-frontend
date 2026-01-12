@@ -2,15 +2,18 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { toast } from "sonner";
+import { toast } from "react-hot-toast";
 import { z } from "zod";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { register as registerUser } from "@/lib/api/auth";
-import { useNavigate } from "react-router-dom";
+import { UserRole } from "@/Types/Types";
+import { Loader2 } from "lucide-react";
 
 const FormSchema = z.object({
     role: z.enum(["DOCTOR", "PATIENT"]),
@@ -26,10 +29,13 @@ const FormSchema = z.object({
     place: z.string().optional(),
 });
 
+type FormValues = z.infer<typeof FormSchema>;
+
 export function RegisterForm() {
     const router = useRouter();
+    const [loading, setLoading] = useState(false);
 
-    const form = useForm<z.infer<typeof FormSchema>>({
+    const form = useForm<FormValues>({
         resolver: zodResolver(FormSchema),
         defaultValues: {
             role: "PATIENT",
@@ -46,100 +52,106 @@ export function RegisterForm() {
         },
     });
 
-    const onSubmit = async (data: z.infer<typeof FormSchema>) => {
+    const onSubmit = async (data: FormValues) => {
+        setLoading(true);
         try {
-            let payload;
+            const commonFields = {
+                email: data.email.trim(),
+                password: data.password,
+                role: data.role,
+            };
 
-            if (data.role === "DOCTOR") {
-                payload = {
-                    email: data.email.trim(),
-                    password: data.password,
-                    role: "DOCTOR",
-                    doctor: {
-                        firstName: data.name,
-                        lastName: data.surname,
-                        birthday: data.birthday,
-                        taxCode: data.taxCode,
-                        phoneNumber: data.phoneNumber,
-                        specialization: data.specialization,
-                        licenseNumber: data.licenseNumber,
-                        place: data.place,
-                    },
+            const profileFields = {
+                firstName: data.name,
+                lastName: data.surname,
+                birthday: data.birthday || null,
+                taxCode: data.taxCode || null,
+                phoneNumber: data.phoneNumber || null,
+            };
+
+            const payload = data.role === "DOCTOR" 
+                ? { 
+                    ...commonFields, 
+                    doctor: { 
+                        ...profileFields, 
+                        specialization: data.specialization, 
+                        licenseNumber: data.licenseNumber, 
+                        place: data.place 
+                    } 
+                }
+                : { 
+                    ...commonFields, 
+                    patient: profileFields 
                 };
-            } else {
-                payload = {
-                    email: data.email.trim(),
-                    password: data.password,
-                    role: "PATIENT",
-                    patient: {
-                        firstName: data.name,
-                        lastName: data.surname,
-                        birthday: data.birthday,
-                        taxCode: data.taxCode,
-                        phoneNumber: data.phoneNumber,
-                    },
-                };
-            }
 
             const res = await registerUser(payload);
-
-            const role = res.user.role.toUpperCase();
+            const role = res?.user?.role || data.role;
+            
+            toast.success("Registrazione completata! Controlla la tua email.");
             router.push(`/auth/email-verification?role=${role}`);
-            toast.success("Registrazione completata!");
         } catch (err: any) {
-            toast.error(err.response?.data?.error || "Errore di rete. Riprova più tardi.");
+            console.error("[Register] Errore:", err);
+            const errorMsg = err.response?.data?.error || err.response?.data?.message || "Errore di rete. Riprova più tardi.";
+            toast.error(errorMsg);
+        } finally {
+            setLoading(false);
         }
     };
 
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-                {/* Ruolo */}
                 <FormField
                     control={form.control}
                     name="role"
                     render={({ field }) => (
                         <FormItem>
                             <FormLabel>Ruolo</FormLabel>
-                            <FormControl>
-                                <select {...field} className="w-full p-2 border rounded">
-                                    <option value="PATIENT">Paziente</option>
-                                    <option value="DOCTOR">Dottore</option>
-                                </select>
-                            </FormControl>
+                            <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                <FormControl>
+                                    <SelectTrigger>
+                                        <SelectValue placeholder="Seleziona un ruolo" />
+                                    </SelectTrigger>
+                                </FormControl>
+                                <SelectContent>
+                                    <SelectItem value="PATIENT">Paziente</SelectItem>
+                                    <SelectItem value="DOCTOR">Dottore</SelectItem>
+                                </SelectContent>
+                            </Select>
                             <FormMessage />
                         </FormItem>
                     )}
                 />
 
-                {/* Campi comuni */}
-                <FormField
-                    control={form.control}
-                    name="name"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Nome</FormLabel>
-                            <FormControl>
-                                <Input placeholder="Mario" {...field} />
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
+                <div className="grid grid-cols-2 gap-4">
+                    <FormField
+                        control={form.control}
+                        name="name"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Nome</FormLabel>
+                                <FormControl>
+                                    <Input placeholder="Mario" {...field} />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
 
-                <FormField
-                    control={form.control}
-                    name="surname"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Cognome</FormLabel>
-                            <FormControl>
-                                <Input placeholder="Rossi" {...field} />
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
+                    <FormField
+                        control={form.control}
+                        name="surname"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Cognome</FormLabel>
+                                <FormControl>
+                                    <Input placeholder="Rossi" {...field} />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                </div>
 
                 <FormField
                     control={form.control}
@@ -169,33 +181,35 @@ export function RegisterForm() {
                     )}
                 />
 
-                <FormField
-                    control={form.control}
-                    name="birthday"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Data di nascita</FormLabel>
-                            <FormControl>
-                                <Input type="date" {...field} />
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
+                <div className="grid grid-cols-2 gap-4">
+                    <FormField
+                        control={form.control}
+                        name="birthday"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Data di nascita</FormLabel>
+                                <FormControl>
+                                    <Input type="date" {...field} />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
 
-                <FormField
-                    control={form.control}
-                    name="taxCode"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Codice Fiscale</FormLabel>
-                            <FormControl>
-                                <Input placeholder="CF..." {...field} />
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
+                    <FormField
+                        control={form.control}
+                        name="taxCode"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Codice Fiscale</FormLabel>
+                                <FormControl>
+                                    <Input placeholder="CF..." {...field} />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                </div>
 
                 <FormField
                     control={form.control}
@@ -211,9 +225,9 @@ export function RegisterForm() {
                     )}
                 />
 
-                {/* Campi solo per DOCTOR */}
                 {form.watch("role") === "DOCTOR" && (
-                    <>
+                    <div className="space-y-4 border-t pt-4 mt-4">
+                        <p className="text-sm font-semibold text-muted-foreground">Informazioni Professionali</p>
                         <FormField
                             control={form.control}
                             name="specialization"
@@ -228,38 +242,47 @@ export function RegisterForm() {
                             )}
                         />
 
-                        <FormField
-                            control={form.control}
-                            name="licenseNumber"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Numero Licenza</FormLabel>
-                                    <FormControl>
-                                        <Input placeholder="12345" {...field} />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
+                        <div className="grid grid-cols-2 gap-4">
+                            <FormField
+                                control={form.control}
+                                name="licenseNumber"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Numero Licenza</FormLabel>
+                                        <FormControl>
+                                            <Input placeholder="12345" {...field} />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
 
-                        <FormField
-                            control={form.control}
-                            name="place"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Luogo</FormLabel>
-                                    <FormControl>
-                                        <Input placeholder="Trapani" {...field} />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                    </>
+                            <FormField
+                                control={form.control}
+                                name="place"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Luogo</FormLabel>
+                                        <FormControl>
+                                            <Input placeholder="Trapani" {...field} />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                        </div>
+                    </div>
                 )}
 
-                <Button className="w-full" type="submit" disabled={form.formState.isSubmitting}>
-                    {form.formState.isSubmitting ? "Registrazione in corso..." : "Registrati"}
+                <Button className="w-full" type="submit" disabled={loading}>
+                    {loading ? (
+                        <>
+                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                            Registrazione in corso...
+                        </>
+                    ) : (
+                        "Registrati"
+                    )}
                 </Button>
             </form>
         </Form>
