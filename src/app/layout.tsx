@@ -1,6 +1,8 @@
 import './globals.css'
 import { Inter } from 'next/font/google'
 import { Toaster } from 'react-hot-toast'
+import { ThemeProvider } from '@/components/theme-provider'
+import { LanguageProvider } from '@/components/language-provider'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -11,10 +13,19 @@ export const metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="it">
-      <body className={`${inter.className} bg-[#f4f5f7]`}>
-        {children}
-        <Toaster position="top-center" />
+    <html lang="it" suppressHydrationWarning>
+      <body className={`${inter.className} bg-[#f4f5f7] dark:bg-background`}>
+        <LanguageProvider>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            {children}
+            <Toaster position="top-center" />
+          </ThemeProvider>
+        </LanguageProvider>
       </body>
     </html>
   )
