@@ -1,13 +1,20 @@
 "use client";
 
 import Link from "next/link";
-import { MailCheck, ArrowLeft } from "lucide-react";
+import { MailCheck, ArrowLeft, Home } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 
 export default function EmailVerificationPage() {
   return (
-    <div className="flex h-screen w-full items-center justify-center bg-[#f4f5f7]">
+    <div className="flex h-screen w-full items-center justify-center bg-[#f4f5f7] relative">
+      <Link
+        href="/"
+        className="absolute top-6 left-6 z-50 flex items-center justify-center w-10 h-10 rounded-full transition-all border backdrop-blur-md bg-black/5 hover:bg-black/10 border-black/10 text-gray-800"
+        title="Torna alla Home"
+      >
+        <Home className="w-6 h-6" />
+      </Link>
       <motion.div 
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
