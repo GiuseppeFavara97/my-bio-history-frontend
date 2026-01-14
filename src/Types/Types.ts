@@ -211,6 +211,13 @@ export type UploadFile = {
   medicalRecord: MedicalRecord;
 };
 
+export type UploadUpdatePayload = {
+  name?: string;
+  type?: string;
+  size?: number;
+  url?: string;
+}
+
 export type oldDoctor = {
   id: number;
   specialization: string;
