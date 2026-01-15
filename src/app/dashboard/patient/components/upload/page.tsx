@@ -4,7 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { toast } from "sonner";
 import {Edit2,Save,X,Upload,RefreshCw,FileText,Image as ImageIcon,Download,Trash2,Clock,AlertCircle} from "lucide-react";
 
-import { getAllUploads, updateUpload, softDeleteUpload, saveUploadWithFile } from "@/lib/api/uploadFile";
+import { getAllUploads, updateUpload, softDeleteUpload, saveUpload } from "@/lib/api/uploadFile";
 import type { UploadFile as UploadFileType } from "@/Types/Types";
 
 export default function UploadFilePage() {
@@ -62,7 +62,7 @@ export default function UploadFilePage() {
 
     setUploading(true);
     try {
-      await saveUploadWithFile(file, patientId, name);
+      await saveUpload(file, patientId, name);
       toast.success("File caricato con successo!");
       await fetchUploadFiles();
     } catch (err) {
