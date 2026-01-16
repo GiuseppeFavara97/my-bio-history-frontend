@@ -5,9 +5,10 @@ export function middleware(req: NextRequest) {
 
   // Cookie HttpOnly settato dal backend
   const hasAccessToken = req.cookies.has("access_token");
+  const hasRefreshToken = req.cookies.has("refresh_token");
 
   // Protegge tutte le dashboard
-  if (pathname.startsWith("/dashboard") && !hasAccessToken) {
+  if (pathname.startsWith("/dashboard") && !hasAccessToken && !hasRefreshToken) {
     return NextResponse.redirect(new URL("/auth", req.url));
   }
 
