@@ -56,7 +56,7 @@ export default function UploadFilePage() {
       return;
     }
 
-    const name = prompt("Inserisci un nome per questo file:", file.name) || file.name;
+    const name = file.name;
 
     const patientId = 1;
 
@@ -214,9 +214,6 @@ export default function UploadFilePage() {
                   ? "Rilascia il file per caricarlo"
                   : "Trascina il documento qui"}
               </p>
-              <p className="text-slate-500 text-sm mb-4">
-                oppure
-              </p>
               <button
                 onClick={() => fileInputRef.current?.click()}
                 disabled={uploading}
@@ -228,7 +225,6 @@ export default function UploadFilePage() {
             </div>
 
             <p className="text-xs text-slate-500 mt-2">
-              Formati supportati: PDF, JPEG, PNG • Massimo 10MB
             </p>
           </div>
 
@@ -292,113 +288,107 @@ export default function UploadFilePage() {
             </div>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filtered.map((u) => (
-              <div
-                key={u.id}
-                className="bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-200 overflow-hidden border border-slate-200"
-              >
-                <div className="p-6">
-                  <div className="flex items-start justify-between mb-4">
-                    <div className="flex items-center gap-3 flex-1">
-                      <div className="p-2 bg-slate-100 rounded-lg flex-shrink-0">
-                        {getFileIcon(u.type)}
-                      </div>
-                      <div className="min-w-0 flex-1">
+          <div className="bg-white rounded-xl shadow-md overflow-hidden border border-slate-200">
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead className="bg-slate-50 border-b border-slate-200">
+                  <tr>
+                    <th className="px-6 py-3 text-left text-xs font-semibold text-slate-700 uppercase tracking-wider">Nome</th>
+                    <th className="px-6 py-3 text-left text-xs font-semibold text-slate-700 uppercase tracking-wider">Tipo</th>
+                    <th className="px-6 py-3 text-right text-xs font-semibold text-slate-700 uppercase tracking-wider">Azioni</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-200">
+                  {filtered.map((u) => (
+                    <tr key={u.id} className="hover:bg-slate-50 transition-colors">
+                      <td className="px-6 py-4">
+                        <div className="flex items-center gap-3">
+                          <div className="p-2 bg-slate-100 rounded-lg flex-shrink-0">
+                            {getFileIcon(u.type)}
+                          </div>
+                          <div className="min-w-0 flex-1">
+                            {editingId === u.id ? (
+                              <input
+                                value={editData.name}
+                                onChange={(e) =>
+                                  setEditData({ ...editData, name: e.target.value })
+                                }
+                                className="w-full px-2 py-1 border border-blue-300 rounded-md focus:ring-2 focus:ring-blue-200 outline-none text-sm font-medium"
+                              />
+                            ) : (
+                              <p className="font-semibold text-slate-900 text-sm truncate">
+                                {u.name}
+                              </p>
+                            )}
+                          </div>
+                        </div>
+                      </td>
+                      <td className="px-6 py-4">
                         {editingId === u.id ? (
-                          <input
-                            value={editData.name}
-                            onChange={(e) =>
-                              setEditData({ ...editData, name: e.target.value })
-                            }
-                            className="w-full px-2 py-1 border border-blue-300 rounded-md focus:ring-2 focus:ring-blue-200 outline-none text-sm font-medium"
-                          />
+                          <span className="px-3 py-1 bg-slate-100 text-slate-700 rounded-full text-xs inline-block">
+                            {getFileTypeLabel(editData.type)}
+                          </span>
                         ) : (
-                          <h3 className="font-semibold text-slate-900 text-sm truncate">
-                            {u.name}
-                          </h3>
-                        )}
-                      </div>
-                    </div>
-                    {editingId !== u.id && (
-                      <button
-                        onClick={() => startEditing(u)}
-                        className="text-blue-600 hover:text-blue-700 p-1 hover:bg-blue-50 rounded transition-colors flex-shrink-0"
-                        title="Modifica"
-                      >
-                        <Edit2 size={16} />
-                      </button>
-                    )}
-                  </div>
-
-                  <div className="space-y-3 mb-4">
-                    <div>
-                      <label className="text-xs text-slate-500 uppercase font-semibold block mb-1">
-                        Tipo Documento
-                      </label>
-                      {editingId === u.id ? (
-                        <input
-                          value={editData.type}
-                          onChange={(e) =>
-                            setEditData({ ...editData, type: e.target.value })
-                          }
-                          className="w-full px-2 py-1 border border-blue-300 rounded-md focus:ring-2 focus:ring-blue-200 outline-none text-sm"
-                        />
-                      ) : (
-                        <div className="flex items-center gap-2">
-                          <span className="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-xs font-semibold">
+                          <span className="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-xs font-semibold inline-block">
                             {getFileTypeLabel(u.type)}
                           </span>
-                          {u.type && (
-                            <span className="text-xs text-slate-500">{u.type}</span>
+                        )}
+                      </td>
+                      <td className="px-6 py-4 text-right">
+                        <div className="flex gap-2 justify-end items-center">
+                          {editingId === u.id ? (
+                            <>
+                              <button
+                                onClick={() => saveUploadFile(u.id)}
+                                className="inline-flex items-center gap-1 px-3 py-2 bg-green-600 text-white text-xs font-semibold rounded-lg hover:bg-green-700 transition-colors"
+                                title="Salva"
+                              >
+                                <Save size={14} />
+                                Salva
+                              </button>
+                              <button
+                                onClick={cancelEditing}
+                                className="inline-flex items-center gap-1 px-3 py-2 bg-slate-200 text-slate-700 text-xs font-semibold rounded-lg hover:bg-slate-300 transition-colors"
+                                title="Annulla"
+                              >
+                                <X size={14} />
+                                Annulla
+                              </button>
+                            </>
+                          ) : (
+                            <>
+                              <button
+                                onClick={() => startEditing(u)}
+                                className="text-blue-600 hover:text-blue-700 p-2 hover:bg-blue-50 rounded transition-colors"
+                                title="Modifica nome"
+                              >
+                                <Edit2 size={16} />
+                              </button>
+                              <a
+                                href={u.url}
+                                target="_blank"
+                                rel="noreferrer"
+                                className="text-slate-600 hover:text-slate-700 p-2 hover:bg-slate-200 rounded transition-colors"
+                                title="Scarica"
+                              >
+                                <Download size={16} />
+                              </a>
+                              <button
+                                onClick={() => handleDelete(u.id)}
+                                className="text-red-600 hover:text-red-700 p-2 hover:bg-red-50 rounded transition-colors"
+                                title="Elimina"
+                              >
+                                <Trash2 size={16} />
+                              </button>
+                            </>
                           )}
                         </div>
-                      )}
-                    </div>
-                  </div>
-
-                  <div className="flex gap-2 justify-between">
-                    {editingId === u.id ? (
-                      <>
-                        <button
-                          onClick={() => saveUploadFile(u.id)}
-                          className="flex-1 flex items-center justify-center gap-2 px-3 py-2 bg-green-600 text-white text-sm font-semibold rounded-lg hover:bg-green-700 transition-colors"
-                        >
-                          <Save size={16} />
-                          Salva
-                        </button>
-                        <button
-                          onClick={cancelEditing}
-                          className="flex-1 flex items-center justify-center gap-2 px-3 py-2 bg-slate-200 text-slate-700 text-sm font-semibold rounded-lg hover:bg-slate-300 transition-colors"
-                        >
-                          <X size={16} />
-                          Annulla
-                        </button>
-                      </>
-                    ) : (
-                      <>
-                        <a
-                          href={u.url}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="flex-1 flex items-center justify-center gap-2 px-3 py-2 bg-blue-100 text-blue-700 text-sm font-semibold rounded-lg hover:bg-blue-200 transition-colors"
-                        >
-                          <Download size={16} />
-                          Scarica
-                        </a>
-                        <button
-                          onClick={() => handleDelete(u.id)}
-                          className="px-3 py-2 bg-red-50 text-red-600 hover:bg-red-100 rounded-lg transition-colors"
-                          title="Elimina"
-                        >
-                          <Trash2 size={16} />
-                        </button>
-                      </>
-                    )}
-                  </div>
-                </div>
-              </div>
-            ))}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         )}
       </div>
