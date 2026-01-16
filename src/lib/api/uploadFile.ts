@@ -1,7 +1,7 @@
 import { UploadFile, UploadUpdatePayload } from "@/Types/Types";
 import { api } from "./api";
 
-const BASE_URL = "/uploads"; // api.ts ha già /api
+const BASE_URL = "/uploads";
 
 export const getAllUploads = async () => {
     const { data } = await api.get("uploads");
@@ -17,11 +17,15 @@ export const updateUpload = (id: number, data: UploadUpdatePayload) =>
 export const softDeleteUpload = (id: number) =>
   api.patch<UploadFile>(`${BASE_URL}/softDelete/${id}`).then(res => res.data);
 
-export const saveUploadWithFile = (file: File, patientId: number, name: string) => {
+export const saveUpload = (file: File, patientId: number, name: string) => {
   const formData = new FormData();
   formData.append("file", file);
-  formData.append("patientId", patientId.toString());
+  formData.append("patientId", String(patientId));
   formData.append("name", name);
 
-  return api.post<UploadFile>(`${BASE_URL}/upload`, formData).then(res => res.data);
+  return api
+    .post<UploadFile>(`${BASE_URL}/create/save`, formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    })
+    .then((res) => res.data);
 };
