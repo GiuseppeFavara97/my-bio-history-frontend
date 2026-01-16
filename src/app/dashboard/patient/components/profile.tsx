@@ -9,7 +9,7 @@ import type { PersonData, User } from "@/Types/Types";
 interface PatientProfileProps {
   userData: PersonData;
   userDataAccount: User;
-  setMainArea: React.Dispatch<React.SetStateAction<string>>;
+  setMainArea: (value: any) => void;
 }
 
 export default function PatientProfile({ userData, userDataAccount, setMainArea }: PatientProfileProps) {

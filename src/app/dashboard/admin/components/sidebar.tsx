@@ -9,7 +9,7 @@ export default function Sidebar({
     setOpen,
 }: {
     open: boolean;
-    setOpen: (s: boolean) => void;
+    setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
     const pathname = usePathname() ?? "/dashboard/admin";
     const router = useRouter();

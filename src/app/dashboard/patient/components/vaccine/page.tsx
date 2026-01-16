@@ -17,7 +17,7 @@ export default function VaccinePage() {
     const [editData, setEditData] = useState({
         name: "",
         vaccinationBooster: "",
-        type: 0,
+        type: "",
         vaccinationDate: "",
         createdAt: "",
     });
@@ -46,7 +46,7 @@ export default function VaccinePage() {
         if (!q) return vaccines;
         return vaccines.filter(vaccine =>
             vaccine.name.toLowerCase().includes(q) ||
-            (vaccine.type === 1 ? "type 1" : "type 2").includes(q)
+            vaccine.type.toLowerCase().includes(q)
         );
     }, [search, vaccines]);
 
@@ -65,7 +65,7 @@ export default function VaccinePage() {
     function cancelEditing() {
         setEditingId(null);
         setCreating(false);
-        setEditData({ name: "", vaccinationBooster: "", type: 0, vaccinationDate: "", createdAt: "" });
+        setEditData({ name: "", vaccinationBooster: "", type: "", vaccinationDate: "", createdAt: "" });
     }
 
     async function saveVaccine(vaccineId: number) {
@@ -122,7 +122,7 @@ export default function VaccinePage() {
                     <button onClick={fetchPatientAndVaccines} className="hidden sm:inline-flex items-center gap-2 px-3 py-2 bg-primary text-white rounded-md text-sm">
                         Aggiorna
                     </button>
-                    <button onClick={() => { setCreating(true); setEditingId(null); setEditData({ name: "", vaccinationBooster: "", type: 0, vaccinationDate: "", createdAt: "" }); }}
+                    <button onClick={() => { setCreating(true); setEditingId(null); setEditData({ name: "", vaccinationBooster: "", type: "", vaccinationDate: "", createdAt: "" }); }}
                         className="inline-flex items-center gap-2 px-3 py-2 bg-green-600 text-white rounded-md text-sm">
                         <Plus size={16} /> Nuovo
                     </button>
@@ -153,7 +153,7 @@ export default function VaccinePage() {
                                             <input value={editData.name} onChange={e => setEditData({ ...editData, name: e.target.value })} className="w-full px-2 py-1 border rounded" />
                                         </td>
                                         <td className="px-4 py-3 text-sm text-slate-600">
-                                            <input type="number" value={editData.type} onChange={e => setEditData({ ...editData, type: parseInt(e.target.value) })} className="w-full px-2 py-1 border rounded" />
+                                            <input value={editData.type} onChange={e => setEditData({ ...editData, type: e.target.value })} className="w-full px-2 py-1 border rounded" />
                                         </td>
                                         <td className="px-4 py-3 text-sm text-slate-500">
                                             <input type="date" value={editData.vaccinationDate} onChange={e => setEditData({ ...editData, vaccinationDate: e.target.value })} className="w-full px-2 py-1 border rounded" />
@@ -182,8 +182,8 @@ export default function VaccinePage() {
                                             </td>
                                             <td className="px-4 py-3 text-sm text-slate-600">
                                                 {editingId === v.id ? (
-                                                    <input type="number" value={editData.type} onChange={e => setEditData({ ...editData, type: parseInt(e.target.value) })} className="w-full px-2 py-1 border rounded" />
-                                                ) : (v.type === 1 ? "Tipo 1" : "Tipo 2")}
+                                                    <input value={editData.type} onChange={e => setEditData({ ...editData, type: e.target.value })} className="w-full px-2 py-1 border rounded" />
+                                                ) : v.type}
                                             </td>
                                             <td className="px-4 py-3 text-sm text-slate-500">
                                                 {editingId === v.id ? (

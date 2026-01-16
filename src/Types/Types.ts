@@ -253,6 +253,28 @@ export type Doctor = {
   updatedAt: string | Date | null;
   patients: Patient[];
 };
+
+export type AppointmentCreateDTO = {
+  doctorId: number;
+  appointmentDate: string | Date;
+  reason: string;
+};
+
+export type AppointmentUpdateDTO = {
+  appointmentDate?: string | Date;
+  reason?: string;
+  status?: string;
+};
+
+export type AppointmentResponseDTO = {
+  id: number;
+  patientId: number;
+  doctorId: number;
+  appointmentDate: string;
+  reason: string;
+  status: string;
+};
+
 export type DoctorAuthData = {
   id: number;
   username: string;

@@ -1,6 +1,6 @@
 "use client";
 
-export default function AdminHeader({ setOpen }: { setOpen: (s: boolean) => void }) {
+export default function AdminHeader({ setOpen }: { setOpen: React.Dispatch<React.SetStateAction<boolean>> }) {
     return (
         <header className="sticky top-0 z-10 bg-white border-b">
             <div className="flex items-center justify-between px-4 py-3">
