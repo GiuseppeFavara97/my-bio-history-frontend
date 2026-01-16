@@ -5,7 +5,7 @@ import { toast } from "sonner";
 import { Edit2, Save, X, Plus, Trash } from "lucide-react";
 import { getCurrentPatient } from "@/lib/api/patient";
 import { getAllergiesByPatientId, createAllergy, updateAllergy, softDeleteAllergy } from "@/lib/api/allergy";
-import { Allergy, Patient } from "@/Types/Types";
+import { Allergy, Patient, Severity } from "@/Types/Types";
 
 export default function AllergyPage() {
     const [patient, setPatient] = useState<Patient | null>(null);
@@ -14,10 +14,15 @@ export default function AllergyPage() {
     const [editingId, setEditingId] = useState<number | null>(null);
     const [creating, setCreating] = useState(false);
     const [search, setSearch] = useState("");
-    const [editData, setEditData] = useState({
+    const [editData, setEditData] = useState<{
+        allergen: string;
+        reaction: string;
+        severity: Severity;
+        note: string;
+    }>({
         allergen: "",
         reaction: "",
-        severity: "",
+        severity: Severity.LIEVE,
         note: ""
     });
 
@@ -61,7 +66,7 @@ export default function AllergyPage() {
     function cancelEditing() {
         setEditingId(null);
         setCreating(false);
-        setEditData({ allergen: "", reaction: "", severity: "", note: "" });
+        setEditData({ allergen: "", reaction: "", severity: Severity.LIEVE, note: "" });
     }
 
     async function saveAllergy(id: number) {
@@ -118,7 +123,7 @@ export default function AllergyPage() {
                     <button onClick={fetchPatientAndAllergies} className="hidden sm:inline-flex items-center gap-2 px-3 py-2 bg-primary text-white rounded-md text-sm">
                         Aggiorna
                     </button>
-                    <button onClick={() => { setCreating(true); setEditingId(null); setEditData({ allergen: "", reaction: "", severity: "", note: "" }); }}
+                    <button onClick={() => { setCreating(true); setEditingId(null); setEditData({ allergen: "", reaction: "", severity: Severity.LIEVE, note: "" }); }}
                         className="inline-flex items-center gap-2 px-3 py-2 bg-green-600 text-white rounded-md text-sm">
                         <Plus size={16} /> Nuova
                     </button>
@@ -152,8 +157,7 @@ export default function AllergyPage() {
                                             <input value={editData.reaction} onChange={e => setEditData({ ...editData, reaction: e.target.value })} className="w-full px-2 py-1 border rounded" />
                                         </td>
                                         <td className="px-4 py-3 text-sm text-slate-500">
-                                            <select value={editData.severity} onChange={e => setEditData({ ...editData, severity: e.target.value })} className="w-full px-2 py-1 border rounded">
-                                                <option value="">Seleziona</option>
+                                            <select value={editData.severity} onChange={e => setEditData({ ...editData, severity: e.target.value as Severity })} className="w-full px-2 py-1 border rounded">
                                                 <option value="LIEVE">LIEVE</option>
                                                 <option value="MODERATA">MODERATA</option>
                                                 <option value="GRAVE">GRAVE</option>
@@ -188,8 +192,7 @@ export default function AllergyPage() {
                                             </td>
                                             <td className="px-4 py-3 text-sm text-slate-500">
                                                 {editingId === u.id ? (
-                                                    <select value={editData.severity} onChange={e => setEditData({ ...editData, severity: e.target.value })} className="w-full px-2 py-1 border rounded">
-                                                        <option value="">Seleziona</option>
+                                                    <select value={editData.severity} onChange={e => setEditData({ ...editData, severity: e.target.value as Severity })} className="w-full px-2 py-1 border rounded">
                                                         <option value="LIEVE">LIEVE</option>
                                                         <option value="MODERATA">MODERATA</option>
                                                         <option value="GRAVE">GRAVE</option>

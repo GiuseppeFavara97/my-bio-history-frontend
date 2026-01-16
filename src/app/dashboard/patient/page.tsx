@@ -9,7 +9,9 @@ import {
     PillBottle,
     Syringe,
     Upload,
-    LayoutDashboard
+    LayoutDashboard,
+    Search,
+    Stethoscope
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -24,8 +26,11 @@ import PatientVaccines from "./components/vaccine/page";
 import PatientDocuments from "./components/upload/page";
 import PatientHome from "./components/patientHome";
 import DashboardSettings from "@/components/dashboard/Settings";
+import DoctorSearch from "./components/DoctorSearch";
+import VisitedDoctors from "./components/VisitedDoctors";
+import PatientAppointments from "./components/PatientAppointments";
 
-type MainArea = "cartella" | "profilo" | "settings" | "visite" | "allergy" | "vaccini" | "documenti";
+type MainArea = "cartella" | "profilo" | "settings" | "visite" | "allergy" | "vaccini" | "documenti" | "cercaDottori" | "mieiDottori";
 
 export default function PatientPage() {
     const router = useRouter();
@@ -67,11 +72,13 @@ export default function PatientPage() {
     const { firstName, lastName, user, allergies } = patient;
 
     // Mappa delle sezioni principali
-    const sections: Record<MainArea, JSX.Element> = {
+    const sections: Record<MainArea, React.ReactNode> = {
         cartella: <PatientHome patient={patient} setMainArea={setMainArea} />,
         profilo: <PatientProfile userData={patient} userDataAccount={user} setMainArea={setMainArea} />,
-        visite: <div>{t("visits")}</div>, // Placeholder per PatientVisits
-        allergy: <PatientAllergy allergies={allergies as Allergy[]} />,
+        visite: <PatientAppointments />,
+        mieiDottori: <VisitedDoctors />,
+        cercaDottori: <DoctorSearch patientId={patient.id} />,
+        allergy: <PatientAllergy />,
         vaccini: <PatientVaccines />,
         documenti: <PatientDocuments />,
         settings: <DashboardSettings />,
@@ -121,6 +128,18 @@ export default function PatientPage() {
                         label={t("visits")}
                         active={mainArea === "visite"}
                         onClick={() => setMainArea("visite")}
+                    />
+                    <SidebarItem
+                        icon={<Stethoscope />}
+                        label="I Miei Dottori"
+                        active={mainArea === "mieiDottori"}
+                        onClick={() => setMainArea("mieiDottori")}
+                    />
+                    <SidebarItem
+                        icon={<Search />}
+                        label="Cerca Dottore"
+                        active={mainArea === "cercaDottori"}
+                        onClick={() => setMainArea("cercaDottori")}
                     />
                     <SidebarItem
                         icon={<PillBottle />}

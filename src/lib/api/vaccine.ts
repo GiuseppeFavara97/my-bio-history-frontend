@@ -16,7 +16,7 @@ export const createVaccine = async (vaccineData: any) => {
     return data;
 };
 
-export const updateVaccine = async (id: number, vaccineData: Partial<Vaccine>) => {
+export const updateVaccine = async (id: number, vaccineData: any) => {
     const { data } = await api.patch(`vaccines/update/${id}`, vaccineData);
     return data;
 };

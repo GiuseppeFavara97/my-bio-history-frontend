@@ -5,8 +5,8 @@ import { useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { Home } from "lucide-react"
-import Login from "./login/page"
-import Register from "./register/page"
+import Login from "./login/login-view"
+import Register from "./register/register-view"
 
 export default function LoginRegister() {
     const [isRegister, setIsRegister] = useState<boolean>(false)

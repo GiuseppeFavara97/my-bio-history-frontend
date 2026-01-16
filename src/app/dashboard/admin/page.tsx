@@ -4,22 +4,22 @@ import { useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 import { Edit2, Save, X } from "lucide-react";
 import { getUsers, updateUser } from "@/lib/api/users";
-import { User } from "@/Types/Types";
+import { User, UserRole } from "@/Types/Types";
 
 export default function AdminDashboardPage() {
     const [users, setUsers] = useState<User[]>([]);
     const [loading, setLoading] = useState(false);
-    const [editingId, setEditingId] = useState<number>(null);
+    const [editingId, setEditingId] = useState<number | null>(null);
     const [search, setSearch] = useState("");
     const [error, setError] = useState<string | null>(null);
     const [editData, setEditData] = useState<{
         username: string;
         email: string;
-        role: string;
+        role: UserRole;
     }>({
         username: "",
         email: "",
-        role: "",
+        role: UserRole.PATIENT,
     });
 
     useEffect(() => {
