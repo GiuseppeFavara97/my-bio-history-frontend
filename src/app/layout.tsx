@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google'
 import { Toaster } from 'react-hot-toast'
 import { ThemeProvider } from '@/components/theme-provider'
 import { LanguageProvider } from '@/components/language-provider'
+import ThemeSwitch from '@/components/theme-switch'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -14,8 +15,9 @@ export const metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="it" suppressHydrationWarning>
-      <body className={`${inter.className} bg-[#f4f5f7] dark:bg-background`}>
+      <body className={`${inter.className} bg-[#f4f5f7] dark:bg-background dark:text-black`}>
         <LanguageProvider>
+          
           <ThemeProvider
             attribute="class"
             defaultTheme="system"
@@ -23,6 +25,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             disableTransitionOnChange
           >
             {children}
+            <ThemeSwitch />
             <Toaster position="top-center" />
           </ThemeProvider>
         </LanguageProvider>
