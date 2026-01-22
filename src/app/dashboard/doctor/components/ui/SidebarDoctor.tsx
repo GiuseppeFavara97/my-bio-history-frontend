@@ -72,15 +72,15 @@ export default function SidebarDoctor() {
           label={t("reports")}
         />
         <SidebarItem
-          active={currentView === "calendario"}
-          onClick={() => setCurrentView("calendario")}
+          active={currentView === "calendar"}
+          onClick={() => setCurrentView("calendar")}
           open={toggleSideBar}
           icon={<Calendar />}
           label={t("calendar")}
         />
         <SidebarItem
-          active={currentView === "messaggi"}
-          onClick={() => setCurrentView("messaggi")}
+          active={currentView === "messages"}
+          onClick={() => setCurrentView("messages")}
           open={toggleSideBar}
           icon={<MessageSquare />}
           label={t("messages")}

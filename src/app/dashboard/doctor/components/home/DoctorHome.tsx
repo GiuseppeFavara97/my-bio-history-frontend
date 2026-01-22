@@ -82,7 +82,6 @@ export default function DoctorHome() {
 
     fetchMedicalRecord(selectedPatient.id);
   }, [selectedPatient]);
-  //console.log("medicalRecord", medicalRecord, "di paziente", selectedPatient?.id, "diagnosi", diagnoses,"paziente",selectedPatient);
   return (
     <main className="flex h-full w-full flex-col overflow-hidden">
       <div id="right" className=" relative flex w-full flex-1 overflow-hidden ">
