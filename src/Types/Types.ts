@@ -270,9 +270,10 @@ export type AppointmentResponseDTO = {
   id: number;
   patientId: number;
   doctorId: number;
-  appointmentDate: string;
-  reason: string;
+  startTime: string;
+  reason?: string;
   status: string;
+  softDeleted: boolean;
 };
 
 export type DoctorAuthData = {

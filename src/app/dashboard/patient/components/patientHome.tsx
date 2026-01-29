@@ -14,9 +14,12 @@ interface PatientHomeProps {
 export default function PatientHome({ patient, setMainArea }: PatientHomeProps) {
     if (!patient) return null;
 
-    const { allergies, vaccines, upload, medicalRecord } = patient;
-    const diagnoses = medicalRecord?.diagnosis || [];
-    const cares = medicalRecord?.cares || [];
+    // Prendi tutti i dati da medicalRecord, con fallback ai campi diretti del patient
+    const allergies = patient.medicalRecord?.allergies || patient.allergies || [];
+    const vaccines = patient.medicalRecord?.vaccines || patient.vaccines || [];
+    const upload = patient.medicalRecord?.upload || patient.upload || [];
+    const diagnoses = patient.medicalRecord?.diagnosis || [];
+    const cares = patient.medicalRecord?.cares || [];
 
     return (
         <div className="space-y-8">

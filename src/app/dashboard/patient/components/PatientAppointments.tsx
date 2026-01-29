@@ -60,7 +60,7 @@ export default function PatientAppointments() {
                                         <div className="flex flex-wrap gap-x-4 gap-y-1 text-sm text-gray-600">
                                             <div className="flex items-center gap-1">
                                                 <Clock className="h-4 w-4" />
-                                                {new Date(app.appointmentDate).toLocaleString()}
+                                                {new Date(app.startTime).toLocaleString()}
                                             </div>
                                             <div className="flex items-center gap-1">
                                                 <User className="h-4 w-4" />
