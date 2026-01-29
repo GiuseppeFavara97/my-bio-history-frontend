@@ -1,10 +1,12 @@
 'use client';
 
+import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { Patient, Allergy, Vaccine, Diagnosis, Care } from "@/Types/Types";
+import { Patient, Allergy, Vaccine, Diagnosis, Care, MedicalRecord } from "@/Types/Types";
 import { ClipboardClock, PillBottle, Syringe, Upload, Activity, ChevronRight } from "lucide-react";
+import { getMedicalRecordById } from "@/lib/api/medicalRecord";
 
 interface PatientHomeProps {
     patient: Patient | null;
@@ -12,14 +14,31 @@ interface PatientHomeProps {
 }
 
 export default function PatientHome({ patient, setMainArea }: PatientHomeProps) {
+    const [medicalRecord, setMedicalRecord] = useState<MedicalRecord | null>(null);
+
+    useEffect(() => {
+        if (patient?.medicalRecordId) {
+            getMedicalRecordById(patient.medicalRecordId)
+                .then(setMedicalRecord)
+                .catch(console.error);
+        }
+    }, [patient?.medicalRecordId]);
+
     if (!patient) return null;
 
-    // Prendi tutti i dati da medicalRecord, con fallback ai campi diretti del patient
-    const allergies = patient.medicalRecord?.allergies || patient.allergies || [];
-    const vaccines = patient.medicalRecord?.vaccines || patient.vaccines || [];
-    const upload = patient.medicalRecord?.upload || patient.upload || [];
-    const diagnoses = patient.medicalRecord?.diagnosis || [];
-    const cares = patient.medicalRecord?.cares || [];
+    const allergies = medicalRecord?.allergies || patient.medicalRecord?.allergies || patient.allergies || [];
+    const vaccines = medicalRecord?.vaccines || patient.medicalRecord?.vaccines || patient.vaccines || [];
+    const upload = medicalRecord?.upload || patient.medicalRecord?.upload || patient.upload || [];
+    const diagnoses = medicalRecord?.diagnosis || patient.medicalRecord?.diagnosis || [];
+    const cares = medicalRecord?.cares || patient.medicalRecord?.cares || [];
+
+    // Ultima diagnosi (la più recente per data di creazione)
+    const latestDiagnosis = diagnoses.length > 0
+        ? [...diagnoses].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())[0]
+        : null;
+
+    // Terapie attive (associate all'ultima diagnosi o tutte se non c'è collegamento)
+    const activeCares = cares.filter((c: Care) => !c.softDeleted);
 
     return (
         <div className="space-y-8">
@@ -39,18 +58,22 @@ export default function PatientHome({ patient, setMainArea }: PatientHomeProps) 
                     </CardHeader>
                     <CardContent>
                         <div className="space-y-4">
-                            {diagnoses.length > 0 ? (
-                                diagnoses.slice(0, 3).map((d: Diagnosis) => (
-                                    <div key={d.id} className="flex flex-col space-y-1 p-3 bg-purple-50 rounded-lg">
-                                        <div className="flex justify-between">
-                                            <span className="font-bold text-sm text-purple-900">{d.pathologyName}</span>
-                                            <span className="text-xs text-purple-600 font-medium">{new Date(d.createdAt).toLocaleDateString()}</span>
-                                        </div>
-                                        <p className="text-xs text-gray-700 line-clamp-2">{d.description}</p>
+                            {latestDiagnosis ? (
+                                <div className="flex flex-col space-y-1 p-3 bg-purple-50 rounded-lg">
+                                    <div className="flex justify-between">
+                                        <span className="font-bold text-sm text-purple-900">{latestDiagnosis.pathologyName}</span>
+                                        <span className="text-xs text-purple-600 font-medium">{new Date(latestDiagnosis.createdAt).toLocaleDateString()}</span>
                                     </div>
-                                ))
+                                    <p className="text-xs text-gray-700 line-clamp-2">{latestDiagnosis.description}</p>
+                                    {latestDiagnosis.doctor && (
+                                        <p className="text-xs text-purple-500 mt-1">Dr. {latestDiagnosis.doctor.lastName} {latestDiagnosis.doctor.firstName}</p>
+                                    )}
+                                </div>
                             ) : (
                                 <p className="text-sm text-gray-400 text-center py-8 italic">Nessuna diagnosi registrata</p>
+                            )}
+                            {diagnoses.length > 1 && (
+                                <p className="text-xs text-gray-500 text-center">Totale diagnosi: {diagnoses.length}</p>
                             )}
                         </div>
                     </CardContent>
@@ -65,16 +88,30 @@ export default function PatientHome({ patient, setMainArea }: PatientHomeProps) 
                     </CardHeader>
                     <CardContent>
                         <div className="space-y-4">
-                            {cares.length > 0 ? (
-                                cares.slice(0, 3).map((c: Care) => (
-                                    <div key={c.id} className="flex flex-col space-y-1 p-3 bg-orange-50 rounded-lg">
-                                        <div className="flex justify-between">
-                                            <span className="font-bold text-sm text-orange-900">{c.description}</span>
-                                            <Badge variant="secondary" className="bg-orange-200 text-orange-900 hover:bg-orange-200">{c.durationDays} gg</Badge>
+                            {activeCares.length > 0 ? (
+                                activeCares.slice(0, 3).map((c: Care) => {
+                                    // Calcola data fine dalla diagnosi associata + durata giorni
+                                    const linkedDiagnosis = diagnoses.find((d: Diagnosis) => d.id === c.diagnosisId);
+                                    const startDate = linkedDiagnosis ? new Date(linkedDiagnosis.createdAt) : null;
+                                    const endDate = startDate && c.durationDays
+                                        ? new Date(startDate.getTime() + Number(c.durationDays) * 86400000)
+                                        : null;
+
+                                    return (
+                                        <div key={c.id} className="flex flex-col space-y-1 p-3 bg-orange-50 rounded-lg">
+                                            <div className="flex justify-between">
+                                                <span className="font-bold text-sm text-orange-900">{c.description}</span>
+                                                <Badge variant="secondary" className="bg-orange-200 text-orange-900 hover:bg-orange-200">{c.durationDays} gg</Badge>
+                                            </div>
+                                            <p className="text-xs text-orange-800">Frequenza: {c.dailyFrequency} volte al giorno</p>
+                                            {endDate && (
+                                                <p className="text-xs text-orange-600">
+                                                    Fine terapia: {endDate.toLocaleDateString()}
+                                                </p>
+                                            )}
                                         </div>
-                                        <p className="text-xs text-orange-800">Frequenza: {c.dailyFrequency} volte al giorno</p>
-                                    </div>
-                                ))
+                                    );
+                                })
                             ) : (
                                 <p className="text-sm text-gray-400 text-center py-8 italic">Nessuna terapia attiva</p>
                             )}
