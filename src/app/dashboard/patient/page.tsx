@@ -85,13 +85,13 @@ export default function PatientPage() {
     };
 
     return (
-        <main className="flex flex-col sm:flex-row h-full m-10 bg-[#f4f5f7] dark:bg-background">
+        <main className="flex flex-col sm:flex-row h-full m-10 bg-[#f4f5f7] dark:bg-background items-start gap-6">
             {/* Sidebar */}
-            <aside className="m-1 gap-y-6 flex flex-col h-full w-full sm:w-1/3">
-                <div className="bg-white dark:bg-card rounded-2xl p-5 flex gap-4 items-center">
-                    <div className="flex flex-col w-full">
+            <aside className="gap-y-6 flex flex-col w-full sm:w-1/3">
+                <div className="bg-white dark:bg-card rounded-2xl p-4 flex gap-4 items-center">
+                    <div className="flex flex-col w-full space-y-2">
                         <span className="text-lg font-semibold dark:text-white">{firstName} {lastName}</span>
-                        <span className="text-sm text-gray-500 mb-3">{user?.email}</span>
+                        <span className="text-sm text-gray-500 mb-1">{user?.email}</span>
 
                         <SidebarItem
                             icon={<CircleUser />}
@@ -163,7 +163,7 @@ export default function PatientPage() {
             </aside>
 
             {/* Contenuto principale */}
-            <section className="flex-1 bg-white dark:bg-card m-6 rounded-2xl p-6 overflow-y-auto">
+            <section className="flex-1 bg-white dark:bg-card rounded-2xl p-6 overflow-y-auto self-stretch">
                 {sections[mainArea]}
             </section>
         </main>
