@@ -256,6 +256,7 @@ export type Doctor = {
 
 export type AppointmentCreateDTO = {
   doctorId: number;
+  patientId: number;
   appointmentDate: string | Date;
   reason: string;
 };
@@ -281,4 +282,37 @@ export type DoctorAuthData = {
   username: string;
   email: string;
   role: UserRole;
+};
+
+export type Appointment = {
+  id: number;
+  patientId: number;
+  doctorId: number;
+  startTime: string | Date;
+  reason?: string;
+  status: string;
+  softDeleted: boolean;
+};
+
+export type AppointmentFormData = {
+  doctorId: number;
+  patientId: number;
+  appointmentDate: string | Date;
+  reason: string;
+};
+
+export type AppointmentPayload = {
+  doctorId?: number;
+  patientId?: number;
+  appointmentDate?: string | Date;
+  reason?: string;
+  status?: string;
+};
+
+export type AppointmentUpdatePayload = {
+  doctorId?: number;
+  patientId?: number;
+  appointmentDate?: string | Date;
+  reason?: string;
+  status?: string;
 };
