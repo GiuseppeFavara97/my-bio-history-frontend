@@ -256,23 +256,25 @@ export type Doctor = {
 
 export type AppointmentCreateDTO = {
   doctorId: number;
+  doctorName: string;
   patientId: number;
-  appointmentDate: string | Date;
-  reason: string;
+  startTime: string | Date;
+  note: string;
+  status?: string;
 };
 
 export type AppointmentUpdateDTO = {
-  appointmentDate?: string | Date;
-  reason?: string;
-  status?: string;
+  startTime?: string | Date;
+  note?: string;
 };
 
 export type AppointmentResponseDTO = {
   id: number;
   patientId: number;
   doctorId: number;
+  doctorName?: string;
   startTime: string;
-  reason?: string;
+  note?: string;
   status: string;
   softDeleted: boolean;
 };
@@ -287,32 +289,38 @@ export type DoctorAuthData = {
 export type Appointment = {
   id: number;
   patientId: number;
-  doctorId: number;
+  doctorId?: number;
   startTime: string | Date;
-  reason?: string;
+  note?: string;
   status: string;
   softDeleted: boolean;
 };
 
 export type AppointmentFormData = {
-  doctorId: number;
+  doctorName: string;
   patientId: number;
-  appointmentDate: string | Date;
-  reason: string;
+  startTime: string | Date;
+  note: string;
 };
 
 export type AppointmentPayload = {
-  doctorId?: number;
+  doctorName?: string;
   patientId?: number;
-  appointmentDate?: string | Date;
-  reason?: string;
+  startTime?: string | Date;
+  note?: string;
   status?: string;
 };
 
 export type AppointmentUpdatePayload = {
-  doctorId?: number;
+  doctorName?: string;
   patientId?: number;
-  appointmentDate?: string | Date;
-  reason?: string;
+  startTime?: string | Date;
+  note?: string;
   status?: string;
 };
+
+export enum AppointmentStatus {
+  SCHEDULED = "SCHEDULED",
+  COMPLETED = "COMPLETED",
+  CANCELED = "CANCELED",
+}

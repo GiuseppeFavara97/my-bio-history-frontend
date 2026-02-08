@@ -55,10 +55,10 @@ export default function PatientAppointments() {
 
   // Form state
   const [formData, setFormData] = useState({
-    doctorId: "",
+    doctorName: "",
     appointmentDate: "",
     appointmentTime: "",
-    reason: "",
+    note: "",
   });
 
   useEffect(() => {
@@ -82,21 +82,46 @@ export default function PatientAppointments() {
   const handleBookAppointment = async () => {
     try {
       setIsSubmitting(true);
+
+      // Validation
+      if (!formData.doctorName || !formData.appointmentDate || !formData.appointmentTime || !formData.note) {
+        toast.error("Per favore compila tutti i campi");
+        setIsSubmitting(false);
+        return;
+      }
+
       const appointmentData: AppointmentCreateDTO = {
-        doctorId: parseInt(formData.doctorId),
-        patientId: 1, // TODO: ricavare da user loggato
-        appointmentDate: `${formData.appointmentDate}T${formData.appointmentTime}:00`,
-        reason: formData.reason,
+        doctorId: 1,
+        doctorName: formData.doctorName.trim(),
+        patientId: 1,
+        startTime: `${formData.appointmentDate}T${formData.appointmentTime}:00`,
+        note: formData.note.trim(),
+        status: "SCHEDULED",
       };
 
-      await createAppointment(appointmentData);
+      console.log("📍 Dati inviati:", appointmentData);
+      console.log("📍 JSON:", JSON.stringify(appointmentData));
+      
+      const response = await createAppointment(appointmentData);
+      console.log("✅ Successo:", response);
       toast.success("Appuntamento prenotato con successo!");
       setIsBookingOpen(false);
-      setFormData({ doctorId: "", appointmentDate: "", appointmentTime: "", reason: "" });
+      setFormData({ doctorName: "", appointmentDate: "", appointmentTime: "", note: "" });
       await fetchAppointments();
     } catch (error: any) {
-      console.error("Errore:", error);
-      toast.error(error?.response?.data?.message || "Errore nella prenotazione");
+      
+      // Alert visibile
+      const backendError = error?.response?.data;
+      const statusCode = error?.response?.status || 'unknown';
+      const errorMsg = backendError?.message || backendError?.error || `Errore ${statusCode}` || error?.message;
+      
+      console.error("❌ MESSAGGIO FINALE:", errorMsg);
+      console.error("❌ STATUS:", statusCode);
+      
+      // Mostra entrambi toast e alert per essere sicuro
+      const fullError = `Status: ${statusCode}\n${errorMsg}`;
+      alert(`❌ Errore della prenotazione:\n${fullError}`);
+      toast.error(`Errore ${statusCode}: ${errorMsg}`);
     } finally {
       setIsSubmitting(false);
     }
@@ -107,18 +132,21 @@ export default function PatientAppointments() {
     try {
       setIsSubmitting(true);
       const updateData: AppointmentUpdateDTO = {
-        appointmentDate: `${formData.appointmentDate}T${formData.appointmentTime}:00`,
-        reason: formData.reason,
+        startTime: `${formData.appointmentDate}T${formData.appointmentTime}:00`,
+        note: formData.note,
       };
 
+      console.log("📍 Modifica dati:", updateData);
       await updateAppointment(selectedAppointment.id, updateData);
       toast.success("Appuntamento modificato con successo!");
       setIsEditOpen(false);
       setSelectedAppointment(null);
       await fetchAppointments();
     } catch (error: any) {
-      console.error("Errore:", error);
-      toast.error("Errore nella modifica dell'appuntamento");
+      console.error("❌ Errore modifica:", error?.response?.data);
+      const backendError = error?.response?.data;
+      const errorMsg = backendError?.message || backendError?.error || error?.message;
+      toast.error(`Errore: ${errorMsg}`);
     } finally {
       setIsSubmitting(false);
     }
@@ -145,21 +173,21 @@ export default function PatientAppointments() {
     setSelectedAppointment(appointment);
     const dateTime = new Date(appointment.startTime);
     setFormData({
-      doctorId: appointment.doctorId.toString(),
+      doctorName: appointment.doctorName || "",
       appointmentDate: dateTime.toISOString().split('T')[0],
       appointmentTime: dateTime.toTimeString().slice(0, 5),
-      reason: appointment.reason || "",
+      note: appointment.note || "",
     });
     setIsEditOpen(true);
   };
 
   const getStatusBadge = (status: string) => {
     switch (status?.toUpperCase()) {
-      case 'PENDING':
+      case 'SCHEDULED':
         return (
-          <Badge className="bg-yellow-500 hover:bg-yellow-600 flex items-center gap-1 w-fit">
+          <Badge className="bg-blue-500 hover:bg-blue-600 flex items-center gap-1 w-fit">
             <Clock className="h-3 w-3" />
-            In Attesa
+            Programmato
           </Badge>
         );
       case 'CONFIRMED':
@@ -183,10 +211,10 @@ export default function PatientAppointments() {
 
   const getStatistics = () => {
     const total = appointments.length;
-    const pending = appointments.filter(a => a.status === 'PENDING').length;
+    const scheduled = appointments.filter(a => a.status === 'SCHEDULED').length;
     const confirmed = appointments.filter(a => a.status === 'CONFIRMED').length;
     const cancelled = appointments.filter(a => a.status === 'CANCELLED').length;
-    return { total, pending, confirmed, cancelled };
+    return { total, scheduled, confirmed, cancelled };
   };
 
   const stats = getStatistics();
@@ -219,13 +247,13 @@ export default function PatientAppointments() {
             </DialogHeader>
             <div className="grid gap-5 py-4">
               <div className="grid gap-2">
-                <Label htmlFor="doctorId" className="font-semibold">Scegli il Dottore</Label>
+                <Label htmlFor="doctor" className="font-semibold">Nome del Dottore</Label>
                 <Input
-                  id="doctorId"
-                  type="number"
-                  placeholder="ID Dottore"
-                  value={formData.doctorId}
-                  onChange={(e) => setFormData({...formData, doctorId: e.target.value})}
+                  id="doctor"
+                  type="text"
+                  placeholder="Nome del dottore"
+                  value={formData.doctorName}
+                  onChange={(e) => setFormData({...formData, doctorName: e.target.value})}
                 />
               </div>
               <div className="grid grid-cols-2 gap-4">
@@ -253,8 +281,8 @@ export default function PatientAppointments() {
                 <Textarea
                   id="reason"
                   placeholder="Descrivi brevemente il motivo della visita..."
-                  value={formData.reason}
-                  onChange={(e) => setFormData({...formData, reason: e.target.value})}
+                  value={formData.note}
+                  onChange={(e) => setFormData({...formData, note: e.target.value})}
                   rows={3}
                   className="resize-none"
                 />
@@ -267,7 +295,7 @@ export default function PatientAppointments() {
               <Button 
                 className="bg-blue-600 hover:bg-blue-700"
                 onClick={handleBookAppointment}
-                disabled={!formData.doctorId || !formData.appointmentDate || !formData.appointmentTime || !formData.reason || isSubmitting}
+                disabled={!formData.doctorName || !formData.appointmentDate || !formData.appointmentTime || !formData.note || isSubmitting}
               >
                 {isSubmitting ? "Prenotazione..." : "Prenota Ora"}
               </Button>
@@ -286,12 +314,12 @@ export default function PatientAppointments() {
             <div className="text-3xl font-bold text-gray-900">{stats.total}</div>
           </CardContent>
         </Card>
-        <Card className="border-l-4 border-l-yellow-500 bg-white shadow-sm">
+        <Card className="border-l-4 border-l-blue-500 bg-white shadow-sm">
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-gray-600">In Attesa</CardTitle>
+            <CardTitle className="text-sm font-medium text-gray-600">Programmati</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold text-yellow-600">{stats.pending}</div>
+            <div className="text-3xl font-bold text-blue-600">{stats.scheduled}</div>
           </CardContent>
         </Card>
         <Card className="border-l-4 border-l-green-500 bg-white shadow-sm">
@@ -339,7 +367,7 @@ export default function PatientAppointments() {
                       </div>
                       <div className="flex-1">
                         <div className="flex items-center gap-3 flex-wrap">
-                          <h3 className="font-bold text-lg text-gray-900">Appuntamento #{app.id}</h3>
+                          <h3 className="font-bold text-lg text-gray-900">Visita #{app.id}</h3>
                           {getStatusBadge(app.status)}
                         </div>
                       </div>
@@ -350,7 +378,7 @@ export default function PatientAppointments() {
                         <Clock className="h-4 w-4 text-blue-600" />
                         <div>
                           <p className="text-xs text-gray-500">Data e Ora</p>
-                          <p className="font-semibold">
+                          <p className="font-semibold text-xl">
                             {new Date(app.startTime).toLocaleDateString('it-IT', {
                               weekday: 'long',
                               day: 'numeric',
@@ -367,7 +395,7 @@ export default function PatientAppointments() {
                         <User className="h-4 w-4 text-blue-600" />
                         <div>
                           <p className="text-xs text-gray-500">Dottore</p>
-                          <p className="font-semibold">ID: {app.doctorId}</p>
+                          <p className="font-semibold">{app.doctorName || `ID: ${app.doctorId}`}</p>
                         </div>
                       </div>
                     </div>
@@ -375,7 +403,7 @@ export default function PatientAppointments() {
                     <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
                       <div className="flex items-start gap-2">
                         <TextQuote className="h-4 w-4 text-blue-600 mt-1 flex-shrink-0" />
-                        <p className="text-sm text-gray-700 italic">{app.reason || "Nessuna descrizione"}</p>
+                        <p className="text-sm text-gray-700 italic">{app.note || "Nessuna descrizione"}</p>
                       </div>
                     </div>
                   </div>
@@ -418,8 +446,8 @@ export default function PatientAppointments() {
                             <div className="bg-red-50 border border-red-200 rounded-lg p-4">
                               <p className="text-sm text-red-800">
                                 <strong>Data:</strong> {new Date(app.startTime).toLocaleString('it-IT')}<br />
-                                <strong>Dottore:</strong> ID {app.doctorId}<br />
-                                <strong>Motivo:</strong> {app.reason}
+                                <strong>Dottore:</strong> {app.doctorName || `ID ${app.doctorId}`}<br />
+                                <strong>Motivo:</strong> {app.note}
                               </p>
                             </div>
                             <DialogFooter>
@@ -492,8 +520,8 @@ export default function PatientAppointments() {
               <Textarea
                 id="edit-reason"
                 placeholder="Descrivi il motivo della visita..."
-                value={formData.reason}
-                onChange={(e) => setFormData({...formData, reason: e.target.value})}
+                value={formData.note}
+                onChange={(e) => setFormData({...formData, note: e.target.value})}
                 rows={3}
                 className="resize-none"
               />
@@ -509,7 +537,7 @@ export default function PatientAppointments() {
             <Button 
               className="bg-blue-600 hover:bg-blue-700"
               onClick={handleUpdateAppointment}
-              disabled={!formData.appointmentDate || !formData.appointmentTime || !formData.reason || isSubmitting}
+              disabled={!formData.appointmentDate || !formData.appointmentTime || !formData.note || isSubmitting}
             >
               {isSubmitting ? "Modifica in corso..." : "Salva Modifiche"}
             </Button>
